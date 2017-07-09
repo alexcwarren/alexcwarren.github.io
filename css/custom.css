@@ -46,6 +46,7 @@ body {
 }
 .site-wrapper-inner {
   background-image: url(../images/background.jpg);
+  background-size: 100% auto;
   display: table-cell;
   vertical-align: top;
 }
