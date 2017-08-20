@@ -1,6 +1,6 @@
 body {
   padding-top: 50px;
-  background-image: url("../images/background.jpg");
+  background: url("../images/background.jpg") fixed #A8BFAD no-repeat;
   background-size: 100% auto;
 }
 
@@ -8,11 +8,17 @@ h1 {
   font-size: 70px;
   margin-top: 0px;
   margin-bottom: 0px;
+  font-family: 'Lobster', cursive;
 }
 
 p, .lead {
   font-size: 30px;
   /*margin-top: 550px;*/
+  font-family: 'Lobster', cursive;
+}
+
+li {
+  font-family: ‘Arvo’, courier, serif;
 }
 
 .starter-template {
