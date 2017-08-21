@@ -26,3 +26,7 @@ li {
   text-align: center;
   color: white;
 }
+
+@media (max-width: 1199px) {
+  
+}
