@@ -35,3 +35,9 @@ li {
 .navbar-inverse {
   background-color: #4D0013;
 }
+
+@media (max-width: 768px) {
+  h1 {
+    margin-top: 500px;
+  }
+}
