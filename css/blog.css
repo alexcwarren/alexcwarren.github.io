@@ -33,3 +33,7 @@ li {
 .blog-description {
   font-size: 124%;
 }
+
+.custom-width {
+  width: 400px;
+}
