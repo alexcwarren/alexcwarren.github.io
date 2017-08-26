@@ -1,5 +1,16 @@
+body {
+  background-color: #000034;
+  color: white;
+  font-family: 'Indie Flower', cursive;
+}
+
 p {
   font-size: 20px;
+}
+
+li {
+  font-family: 'Courgette', cursive;*/
+  font-weight: bold;
 }
 
 .blog-title {
@@ -8,4 +19,8 @@ p {
 
 .blog-description {
   font-size: 124%;
+}
+
+.navbar-inverse {
+  background-color: #4D0013;
 }
