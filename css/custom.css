@@ -35,3 +35,16 @@ li {
 .navbar-inverse {
   background-color: #4D0013;
 }
+
+@media (max-width: 768px) {
+  body {
+    background-position: bottom;
+  }
+  h1 {
+    font-size: 400%;
+    margin-top: -10px;
+  }
+  p, .lead {
+    font-size: 150%;
+  }
+}
