@@ -2,6 +2,7 @@ body {
   padding-top: 50px;
   background: url("../images/background.jpg") fixed #A8BFAD no-repeat;
   background-size: 100% auto;
+  background-position: center;
 }
 
 h1 {
