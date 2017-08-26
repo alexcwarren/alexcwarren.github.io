@@ -1,7 +1,7 @@
 body {
   background-color: #000034;
   color: white;
-  font-family: 'Indie Flower', cursive;
+  font-family: 'Lobster', cursive;
 }
 
 p {
@@ -13,14 +13,22 @@ li {
   font-weight: bold;
 }
 
+.navbar-inverse {
+  background-color: #4D0013;
+}
+
+.blog-rosa {
+  font-family: 'Indie Flower', cursive;
+}
+
+.blog-alex {
+  font-family: 'Shadows Into Light', cursive;
+}
+
 .blog-title {
   margin-top: 60px;
 }
 
 .blog-description {
   font-size: 124%;
-}
-
-.navbar-inverse {
-  background-color: #4D0013;
 }
