@@ -5,6 +5,12 @@ body {
   font-family: 'Lobster', cursive;
 }
 
+li {
+  font-family: 'Courgette', cursive;*/
+  font-weight: bold;
+  font-size: 120%;
+}
+
 .navbar {
   margin-bottom: 0;
 }

@@ -24,6 +24,7 @@ h1, p, .lead {
 li {
   font-family: 'Courgette', cursive;*/
   font-weight: bold;
+  font-size: 120%;
 }
 
 .starter-template {
