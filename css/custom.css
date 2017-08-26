@@ -3,6 +3,7 @@ body {
   background: url("../images/background.jpg") fixed #A8BFAD no-repeat;
   background-size: 100% auto;
   background-position: center;
+  background-color: #000034;
 }
 
 h1 {
@@ -26,6 +27,10 @@ li {
   padding: 0px 15px;
   text-align: center;
   color: white;
+}
+
+.navbar-inverse {
+  background-color: #4D0013;
 }
 
 @media (max-width: 1199px) {
