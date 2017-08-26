@@ -1,16 +1,23 @@
 body {
   min-height: 75rem; /* Can be removed; just added for demo purposes */
+  background-color: #000034;
+  color: white;
+  font-family: 'Lobster', cursive;
 }
 
 .navbar {
   margin-bottom: 0;
 }
 
+.navbar-inverse {
+  background-color: #4D0013;
+}
+
 .jumbotron {
   padding-top: 6rem;
   padding-bottom: 6rem;
   margin-bottom: 0;
-  background-color: #fff;
+  background-color: #000034;
 }
 
 .jumbotron p:last-child {
@@ -29,7 +36,7 @@ body {
   min-height: 50rem; /* Can be removed; just added for demo purposes */
   padding-top: 3rem;
   padding-bottom: 3rem;
-  background-color: #f7f7f7;
+
 }
 
 .card {
@@ -55,4 +62,10 @@ footer {
 
 footer p {
   margin-bottom: .25rem;
+}
+
+@media (max-width: 768px) {
+  .card {
+    width: 100%;
+  }
 }
