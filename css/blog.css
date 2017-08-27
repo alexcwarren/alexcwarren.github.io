@@ -18,6 +18,10 @@ li {
   background-color: #4D0013;
 }
 
+.navbar-collapse {
+  min-height: 380px;
+}
+
 .blog-rosa {
   font-family: 'Indie Flower', cursive;
 }
