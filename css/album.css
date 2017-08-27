@@ -74,6 +74,9 @@ footer p {
   .card {
     width: 100%;
   }
+  .navbar-collapse {
+    min-height: 380px;
+  }
 }
 
 .back-to-top {
