@@ -37,10 +37,6 @@ li {
   background-color: #4D0013;
 }
 
-.navbar-collapse {
-  min-height: 380px;
-}
-
 @media (max-width: 768px) {
   body {
     background-position: bottom;
@@ -51,5 +47,8 @@ li {
   }
   p, .lead {
     font-size: 150%;
+  }
+  .navbar-collapse {
+    min-height: 380px;
   }
 }

@@ -18,10 +18,6 @@ li {
   background-color: #4D0013;
 }
 
-.navbar-collapse {
-  min-height: 380px;
-}
-
 .blog-rosa {
   font-family: 'Indie Flower', cursive;
 }
@@ -44,4 +40,10 @@ li {
 
 .back-to-top {
   font-size: 20px;
+}
+
+@media (max-width: 768px) {
+  .navbar-collapse {
+    min-height: 380px;
+  }
 }
