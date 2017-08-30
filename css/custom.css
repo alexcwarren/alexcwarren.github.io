@@ -37,6 +37,13 @@ li {
   background-color: #4D0013;
 }
 
+@media (max-width: 1199px) {
+  body {
+    margin-top: 40px;
+    margin-left: -75px;
+  }
+}
+
 @media (min-width: 1200px) {
   h1, p {
     margin-left: -75px;
