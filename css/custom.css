@@ -45,7 +45,7 @@ li {
 
 @media (max-width: 768px) {
   body {
-    background-position: bottom;
+    background-position: 0px 50px;
   }
   h1 {
     font-size: 400%;
@@ -60,6 +60,9 @@ li {
 }
 
 @media (max-width: 400px) {
+  body {
+    background-position: 0px 50px;
+  }
   .starter-template {
     margin-top: 275px;
   }
