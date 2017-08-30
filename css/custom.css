@@ -52,3 +52,9 @@ li {
     min-height: 380px;
   }
 }
+
+@media (max-width: 400px) {
+  body {
+    background-position: bottom;
+  }
+}
