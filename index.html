@@ -31,6 +31,17 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <script>
+      function roll(form) {
+        var args = form.arguments.value;
+        if(!args) {
+          return;
+        }
+        var message = 'You typed: ' + args;
+        alert (message);
+      }
+    </script>
   </head>
 
   <body>
@@ -56,6 +67,15 @@
 
     <div class="container">
 
+      <form name="myForm" action="" method="get">
+        <div>
+          <label for="arguments">Arguments:</label>
+          <input type="text" name="arguments" id="arguments" placeholder="1d20" required>
+        </div>
+        <div>
+          <input type="submit" value="Roll" onClick="roll(this.form)">
+        </div>
+      </form>
       <!-- <div class="starter-template">
         <h1>Rosa & Alex</h1>
         <p class="lead">Saturday, November 18th, 2017<br>Purcellville, Virginia</p>
