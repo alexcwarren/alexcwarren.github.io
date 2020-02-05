@@ -40,12 +40,16 @@
           ['hard', ['0', '0', '0', '-1', '-1', '-2', '-2', '-3', '-3', '-4', '-5', 'skull', 'skull', 'hood', 'tablet', 'cthulu', 'star']],
           ['expert', ['0', '-1', '-1', '-2', '-2', '-3', '-3', '-4', '-4', '-5', '-6', '-8', 'skull', 'skull', 'hood', 'tablet', 'cthulu', 'star']]
         ];
+        
         var difficultySelection = document.getElementById('difficulty');
         var difficultyIndex = difficultySelection.selectedIndex;
         var difficulty = difficultySelection.options[ difficultyIndex ].value;
+        
         var chaosTokens = chaosTokensArr[difficulty];
         var index = Math.ceil(Math.random() * chaosTokens.length - 1);
         log(chaosTokens[index] + '<br/>');
+        
+        legend(difficulty);
       }
       
       function log(message) {
@@ -59,6 +63,26 @@
       
       function clearLog() {
         document.getElementById('log').innerHTML = '';
+      }
+      
+      function legend(difficulty) {
+        var text = '';
+        
+        if(difficulty == 'easy' || difficulty == 'standard') {
+          text += 'skull: -X. X is the number of <strong><em>Ghoul</em></strong> enemies at your location.<br/>';
+          text += 'hood: -1. If you fail, take 1 horror.<br/>';
+          text += 'tablet: -2. If there is a <strong><em>Ghoul</em></strong> enemy at your location, take 1 damage.<br/>';
+        }
+        else if(difficulty == 'hard' || difficulty == 'expert') {
+          text += 'skull: -2. If you fail, after this skill test, search the encounter deck and discard pile for a <strong><em>Ghoul</em></strong> enemy, and draw it. Shuffle the encounter deck.<br/>';
+          text += 'hood: Reveal another token. If you fail, take 2 horror.<br/>';
+          text += 'tablet: -4. If there is a <strong><em>Ghoul</em></strong> enemy at your location, take 1 damage and 1 horror.<br/>';
+        }
+        
+        text += 'cthulu: Automatic failure.<br/>';
+        text += 'star: Consult your <strong><em>Investigator Card</em></strong>.<br/>';
+        
+        document.getElementById('legend').innerHTML = text;
       }
     </script>
   </head>
@@ -97,6 +121,8 @@
         <option value="hard">Hard</option>
         <option value="expert">Expert</option>
       </select>
+      <br/><br/>
+      <p id="legend"></p>
       <br/><br/>
       <button onClick="clearLog()">Clear Log</button>
       <p>Log:</p>
