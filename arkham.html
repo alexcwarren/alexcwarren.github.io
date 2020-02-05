@@ -33,13 +33,23 @@
     <![endif]-->
 
     <script>
-      function roll(form) {
-        var args = form.arguments.value;
-        if(!args) {
+      function drawChaosToken() {
+        let chaosTokens = ['+1', '0', '0', '-1', '-1', '-1', '-2', '-2', '-3', '-4', 'skull', 'skull', 'hood', 'tablet', 'cthulu', 'star'];
+        var index = Math.ceil(Math.random() * chaosTokens.length - 1);
+        log(chaosTokens[index] + '<br/>');
+      }
+      
+      function log(message) {
+        if(!message) {
           return;
         }
-        var message = 'You typed: ' + args;
-        alert (message);
+        
+        let text = document.getElementById('log').innerHTML;
+        document.getElementById('log').innerHTML = message + text;
+      }
+      
+      function clearLog() {
+        document.getElementById('log').innerHTML = '';
       }
     </script>
   </head>
@@ -69,19 +79,11 @@
 
     <div class="container">
 
-      <form name="myForm" action="" method="get">
-        <div>
-          <label for="arguments">Arguments:</label>
-          <input type="text" name="arguments" id="arguments" placeholder="1d20" required>
-        </div>
-        <div>
-          <input type="submit" value="Roll" onClick="roll(this.form)">
-        </div>
-      </form>
-      <!-- <div class="starter-template">
-        <h1>Rosa & Alex</h1>
-        <p class="lead">Saturday, November 18th, 2017<br>Purcellville, Virginia</p>
-      </div> -->
+      <button onClick="drawChaosToken()">Draw Chaos Token</button>
+      <br/><br/>
+      <button onClick="clearLog()">Clear Log</button>
+      <p>Log:</p>
+      <p id="log"></>
 
     </div><!-- /.container -->
 
