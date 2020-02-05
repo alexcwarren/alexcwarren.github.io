@@ -34,7 +34,15 @@
 
     <script>
       function drawChaosToken() {
-        let chaosTokens = ['+1', '0', '0', '-1', '-1', '-1', '-2', '-2', '-3', '-4', 'skull', 'skull', 'hood', 'tablet', 'cthulu', 'star'];
+        let chaosTokensArr= [
+          ['easy', ['+1', '0', '0', '-1', '-1', '-1', '-2', '-2', '-3', '-4', 'skull', 'skull', 'hood', 'tablet', 'cthulu', 'star']],
+          ['medium', []],
+          ['hard', []]
+        ];
+        var difficultySelection = document.getElementById('difficulty');
+        var difficultyIndex = difficultySelection.selectedIndex;
+        var difficulty = difficultySelection.options[ difficultyIndex ].value;
+        var chaosTokens = chaosTokensArr[difficulty];
         var index = Math.ceil(Math.random() * chaosTokens.length - 1);
         log(chaosTokens[index] + '<br/>');
       }
@@ -81,6 +89,12 @@
 
       <button onClick="drawChaosToken()">Draw Chaos Token</button>
       <br/><br/>
+      <p>Difficulty:</p>
+      <select id="difficulty">
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
       <button onClick="clearLog()">Clear Log</button>
       <p>Log:</p>
       <p id="log"></>
