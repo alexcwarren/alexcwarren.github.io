@@ -34,13 +34,17 @@
     <![endif]-->
 
     <script>
-      function roll(form) {
-        var args = form.arguments.value;
-        if(!args) {
-          return;
-        }
-        var message = 'You typed: ' + args;
-        alert (message);
+      function log(message) {
+          if(!message) {
+              return;
+          }
+
+          let text = document.getElementById('log').innerHTML;
+          document.getElementById('log').innerHTML = message + text;
+      }
+
+      function clearLog() {
+          document.getElementById('log').innerHTML = '';
       }
     </script>
   </head>
@@ -70,9 +74,57 @@
 
     <div class="container">
 
-      <div class="starter-template">
-        <p>Under construction...</p>
-      </div>
+      <table>
+        <tr>
+            <th>#</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>Mod</th>
+        </tr>
+        <tr>
+          <td><input name="numDice" id="numDice" placeholder="1" size=1 /></td>
+          <td><button onClick="">d4</button></td>
+          <td><button onClick="">d6</button></td>
+          <td><button onClick="">d8</button></td>
+          <td><button onClick="">d10</button></td>
+          <td><button onClick="">d12</button></td>
+          <td><button onClick="">d20</button></td>
+          <td><button onClick="">d100</button></td>
+          <td><input name="mod" id="mod" placeholder="+0" size=1 /></td>
+        </tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr>
+            <td colspan="4"><input name="customInput" id="customInput" placeholder="1d20 4d4+4" required</td>
+            <td><button onClick="">Roll</button></td>
+        </tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr>
+            <td colspan="10">
+                <button onClick="">Ability Scores</button>
+                <button onClick="">NPC</button>
+                <button onClick="">Weather</button>
+                <button onClick="">Tavern Name</button>
+                <button onClick="">Villain</button>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="10">
+                <button onClick="">Urban Encounter</button>
+            </td>
+        </tr>
+      </table>
+      <br/><br/>
+      <button onClick="clearLog()">Clear Log</button>
+      <br/><br/>
+      <p>Log:</p>
+      <p id="log"></>
 
     </div><!-- /.container -->
 
