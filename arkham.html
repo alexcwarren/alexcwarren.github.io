@@ -33,7 +33,7 @@
     <![endif]-->
 
     <script>
-      function drawChaosToken() {
+      function getChaosTokensMap() {
         let EASY = 'easy';
         let STD = 'standard';
         let HARD = 'hard';
@@ -60,10 +60,30 @@
         chaosTokensMap.set(HARD, [z, z, z, m1, m1, m2, m2, m3, m3, m4, m5, skull, skull, hood, tablet, cthulu, star]);
         chaosTokensMap.set(EXP, [z, m1, m1, m2, m2, m3, m3, m4, m4, m5, m6, m8, skull, skull, hood, tablet, cthulu, star]);
 
-        var difficultySelection = document.getElementById('difficulty');
-        var difficultyIndex = difficultySelection.selectedIndex;
-        var difficulty = difficultySelection.options[ difficultyIndex ].value;
+        return chaosTokensMap;
+      }
 
+      function getDifficulty() {
+          var difficultySelection = document.getElementById('difficulty');
+          var difficultyIndex = difficultySelection.selectedIndex;
+          return difficulty = difficultySelection.options[ difficultyIndex ].value;
+      }
+
+      function showChaosTokens() {
+          let chaosTokensMap = getChaosTokensMap();
+          var text = '';
+
+          for(let el of chaosTokensMap.get(getDifficulty())) {
+              text += el + ', ';
+          }
+
+          log(text.substring(0, text.length - 2) + '<br/>');
+      }
+
+      function drawChaosToken() {
+        var difficulty = getDifficulty();
+
+        let chaosTokensMap = getChaosTokensMap();
         var chaosTokens = chaosTokensMap.get(difficulty);
         var index = Math.ceil(Math.random() * chaosTokens.length - 1);
         log(chaosTokens[index] + '<br/>');
@@ -83,9 +103,7 @@
       }
 
       function legend() {
-        var difficultySelection = document.getElementById('difficulty');
-        var difficultyIndex = difficultySelection.selectedIndex;
-        var difficulty = difficultySelection.options[ difficultyIndex ].value;
+        var difficulty = getDifficulty();
 
         let legendRows = document.getElementById('legend').rows;
 
@@ -134,6 +152,7 @@
     <div class="container">
 
       <button onClick="drawChaosToken()">Draw Chaos Token</button>
+      <button onClick="showChaosTokens()">Show Chaos Tokens</button>
       <br/><br/>
       Difficulty:
       <select id="difficulty" onChange="legend()">
