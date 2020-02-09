@@ -12,3 +12,7 @@ td {
 input.smallInput {
     text-align: center;
 }
+
+button.d-type {
+    width: 50px;
+}

@@ -34,18 +34,66 @@
     <![endif]-->
 
     <script>
-      function log(message) {
-          if(!message) {
-              return;
-          }
+        function parseInput() {
+            var input = document.getElementById('customInput').value;
 
-          let text = document.getElementById('log').innerHTML;
-          document.getElementById('log').innerHTML = message + text;
-      }
+            var rolls = [];
+            for(let arg of input.split(' ')) {
+                var rollArg = validateArgument(arg);
 
-      function clearLog() {
-          document.getElementById('log').innerHTML = '';
-      }
+                if(rollArg.isValid) {
+                    rolls.add(roll(rollArg.numDice, rollArg.dieType, rollArg.mod, false));
+                }
+                else {
+                    rolls.add('Invalid argument: ' + arg);
+                }
+
+            }
+        }
+
+        function validateArgument(arg) {
+            return {
+                isValid: true,
+                numDice: 1,
+                dieType: 4,
+                mod: 0
+            };
+        }
+
+        function roll(numDice, dieType, modifier=0, log=true) {
+            var logMessage = numDice + 'd' + dieType;
+            if(modifier != 0) {
+                if(modifier > 0) {
+                    logMessage += '+';
+                }
+
+                logMessage += modifier + ': ';
+            }
+
+            var sum = 0;
+            for(let i = 0; i < numDice; i++) {
+                var outcome = Math.ceil( Math.random() * dieType );
+                sum += outcome;
+                logMessage += outcome + ' ';
+            }
+            // TODO: handle modifier
+            // TODO: devise way to allow Ability Score functionality
+        }
+
+        function log(message, newline=true) {
+            if(!message) {
+                return;
+            }
+
+            message += newline ? '<br/>' : '';
+
+            let text = document.getElementById('log').innerHTML;
+            document.getElementById('log').innerHTML = message + text;
+        }
+
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+        }
     </script>
   </head>
 
@@ -88,20 +136,20 @@
         </tr>
         <tr>
           <td><input class="smallInput" name="numDice" id="numDice" placeholder="1" size=1 /></td>
-          <td><button onClick="">d4</button></td>
-          <td><button onClick="">d6</button></td>
-          <td><button onClick="">d8</button></td>
-          <td><button onClick="">d10</button></td>
-          <td><button onClick="">d12</button></td>
-          <td><button onClick="">d20</button></td>
-          <td><button onClick="">d100</button></td>
-          <td><input class="smallInput" name="mod" id="mod" placeholder="+0" size=1 /></td>
+          <td><button class="d-type" onClick="">d4</button></td>
+          <td><button class="d-type" onClick="">d6</button></td>
+          <td><button class="d-type" onClick="">d8</button></td>
+          <td><button class="d-type" onClick="">d10</button></td>
+          <td><button class="d-type" onClick="">d12</button></td>
+          <td><button class="d-type" onClick="">d20</button></td>
+          <td><button class="d-type" onClick="">d100</button></td>
+          <td><input class="smallInput" name="mod" id="mod" placeholder="0" size=1 /></td>
         </tr>
         <tr><td></td></tr>
         <tr><td></td></tr>
         <tr>
-            <td colspan="4"><input name="customInput" id="customInput" placeholder="1d20 4d4+4" required</td>
-            <td><button onClick="">Roll</button></td>
+            <td colspan="4"><input name="customInput" id="customInput" placeholder="1d20 4d4+4" size=30 /></td>
+            <td><button onClick="parseInput()">Roll</button></td>
         </tr>
         <tr><td></td></tr>
         <tr><td></td></tr>
