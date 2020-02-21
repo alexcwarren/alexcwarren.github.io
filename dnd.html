@@ -76,6 +76,10 @@
             };
         }
 
+        function rollDie(dieType) {
+            return Math.ceil( Math.random() * dieType );
+        }
+
         function roll(numDice, dieType, modifier=0, logRoll=true) {
             var logMessage = numDice + 'd' + dieType;
             if(modifier != 0) {
@@ -89,7 +93,7 @@
 
             var sum = 0;
             for(let i = 0; i < numDice; i++) {
-                var outcome = Math.ceil( Math.random() * dieType );
+                var outcome = rollDie(dieType);
                 sum += outcome;
                 logMessage += outcome + ' ';
             }
@@ -111,7 +115,7 @@
             return logMessage;
         }
 
-        function rollD(dieType) {
+        function rollButton(dieType) {
             var numDice = document.getElementById('numDice').value;
             var mod = document.getElementById('mod').value;
 
@@ -119,6 +123,31 @@
             mod = !mod ? 0 : mod;
 
             roll(numDice, dieType, mod);
+        }
+
+        function roll20(type) {
+            var msg = '';
+            var useMax = false;
+
+            if(type == 'adv') {
+                msg += 'Adv ';
+                useMax = true;
+            }
+            else if(type == 'dis'){
+                msg += 'Dis '
+            }
+            else {
+                return;
+            }
+
+            var roll1 = rollDie(20);
+            var roll2 = rollDie(20);
+
+            msg += '2d20: ' + roll1 + ' ' + roll2 + ' >>> ';
+
+            msg += useMax ? Math.max(roll1, roll2) : Math.min(roll1, roll2);
+
+            log(msg);
         }
 
         function log(message, newline=true) {
@@ -177,13 +206,13 @@
         </tr>
         <tr>
           <td><input class="smallInput" name="numDice" id="numDice" placeholder="1" size=1 /></td>
-          <td><button class="d-type" onClick="rollD(4)">d4</button></td>
-          <td><button class="d-type" onClick="rollD(6)">d6</button></td>
-          <td><button class="d-type" onClick="rollD(8)">d8</button></td>
-          <td><button class="d-type" onClick="rollD(10)">d10</button></td>
-          <td><button class="d-type" onClick="rollD(12)">d12</button></td>
-          <td><button class="d-type" onClick="rollD(20)">d20</button></td>
-          <td><button class="d-type" onClick="rollD(100)">d100</button></td>
+          <td><button class="d-type" onClick="rollButton(4)">d4</button></td>
+          <td><button class="d-type" onClick="rollButton(6)">d6</button></td>
+          <td><button class="d-type" onClick="rollButton(8)">d8</button></td>
+          <td><button class="d-type" onClick="rollButton(10)">d10</button></td>
+          <td><button class="d-type" onClick="rollButton(12)">d12</button></td>
+          <td><button class="d-type" onClick="rollButton(20)">d20</button></td>
+          <td><button class="d-type" onClick="rollButton(100)">d100</button></td>
           <td><input class="smallInput" name="mod" id="mod" placeholder="0" size=1 /></td>
         </tr>
         <tr><td></td></tr>
@@ -194,6 +223,12 @@
         </tr>
         <tr><td></td></tr>
         <tr><td></td></tr>
+        <tr>
+            <td colspan="10">
+                <button onClick="roll20('adv')">Advantage</button>
+                <button onClick="roll20('dis')">Disadvantage</button>
+            </td>
+        </tr>
         <tr>
             <td colspan="10">
                 <button onClick="">Ability Scores</button>
