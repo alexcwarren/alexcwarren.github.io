@@ -55,18 +55,11 @@
         }
 
         function validateArgument(arg) {
-            //TODO This function does not work yet
-            var validity = true;
-            var num = 1;
-            var type = 4;
-            var mod = 0;
-
-            var regex = /\d+d\d+/;
-            // // if(!arg.test(/\d{1,2}d\d{1,3}[+-]?\d{1,2}/g)) {
-            validity = regex.test(arg);
-
-            regex = /\d+/;
-            num = regex.match(arg)[0];
+            var validity = arg.search("\\d+[d]\\d+") >= 0 ? true : false;
+            var num = arg.match("^\\d+")[0];
+            var type = arg.match("[d]\\d+")[0].replace("d", "");
+            var mod = arg.match("[+-]\\d+");
+            mod = !mod ? 0 : mod[0].replace("+", "");
 
             return {
                 isValid: validity,
@@ -219,7 +212,7 @@
         <tr><td></td></tr>
         <tr>
             <td colspan="4"><input name="customInput" id="customInput" placeholder="1d20 4d4+4" size=30 value=""/></td>
-            <td><button onClick="parseInput()" disabled>Roll</button></td>
+            <td><button onClick="parseInput()">Roll</button></td>
         </tr>
         <tr><td></td></tr>
         <tr><td></td></tr>
