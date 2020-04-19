@@ -34,18 +34,129 @@
     <![endif]-->
 
     <script>
-      function log(message) {
-          if(!message) {
-              return;
-          }
+        function parseInput() {
+            var input = document.getElementById('customInput').value;
 
-          let text = document.getElementById('log').innerHTML;
-          document.getElementById('log').innerHTML = message + text;
-      }
+            var rolls = [];
+            for(let arg of input.split(' ')) {
+                var rollArg = validateArgument(arg);
 
-      function clearLog() {
-          document.getElementById('log').innerHTML = '';
-      }
+                if(rollArg.isValid) {
+                    rolls.push(roll(rollArg.numDice, rollArg.dieType, rollArg.modifier, false));
+                }
+                else {
+                    rolls.push('Invalid argument: ' + arg);
+                }
+            }
+
+            for(r of rolls) {
+                log(r);
+            }
+        }
+
+        function validateArgument(arg) {
+            var validity = arg.search("\\d+[d]\\d+") >= 0 ? true : false;
+            var num = arg.match("^\\d+")[0];
+            var type = arg.match("[d]\\d+")[0].replace("d", "");
+            var mod = arg.match("[+-]\\d+");
+            mod = !mod ? 0 : mod[0].replace("+", "");
+
+            return {
+                isValid: validity,
+                numDice: num,
+                dieType: type,
+                modifier: mod
+            };
+        }
+
+        function rollDie(dieType) {
+            return Math.ceil( Math.random() * dieType );
+        }
+
+        function roll(numDice, dieType, modifier=0, logRoll=true) {
+            var logMessage = numDice + 'd' + dieType;
+            if(modifier != 0) {
+                if(modifier > 0) {
+                    logMessage += '+';
+                }
+
+                logMessage += modifier;
+            }
+            logMessage += ': ';
+
+            var sum = 0;
+            for(let i = 0; i < numDice; i++) {
+                var outcome = rollDie(dieType);
+                sum += outcome;
+                logMessage += outcome + ' ';
+            }
+            if(numDice > 1) {
+                logMessage += '= ' + sum + ' ';
+            }
+
+            if(modifier != 0) {
+                logMessage += '+ ';
+                logMessage += modifier + ' = ' + eval(sum + '+' + modifier);
+            }
+
+            // TODO: devise way to allow Ability Score functionality
+
+            if(logRoll) {
+                log(logMessage);
+            }
+
+            return logMessage;
+        }
+
+        function rollButton(dieType) {
+            var numDice = document.getElementById('numDice').value;
+            var mod = document.getElementById('mod').value;
+
+            numDice = !numDice ? 1 : numDice;
+            mod = !mod ? 0 : mod;
+
+            roll(numDice, dieType, mod);
+        }
+
+        function roll20(type) {
+            var msg = '';
+            var useMax = false;
+
+            if(type == 'adv') {
+                msg += 'Adv ';
+                useMax = true;
+            }
+            else if(type == 'dis'){
+                msg += 'Dis '
+            }
+            else {
+                return;
+            }
+
+            var roll1 = rollDie(20);
+            var roll2 = rollDie(20);
+
+            msg += '2d20: ' + roll1 + ' ' + roll2 + ' = ';
+
+            msg += useMax ? Math.max(roll1, roll2) : Math.min(roll1, roll2);
+
+            log(msg);
+        }
+
+        function log(message, newline=true) {
+            if(!message) {
+                return;
+            }
+
+            message += newline ? '<br/>' : '';
+
+            let logText = document.getElementById('log').innerHTML;
+            document.getElementById('log').innerHTML = message + logText;
+        }
+
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+        }
     </script>
   </head>
 
@@ -87,24 +198,30 @@
             <th>Mod</th>
         </tr>
         <tr>
-          <td><input name="numDice" id="numDice" placeholder="1" size=1 /></td>
-          <td><button onClick="">d4</button></td>
-          <td><button onClick="">d6</button></td>
-          <td><button onClick="">d8</button></td>
-          <td><button onClick="">d10</button></td>
-          <td><button onClick="">d12</button></td>
-          <td><button onClick="">d20</button></td>
-          <td><button onClick="">d100</button></td>
-          <td><input name="mod" id="mod" placeholder="+0" size=1 /></td>
+          <td><input class="smallInput" name="numDice" id="numDice" placeholder="1" size=1 /></td>
+          <td><button class="d-type" onClick="rollButton(4)">d4</button></td>
+          <td><button class="d-type" onClick="rollButton(6)">d6</button></td>
+          <td><button class="d-type" onClick="rollButton(8)">d8</button></td>
+          <td><button class="d-type" onClick="rollButton(10)">d10</button></td>
+          <td><button class="d-type" onClick="rollButton(12)">d12</button></td>
+          <td><button class="d-type" onClick="rollButton(20)">d20</button></td>
+          <td><button class="d-type" onClick="rollButton(100)">d100</button></td>
+          <td><input class="smallInput" name="mod" id="mod" placeholder="0" size=1 /></td>
         </tr>
         <tr><td></td></tr>
         <tr><td></td></tr>
         <tr>
-            <td colspan="4"><input name="customInput" id="customInput" placeholder="1d20 4d4+4" required</td>
-            <td><button onClick="">Roll</button></td>
+            <td colspan="4"><input name="customInput" id="customInput" placeholder="1d20 4d4+4" size=30 value=""/></td>
+            <td><button onClick="parseInput()">Roll</button></td>
         </tr>
         <tr><td></td></tr>
         <tr><td></td></tr>
+        <tr>
+            <td colspan="10">
+                <button onClick="roll20('adv')">Advantage</button>
+                <button onClick="roll20('dis')">Disadvantage</button>
+            </td>
+        </tr>
         <tr>
             <td colspan="10">
                 <button onClick="">Ability Scores</button>

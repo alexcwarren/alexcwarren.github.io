@@ -8,3 +8,11 @@ th {
 td {
     padding: 5px;
 }
+
+input.smallInput {
+    text-align: center;
+}
+
+button.d-type {
+    width: 50px;
+}
