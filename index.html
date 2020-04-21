@@ -74,5 +74,29 @@
     <script src="js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="js/ie10-viewport-bug-workaround.js"></script>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-analytics.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyApe3zVUzA7YUHz5MZfmr-iiKGND2xgPpU",
+        authDomain: "my-website-890bd.firebaseapp.com",
+        databaseURL: "https://my-website-890bd.firebaseio.com",
+        projectId: "my-website-890bd",
+        storageBucket: "my-website-890bd.appspot.com",
+        messagingSenderId: "331914125238",
+        appId: "1:331914125238:web:ecfdc64ebc4f76a290eb17",
+        measurementId: "G-1RFK4QMCGC"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+    </script>
   </body>
 </html>
