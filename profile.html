@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -63,10 +62,15 @@
 
     <div class="container">
       <div class="">
-        <!-- <button onclick = "googleSignin()">Google Signin</button>
-        <button onclick = "googleSignout()">Google Signout</button> -->
-        <button onclick = "signin()">Signin</button>
-        <button onclick = "signout()">Signout</button>
+        <button id="quickstart-sign-in">Sign in with Google</button>
+      </div>
+
+      <div class="">
+        Firebase sign-in status: <span id="quickstart-sign-in-status">Unknown</span>
+        <div>Firebase auth <code>currentUser</code> object value:</div>
+        <br/>
+        <button onClick="getUID()">Show UID</button>
+        <br/>
       </div>
 
       <div class="">
@@ -96,29 +100,6 @@
     <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-analytics.js"></script>
 
-    <script>
-      // Your web app's Firebase configuration
-      var firebaseConfig = {
-        apiKey: "AIzaSyApe3zVUzA7YUHz5MZfmr-iiKGND2xgPpU",
-        authDomain: "my-website-890bd.firebaseapp.com",
-        databaseURL: "https://my-website-890bd.firebaseio.com",
-        projectId: "my-website-890bd",
-        storageBucket: "my-website-890bd.appspot.com",
-        messagingSenderId: "331914125238",
-        appId: "1:331914125238:web:ecfdc64ebc4f76a290eb17",
-        measurementId: "G-1RFK4QMCGC"
-      };
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-
-      // Firebase Authentication
-      var auth = firebase.auth();
-      // var provider = new firebase.auth.GoogleAuthProvider();
-
-      // Get a reference to the database service
-      var database = firebase.database();
-
-      var analytics = firebase.analytics();
-    </script>
+    <script src="js/firebase.js"></script>
   </body>
 </html>
