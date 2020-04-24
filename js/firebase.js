@@ -17,21 +17,21 @@ function initApp() {
       var uid = user.uid;
       var providerData = user.providerData;
       // [START_EXCLUDE]
-      document.getElementById('quickstart-sign-in').textContent = 'Sign out';
+      document.getElementById('sign-in').textContent = 'Sign Out';
       // [END_EXCLUDE]
     } else {
       // User is signed out.
       // [START_EXCLUDE]
-      document.getElementById('quickstart-sign-in').textContent = 'Sign in with Google';
+      document.getElementById('sign-in').textContent = 'Sign In';
       // [END_EXCLUDE]
     }
     // [START_EXCLUDE]
-    document.getElementById('quickstart-sign-in').disabled = false;
+    document.getElementById('sign-in').disabled = false;
     // [END_EXCLUDE]
   });
   // [END authstatelistener]
 
-  document.getElementById('quickstart-sign-in').addEventListener('click', toggleSignIn, false);
+  document.getElementById('sign-in').addEventListener('click', toggleSignIn, false);
 }
 
 window.onload = function() {

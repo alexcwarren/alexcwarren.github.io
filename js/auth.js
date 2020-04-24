@@ -30,6 +30,8 @@ function toggleSignIn() {
       var ref = database.ref('users/' + userUid + '/about');
       console.log("Creating user database...");
       ref.set(about);
+
+      document.getElementById('sign-in-status').textContent = 'You are Signed In, ' + displayName;
     }).catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
@@ -53,9 +55,10 @@ function toggleSignIn() {
     // [START signout]
     firebase.auth().signOut();
     // [END signout]
+    document.getElementById('sign-in-status').textContent = 'You are Signed Out';
   }
   // [START_EXCLUDE]
-  document.getElementById('quickstart-sign-in').disabled = true;
+  document.getElementById('sign-in').disabled = true;
   // [END_EXCLUDE]
 }
 // [END buttoncallback]
