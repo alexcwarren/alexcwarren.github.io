@@ -26,7 +26,7 @@ function initApp() {
       // [END_EXCLUDE]
     }
     // [START_EXCLUDE]
-    document.getElementById('sign-in').disabled = false;
+    document.getElementById('sign-in').disabled = true;
     // [END_EXCLUDE]
   });
   // [END authstatelistener]
