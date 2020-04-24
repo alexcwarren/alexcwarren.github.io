@@ -17,13 +17,11 @@ function initApp() {
       var uid = user.uid;
       var providerData = user.providerData;
       // [START_EXCLUDE]
-      document.getElementById('quickstart-sign-in-status').textContent = 'Signed in';
       document.getElementById('quickstart-sign-in').textContent = 'Sign out';
       // [END_EXCLUDE]
     } else {
       // User is signed out.
       // [START_EXCLUDE]
-      document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
       document.getElementById('quickstart-sign-in').textContent = 'Sign in with Google';
       // [END_EXCLUDE]
     }
