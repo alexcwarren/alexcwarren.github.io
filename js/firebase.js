@@ -19,15 +19,14 @@ function initApp() {
       // [START_EXCLUDE]
       document.getElementById('sign-in').textContent = 'Sign Out';
       // [END_EXCLUDE]
+      document.getElementById('sign-in').disabled = false;
     } else {
       // User is signed out.
       // [START_EXCLUDE]
       document.getElementById('sign-in').textContent = 'Sign In';
       // [END_EXCLUDE]
+      document.getElementById('sign-in').disabled = true;
     }
-    // [START_EXCLUDE]
-    document.getElementById('sign-in').disabled = true;
-    // [END_EXCLUDE]
   });
   // [END authstatelistener]
 
