@@ -32,6 +32,7 @@ function toggleSignIn() {
       ref.set(about);
 
       document.getElementById('sign-in-status').textContent = 'You are Signed In, ' + displayName;
+      document.getElementById('sign-in').textContent = 'Sign Out';
     }).catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
@@ -56,6 +57,7 @@ function toggleSignIn() {
     firebase.auth().signOut();
     // [END signout]
     document.getElementById('sign-in-status').textContent = 'You are Signed Out';
+    document.getElementById('sign-in').textContent = 'Sign in with Google';
   }
   // [START_EXCLUDE]
   document.getElementById('sign-in').disabled = true;
