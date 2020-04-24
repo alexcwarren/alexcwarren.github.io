@@ -17,16 +17,17 @@ function initApp() {
       var uid = user.uid;
       var providerData = user.providerData;
       // [START_EXCLUDE]
-      document.getElementById('sign-in').textContent = 'Sign Out';
+      document.getElementById('sign-in-tab').textContent = 'Sign Out';
       // [END_EXCLUDE]
-      document.getElementById('sign-in').disabled = false;
     } else {
       // User is signed out.
       // [START_EXCLUDE]
-      document.getElementById('sign-in').textContent = 'Sign In';
+      document.getElementById('sign-in-tab').textContent = 'Sign In';
       // [END_EXCLUDE]
-      document.getElementById('sign-in').disabled = true;
     }
+    // [START_EXCLUDE]
+    document.getElementById('sign-in').disabled = false;
+    // [END_EXCLUDE]
   });
   // [END authstatelistener]
 
