@@ -34,10 +34,6 @@ function initApp() {
   document.getElementById('sign-in').addEventListener('click', toggleSignIn, false);
 }
 
-window.onload = function() {
-  initApp();
-};
-
 // Your web app's Firebase configuration
 var firebaseConfig = {
   apiKey: "AIzaSyApe3zVUzA7YUHz5MZfmr-iiKGND2xgPpU",
