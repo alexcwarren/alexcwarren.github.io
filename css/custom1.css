@@ -16,3 +16,21 @@ input.smallInput {
 button.d-type {
     width: 50px;
 }
+
+div.row {
+  padding: 10px;
+}
+
+.dropdown-menu {
+  background: #222;
+}
+
+a.dropdown-item:hover {
+  color: white;
+  text-decoration: none;
+}
+.dropdown-item {
+  display: block;
+  padding: 5px;
+  color: #9d9d9d;
+}
