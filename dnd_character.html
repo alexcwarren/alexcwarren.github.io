@@ -7,7 +7,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+    <!-- <link rel="icon" href="../../favicon.ico"> -->
 
     <title>alexcwarren.com</title>
 
@@ -31,8 +31,6 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-
-    <script src="js/dnd.js"></script>
   </head>
 
   <body>
@@ -70,15 +68,40 @@
     </nav>
 
     <div class="container">
-
+      <button type="button" onclick="storeData()">Store</button>
+      <button type="button" onclick="getNextID()">Get ID</button>
       <form>
         <div class="row">
           <div class="form-group col-md-6">
             <label for="characterName">Character Name</label>
-            <input type="text" class="form-control" id="characterName" placeholder="Character name">
+            <input type="text" class="form-control" id="characterName" name="" value="" placeholder="Character name">
           </div>
         </div>
-        <button type="submit" class="btn btn-primary">Save</button>
+        <div class="row">
+          <div class="form-group col-md-3">
+            <label for="race">Race</label>
+            <select class="form-control" id="race" name="race" value=""></select>
+          </div>
+          <div class="form-group col-md-3">
+            <label for="">Class</label>
+            <input type="text" class="form-control" id="" name="" value="" placeholder="">
+          </div>
+          <div class="form-group col-md-3">
+            <label for="">Speed</label>
+            <input type="text" class="form-control" id="" name="" value="" placeholder="" disabled>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-2">
+            <label for="">Age</label>
+            <input type="text" class="form-control" id="" name="" value="" placeholder="">
+          </div>
+          <div class="form-group col-md-2">
+            <label for="">Alignment</label>
+            <input type="text" class="form-control" id="" name="" value="" placeholder="">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" onclick="saveCharacter()">Save</button>
       </form>
 
     </div><!-- /.container -->
@@ -104,7 +127,10 @@
     <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-analytics.js"></script>
 
     <script src="js/firebase.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/profile.js"></script>
+    <!-- <script src="js/auth.js"></script> -->
+    <script src="js/data.js"></script>
+    <script src="js/database.js"></script>
+    <script src="js/dnd_character.js"></script>
+    <script src="js/dnd.js"></script>
   </body>
 </html>
