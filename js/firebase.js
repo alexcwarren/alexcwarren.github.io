@@ -18,20 +18,31 @@ function initApp() {
       var providerData = user.providerData;
       // [START_EXCLUDE]
       document.getElementById('sign-in-tab').textContent = 'Sign Out';
+      if (document.body.contains(document.getElementById('sign-in'))) {
+        document.getElementById('sign-in').textContent = 'Sign Out';
+      }
+      if (document.body.contains(document.getElementById('sign-in-status'))) {
+        document.getElementById('sign-in-status').textContent = 'You are Signed In, ' + displayName;
+      }
       // [END_EXCLUDE]
     } else {
       // User is signed out.
       // [START_EXCLUDE]
       document.getElementById('sign-in-tab').textContent = 'Sign In';
+      if (document.body.contains(document.getElementById('sign-in'))) {
+        document.getElementById('sign-in').textContent = 'Sign In';
+      }
+      if (document.body.contains(document.getElementById('sign-in-status'))) {
+        document.getElementById('sign-in').textContent = 'You are Signed Out';
+      }
       // [END_EXCLUDE]
     }
     // [START_EXCLUDE]
-    document.getElementById('sign-in').disabled = false;
+    // document.getElementById('sign-in').disabled = false;
     // [END_EXCLUDE]
   });
   // [END authstatelistener]
-
-  document.getElementById('sign-in').addEventListener('click', toggleSignIn, false);
+  // document.getElementById('sign-in').addEventListener('click', toggleSignIn, false);
 }
 
 // Your web app's Firebase configuration
@@ -45,8 +56,15 @@ var firebaseConfig = {
   appId: "1:331914125238:web:ecfdc64ebc4f76a290eb17",
   measurementId: "G-1RFK4QMCGC"
 };
+
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+if (firebase.apps.length === 0) {
+  console.log('Initializing Firebase app...');
+  firebase.initializeApp(firebaseConfig);
+}
+else {
+  console.log('Firebase already initialized!');
+}
 
 // Get a reference to Firebase services
 var database = firebase.database();

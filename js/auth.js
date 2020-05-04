@@ -3,7 +3,9 @@
  */
 // [START buttoncallback]
 function toggleSignIn() {
-  if (!firebase.auth().currentUser) {
+  var user = firebase.auth().currentUser;
+  console.log(user);
+  if (!user) {
     // [START createprovider]
     var provider = new firebase.auth.GoogleAuthProvider();
     // [END createprovider]
@@ -28,11 +30,8 @@ function toggleSignIn() {
       };
 
       var ref = database.ref('users/' + userUid + '/about');
-      console.log("Creating user database...");
+      console.log("Adding user data...");
       ref.set(about);
-
-      document.getElementById('sign-in-status').textContent = 'You are Signed In, ' + displayName;
-      document.getElementById('sign-in').textContent = 'Sign Out';
     }).catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
@@ -56,16 +55,9 @@ function toggleSignIn() {
     // [START signout]
     firebase.auth().signOut();
     // [END signout]
-    document.getElementById('sign-in-status').textContent = 'You are Signed Out';
-    document.getElementById('sign-in').textContent = 'Sign in with Google';
   }
   // [START_EXCLUDE]
-  document.getElementById('sign-in').disabled = true;
+  // document.getElementById('sign-in').disabled = true;
   // [END_EXCLUDE]
 }
 // [END buttoncallback]
-
-function getUID() {
-  var userId = firebase.auth().currentUser.uid;
-  console.log(userId);
-}
