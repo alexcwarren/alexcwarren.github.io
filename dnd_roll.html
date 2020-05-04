@@ -7,7 +7,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+    <!-- <link rel="icon" href="../../favicon.ico"> -->
 
     <title>alexcwarren.com</title>
 
@@ -33,6 +33,15 @@
     <![endif]-->
 
     <script src="js/dnd.js"></script>
+    <script type="text/javascript">
+      function showUser() {
+        var user = firebase.auth().currentUser;
+        var userId = user ? user.uid : 'none';
+        var display = document.getElementById('userDisplay');
+        display.textContent = userId;
+        console.log(userId);
+      }
+    </script>
   </head>
 
   <body>
@@ -71,7 +80,8 @@
     </nav>
 
     <div class="container">
-
+      <!-- <button type="button" onclick="showUser()" style="color: black;">Show User</button>
+      <p id="userDisplay">NOTHING</p> -->
       <table>
         <tr>
             <th>#</th>
@@ -153,7 +163,7 @@
     <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-analytics.js"></script>
 
     <script src="js/firebase.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/profile.js"></script>
+    <!-- <script src="js/auth.js"></script> -->
+    <script src="js/dnd_roll.js"></script>
   </body>
 </html>
