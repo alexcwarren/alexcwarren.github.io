@@ -21,6 +21,10 @@ td {
   color: white;
 }
 
+.showBorder {
+  border: 1px solid red;
+}
+
 input.smallInput {
     text-align: center;
 }
