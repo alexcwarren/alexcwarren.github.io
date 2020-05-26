@@ -7,7 +7,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+    <!-- <link rel="icon" href="../../favicon.ico"> -->
 
     <title>alexcwarren.com</title>
 
@@ -33,7 +33,7 @@
     <![endif]-->
   </head>
 
-  <body>
+  <body class="home">
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
@@ -47,11 +47,20 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="index.html">Home</a></li>
-            <li><a href="dnd.html">DnD</a></li>
-            <li><a href="arkham.html">Arkham</a></li>
-            <li><a href="wedding.html">Wedding</a></li>
-            <li><a id="sign-in-tab" href="profile.html">Sign In</a></li>
+            <li class="nav-item active"><a href="index.html">Home</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                DnD
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="dnd_character.html">Character Form</a>
+                <a class="dropdown-item" href="dnd_roll.html">Roll Dashboard</a>
+                <!-- <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Something else here</a> -->
+              </div>
+            </li>
+            <li class="nav-item"><a href="arkham.html">Arkham</a></li>
+            <li class="nav-item"><a href="wedding.html">Wedding</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -60,8 +69,8 @@
     <div class="container">
 
       <div class="starter-template">
-        <h1>Welcome</h1>
-        <p class="lead">to alexcwarren.com</p>
+        <h1 class="home">Welcome</h1>
+        <p class="lead home">to alexcwarren.com</p>
       </div>
 
     </div><!-- /.container -->
@@ -75,19 +84,5 @@
     <script src="js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <!-- <script src="js/ie10-viewport-bug-workaround.js"></script> -->
-
-    <!-- Firebase core JavaScript
-    ================================================== -->
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-app.js"></script>
-    <!-- TODO: Add SDKs for Firebase products that you want to use
-         https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-analytics.js"></script>
-
-    <script src="js/firebase.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/profile.js"></script>
   </body>
 </html>
