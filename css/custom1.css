@@ -2,11 +2,27 @@ body {
   padding-top: 60px;
 }
 
+body.home {
+  background: url("../images/blue-universe.jpg") fixed #333 no-repeat;
+  background-size: 100% auto;
+  padding-top: 60px;
+  /* background-position: 0px 50px; */
+  background-color: #333;
+}
+
 th {
     text-align: center;
 }
 td {
     padding: 5px;
+}
+
+.home {
+  color: white;
+}
+
+.showBorder {
+  border: 1px solid red;
 }
 
 input.smallInput {
@@ -15,4 +31,43 @@ input.smallInput {
 
 button.d-type {
     width: 50px;
+}
+
+div.row {
+  padding: 10px;
+}
+
+.dropdown-menu {
+  background: #222;
+}
+
+a.dropdown-item:hover {
+  color: white;
+  text-decoration: none;
+}
+.dropdown-item {
+  display: block;
+  padding: 5px;
+  color: #9d9d9d;
+}
+
+@media (max-width: 598px) {
+  body {
+    background-position: 0px 50px;
+    background: url("../images/stars-and-galaxy.jpg") fixed #333 no-repeat;
+    background-size: auto 100%;
+  }
+  h1 {
+    font-size: 400%;
+    margin-top: 0px;
+  }
+  p, .lead {
+    font-size: 150%;
+  }
+  .navbar-collapse {
+    min-height: 380px;
+  }
+  .starter-template {
+    margin-top: 275px;
+  }
 }
