@@ -51,6 +51,48 @@ a.dropdown-item:hover {
   color: #9d9d9d;
 }
 
+.underline {
+  text-decoration: underline;
+}
+
+.borderBottom {
+  border-bottom: 1px solid inherit;
+}
+
+table.nonogram {
+  width: 50%;
+  height: 400px;
+}
+
+.submit {
+  margin: 50px;
+}
+
+.nonocell {
+  /* width: 15%; */
+  border: 2px solid black;
+}
+
+.countCell {
+  border: inherit;
+  background: inherit;
+  text-align: center;
+}
+
+.cellOn {
+  background-color: black;
+  border: 2px solid white;
+}
+
+.cellOff {
+  background-color: inherit;
+  border: 2px solid black;
+}
+
+input.counter {
+  /* width: 30px; */
+}
+
 @media (max-width: 598px) {
   body {
     background-position: 0px 50px;
