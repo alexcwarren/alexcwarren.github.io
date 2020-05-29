@@ -1,4 +1,32 @@
-var characterClass = null;
+var abilitiesQuery = database.ref('data/abilities/');
+var abilitiesVal;
+
+var racesQuery = database.ref('data/races/');
+var racesVal;
+
+var classesQuery = database.ref('data/classes/');
+var classesVal;
+
+var traitsQuery = database.ref('data/traits/');
+var traitsVal;
+
+var armorQuery = database.ref('data/armor/');
+var armorVal;
+
+var weaponsQuery = database.ref('data/weapons/');
+var weaponsVal;
+
+var armorCategoriesQuery = database.ref('data/armor/categories');
+var armorCategoriesVal;
+
+var weaponsCategoriesQuery = database.ref('data/weapons/categories');
+var weaponsCategoriesVal;
+
+var skillsQuery = database.ref('data/skills/');
+var skillsVal;
+
+var toolsQuery = database.ref('data/tools/');
+var toolsVal;
 
 function saveCharacter() {
   var userId = firebase.auth().currentUser.uid;
@@ -20,6 +48,47 @@ function loadData() {
 
   console.log('Loading Class dropdown...');
   loadList('class', 'classes', '-- Select Class --');
+
+  // Make initial queries here since first query is undefined (for some reason)
+  abilitiesQuery.on('value', function(snap) {
+    abilitiesVal = snap.val();
+  });
+
+  racesQuery.on('value', function(snap) {
+    racesVal = snap.val();
+  });
+
+  classesQuery.on('value', function(snap) {
+    classesVal = snap.val();
+  });
+
+  traitsQuery.on('value', function(snap) {
+    traitsVal = snap.val();
+  });
+
+  armorQuery.on('value', function(snap) {
+    armorVal = snap.val();
+  });
+
+  weaponsQuery.on('value', function(snap) {
+    weaponsVal = snap.val();
+  });
+
+  armorCategoriesQuery.on('value', function(snap) {
+    armorCategoriesVal = snap.val();
+  });
+
+  weaponsCategoriesQuery.on('value', function(snap) {
+    weaponsCategoriesVal = snap.val();
+  });
+
+  skillsQuery.on('value', function(snap) {
+    skillsVal = snap.val();
+  });
+
+  toolsQuery.on('value', function(snap) {
+    toolsVal = snap.val();
+  });
 }
 
 function loadList(listID, dbRef, nullText) {
@@ -45,140 +114,125 @@ function loadList(listID, dbRef, nullText) {
 
 function clear() {
   document.getElementById('speed').value = '';
-  document.getElementById('traits').value = '';
   document.getElementById('hitDice').value = '';
+  document.getElementById('traits').value = '';
   document.getElementById('proficiencies').value = '';
 }
 
-function updateRace() {
-  const raceValue = document.getElementById('race').value;
+function getVal(path) {
+  var val;
 
-  if (raceValue == '') {
-    return;
+  switch(path) {
+    case 'armor':
+      val = armorVal;
+      break;
+    case 'weapons':
+      val = weaponsVal;
+      break;
+    case 'tools':
+      val = toolsVal;
+      break;
+    case 'skills':
+      val = skillsVal;
+      break;
+    case 'abilities':
+      val = abilitiesVal;
+      break;
+    case 'armor/categories':
+      val = armorCategoriesVal;
+      break;
+    case 'weapons/categories':
+      val = weaponsCategoriesVal;
+      break;
+    default:
+      val = null;
   }
 
-  var raceQuery = database.ref('data/races/' + raceValue).orderByKey();
-  raceQuery.once('value').then(function(raceSnapshot) {
-    var race = raceSnapshot.val();
-    document.getElementById('speed').value = race.speed;
-
-    var traitQuery = database.ref('data/traits').orderByKey();
-    traitQuery.once('value').then(function(traitSnapshot) {
-      var traits = traitSnapshot.val();
-      var traitText = '';
-      for (traitID of race.traits) {
-        for (t in traits) {
-          if (traitID === traits[t].id) {
-            traitText += traits[t].name + '\n';
-            break;
-          }
-        }
-      }
-      document.getElementById('traits').value = traitText;
-
-      var proficiencies = raceSnapshot.val().proficiencies;
-      var proficiencyText = '';
-      for (prof of proficiencies) {
-        proficiencyText += prof.path + '\n';
-      }
-      document.getElementById('proficiencies').value = proficiencyText;
-    });
-  });
+  return val;
 }
 
-function updateClass() {
-  const classValue = document.getElementById('class').value;
+function getProficiencies(list) {
+  // TODO - Make list of proficiencies unique
+  var profs = '';
 
-  if (classValue == '') {
-    return;
-  }
+  for (p of list) {
+    if (p.hasOwnProperty('id')) {
+      var val = getVal(p.path);
 
-  var classQuery = database.ref('data/classes/' + classValue).orderByKey();
-  classQuery.once('value').then(function(classSnapshot) {
-    var classObj = classSnapshot.val();
-    document.getElementById('hitDice').value = classObj.hitDice.text;
-
-    var proficiencies = classSnapshot.val().proficiencies;
-
-    // Iterate through the class proficiencies
-    for (i in proficiencies) {
-      var prof = proficiencies[i];
-
-      if (prof.hasOwnProperty('id')) {
-        document.getElementById('proficiencies').value += prof.id;
-      }
-      else {
-        document.getElementById('proficiencies').value += 'choose';
-      }
-
-      if (i < proficiencies.length - 1) {
-        document.getElementById('proficiencies').value += '\n';
-      }
-
-      // Query path for class proficiency
-      var profQuery = database.ref('data/' + prof.path).orderByKey();
-      profQuery.once('value').then(function(profSnapshot) {
-        var proficiency = profSnapshot.val();
-        var ids = document.getElementById('proficiencies').value.split('\n');
-
-        // Find matching proficiency
-        for (p in proficiency) {
-          if (prof.id === proficiency[p].id) {
-            console.log('p: ', proficiency[p], proficiency[p].id);
-            document.getElementById('proficiencies').value += proficiency[p].name + '\n';
-          }
-        }
-      });
+      profs += val[p.id].name + '\n';
     }
-  });
+    else {
+      profs += 'Choose ' + p.choose.amount + ':\n';
+
+      for (c of p.choose.choices) {
+        if (c.hasOwnProperty('id')) {
+          if (c.id === 'any') {
+            profs += '  ' + c.id + ' ' + c.path + '\n';
+          }
+          else {
+            var val = getVal(c.path);
+
+            profs += '  ';
+
+            if (c.hasOwnProperty('quantity') && c.quantity > 1) {
+              profs += c.quantity + ' ';
+            }
+
+            profs += val[c.id].name + '\n';
+          }
+        }
+        else {
+          // var val = getVal(c.searchPath);
+          profs += '  ' + c.searchPath + ' with ';
+          for (x of c.conditions) {
+            profs += x.attribute + ' of ' + x.id + '\n';
+          }
+        }
+      }
+    }
+  }
+
+  return profs
 }
 
-function myTest() {
-  const race = document.getElementById('race').value;
-  const url = firebaseConfig.databaseURL + '/races/' + race + '.json';
-  console.log(url);
+function updateRace() {
+  var raceValue = document.getElementById('race').value;
 
-  var dwarf = httpGet(url);
-  console.log(dwarf);
-}
-
-function httpGet(url) {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open('GET', url);
-    xmlHttp.send();
-    return xmlHttp.responseText;
-}
-
-function loadClass() {
-  const classValue = document.getElementById('class').value;
-
-  if (classValue == '') {
+  if (raceValue === '') {
     return;
   }
 
-  var classQuery = database.ref('data/classes/' + classValue).orderByKey();
-  classQuery.once('value', function(snapshot) {
-    // var classObj = JSON.parse(snapshot.val())
-    const tmp = document.getElementById('tmp');
-    tmp.value = '';
-    tmp.value = JSON.stringify(snapshot.val());
-  });
+  var race = racesVal[raceValue];
+  document.getElementById('speed').value = race.speed;
+
+  var traitsTag = document.getElementById('traits');
+  for (trait of race.traits) {
+    traitsTag.value += traitsVal[trait].name + '\n';
+  }
+
+  var profsTag = document.getElementById('proficiencies');
+  profsTag.value += getProficiencies(race.proficiencies);
 }
 
 function updateClass() {
-  loadClass();
+  var classValue = document.getElementById('class').value;
 
-  console.log('tmp: ', document.getElementById('tmp').value);
-  var classObj = document.getElementById('tmp').value;
-  console.log('classObj: ', classObj);
+  if (classValue === '') {
+    return;
+  }
+
+  var clas = classesVal[classValue];
+  document.getElementById('hitDice').value = clas.hitDice.text;
+
+  var profsTag = document.getElementById('proficiencies');
+  profsTag.value += getProficiencies(clas.proficiencies);
 }
 
 function update() {
   console.log('Updating...');
   clear();
+  updateRace();
   updateClass();
-  // updateRace();
-  // updateClass();
 
   // Update abilities
   // Update proficiencies
