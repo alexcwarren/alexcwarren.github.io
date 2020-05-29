@@ -1,5 +1,6 @@
+// TODO - Replace reference to IDs with the entry's name
+
 var usedIDs = [];
-// var usedIDs = ['3731', '1412', 'fa0b', '4f72', '5216', 'f409', 'f3b1', 'eca4', '29ef', '14a4', 'b114', 'ed2b', 'e9d7', 'c002', 'ce74', '3382', 'd4e8', '306a', '69ed', '72da', 'cebd', '12db', 'c306', 'bbc0', '458d', '3e47', '6449', 'f40a', 'a8de', 'ff1e', 'f5c4', '809d', '50c0', '132c', '844d', 'a640', '61b6', '8e43', 'a652', '58e0', 'f52b', 'c2a3', '9726', 'b800', '16d3', 'f15d', '471c', 'ee14', '83d3', 'd373', 'edbb', '553a', 'e740', 'c620', '71b3', '8e08', '51e1', 'baf8', '6958', '88e2', '6af0', '3bdc', '43dd', 'a949', 'bad9', 'e020', '6858', '7af4', '8e7a', 'e772', '5b81', '71c6', 'cb4b', 'a8e0', '94da', '86d9', '3f94', 'c68b', '5b8c', '3783', '26bb', 'ecd9', '7290', 'efb6', 'a75f', '9705', '518d', '978a', '1561', '8d66', '5336', '3aca', 'f676', '8543', '1842'];
 
 function pushID(id) {
   if (usedIDs.includes(id)) {
@@ -295,13 +296,13 @@ function storeLanguages() {
 
 function storeWeapons() {
   var weaponClasses = {
-    'melee': {'id': pushID('16d3')},
-    'ranged': {'id': pushID('f15d')}
+    'melee': {'id': pushID('16d3'), 'name': 'Melee weapons'},
+    'ranged': {'id': pushID('f15d'), 'name': 'Ranged weapons'}
   };
 
   var weaponCategories = {
-    'simple': {'id': pushID('471c')},
-    'martial': {'id': pushID('ee14')}
+    'simple': {'id': pushID('471c'), 'name': 'Simple weapons'},
+    'martial': {'id': pushID('ee14'), 'name': 'Martial weapons'}
   };
 
   var weapons = {
@@ -584,10 +585,10 @@ function storeWeapons() {
 
 function storeArmor() {
   var armorCategories = {
-    'light': {'id': pushID('83d3')},
-    'medium': {'id': pushID('d373')},
-    'hard': {'id': pushID('edbb')},
-    'shield': {'id': pushID('553a')}
+    'light': {'id': pushID('83d3'), 'name': 'Light armor'},
+    'medium': {'id': pushID('d373'), 'name': 'Medium armor'},
+    'hard': {'id': pushID('edbb'), 'name': 'Hard armor'},
+    'shield': {'id': pushID('553a'), 'name': 'Shields'}
   };
 
   var armor = {
@@ -1242,29 +1243,29 @@ function storeRaces() {
       'id': pushID('9726'),
       'name': 'Dwarf',
       'increases': [
-        {'ability': '3aca', 'mod': 2}
+        {'ability': 'CON', 'mod': 2}
       ],
       'speed': 25,
       'traits': [
-        'c306',
-        'bbc0',
-        'c2a3',
-        '458d'
+        'darkvision',
+        'dwarven_resilience',
+        'dwarven_combat_training',
+        'stonecunning'
       ],
       'proficiencies': [
-        getTag('weapons', '29ef'),
-        getTag('weapons', '14a4'),
-        getTag('weapons', 'b114'),
-        getTag('weapons', 'ed2b'),
-        getChooseGroup(1, [getTag('tools', '72da', 1), getTag('tools', 'cebd', 1), getTag('tools', '12db', 1)])
+        getTag('weapons', 'battleaxe'),
+        getTag('weapons', 'handaxe'),
+        getTag('weapons', 'light_hammer'),
+        getTag('weapons', 'warhammer'),
+        getChooseGroup(1, [getTag('tools', 'smiths_tools', 1), getTag('tools', 'brewers_supplies', 1), getTag('tools', 'masons_tools', 1)])
       ],
       'languages': [
-        '3731',
-        '1412'
+        'common',
+        'dwarvish'
       ],
       'subraces': [
-        '58e0',
-        'f52b'
+        'hill_dwarf',
+        'mountain_dwarf'
       ],
       'maxHP_bonus': 0
     },
@@ -1272,31 +1273,31 @@ function storeRaces() {
       'id': pushID('e772'),
       'name': 'Elf',
       'increases': [
-        {'ability': '5336', 'mod': 2}
+        {'ability': 'DEX', 'mod': 2}
       ],
       'speed': 30,
       'traits': [
-        'c306',
-        'f40a',
-        'a8de',
-        'ff1e',
-        'f5c4'
+        'darkvision',
+        'keen_senses',
+        'fey_ancestry',
+        'trance',
+        'elf_weapon_training'
       ],
       'proficiencies': [
-        getTag('skills', 'efb6'),
-        getTag('weapons', 'e9d7'),
-        getTag('weapons', 'c002'),
-        getTag('weapons', 'ce74'),
-        getTag('weapons', '3382')
+        getTag('skills', 'perception'),
+        getTag('weapons', 'longsword'),
+        getTag('weapons', 'shortsword'),
+        getTag('weapons', 'shortbow'),
+        getTag('weapons', 'longbow')
       ],
       'languages': [
-        '3731',
-        'fa0b'
+        'common',
+        'elvish'
       ],
       'subraces': [
-        '7af4',
-        '8e7a',
-        '5b81'
+        'high_elf',
+        'wood_elf',
+        'dark_elf'
       ],
       'maxHP_bonus': 0
     }
@@ -1319,42 +1320,42 @@ function storeClasses() {
         'text': '1d12'
       },
       'proficiencies': [
-        getTag('armor/categories', '83d3'),
-        getTag('armor/categories', 'd373'),
-        getTag('armor/categories', '553a'),
-        getTag('weapons/categories', '471c'),
-        getTag('weapons/categories', 'ee14'),
-        getTag('abilities', '8d66'),
-        getTag('abilities', '3aca'),
+        getTag('armor/categories', 'light'),
+        getTag('armor/categories', 'medium'),
+        getTag('armor/categories', 'shield'),
+        getTag('weapons/categories', 'simple'),
+        getTag('weapons/categories', 'martial'),
+        getTag('abilities', 'STR'),
+        getTag('abilities', 'CON'),
         getChooseGroup(2, [
-          getTag('skills', '26bb'),
-          getTag('skills', '71c6'),
-          getTag('skills', '518d'),
-          getTag('skills', '5b8c'),
-          getTag('skills', 'efb6'),
-          getTag('skills', 'a75f')
+          getTag('skills', 'animal_handling'),
+          getTag('skills', 'athletics'),
+          getTag('skills', 'intimidation'),
+          getTag('skills', 'nature'),
+          getTag('skills', 'perception'),
+          getTag('skills', 'survival')
         ])
       ],
       'equipment': [
         getChooseGroup(1, [
-          getTag('weapons', '21bc', 1),
+          getTag('weapons', 'greataxe', 1),
           getTagFilter('weapons', [
-              getCondition('class', '16d3'),
-              getCondition('category', 'ee14')
+              getCondition('class', 'melee'),
+              getCondition('category', 'martial')
             ],
             1
           )
         ]),
         getChooseGroup(1, [
-          getTag('weapons', '14a4', 2),
+          getTag('weapons', 'handaxe', 2),
           getTagFilter('weapons', [
-              getCondition('category', '471c')
+              getCondition('category', 'simple')
             ],
             1
           )
         ]),
-        getTag('gear/packs', 'ec6d'),
-        getTag('weapons', '86c3', 4)
+        getTag('gear/packs', 'explorer'),
+        getTag('weapons', 'javelin', 4)
       ]
     },
     'bard': {
@@ -1366,32 +1367,32 @@ function storeClasses() {
         'text': '1d8'
       },
       'proficiencies': [
-        getTag('armor/categories', '83d3'),
-        getTag('weapons/categories', '471c'),
-        getTag('weapons', '306a'),
-        getTag('weapons', 'e9d7'),
-        getTag('weapons', 'd4e8'),
-        getTag('weapons', 'c002'),
+        getTag('armor/categories', 'light'),
+        getTag('weapons/categories', 'simple'),
+        getTag('weapons', 'hand_crossbow'),
+        getTag('weapons', 'longsword'),
+        getTag('weapons', 'rapier'),
+        getTag('weapons', 'shortsword'),
         getChooseGroup(3, [getTagFilter('tools', [
-          getCondition('category', '6858')
+          getCondition('category', 'instrument')
         ])]),
-        getTag('abilities', '5336'),
-        getTag('abilities', '1842'),
+        getTag('abilities', 'DEX'),
+        getTag('abilities', 'CHA'),
         getChooseGroup(3, [getTag('skills', 'any')])
       ],
       'equipment': [
         getChooseGroup(1, [
-          getTag('weapons', 'd4e8', 1),
-          getTag('weapons', 'e9d7', 1),
-          getTagFilter('weapons', [getCondition('category', '471c')], 1),
+          getTag('weapons', 'rapier', 1),
+          getTag('weapons', 'longsword', 1),
+          getTagFilter('weapons', [getCondition('category', 'simple')], 1),
         ]),
         getChooseGroup(1, [
-          getTag('gear/packs', '61fc', 1),
-          getTag('gear/packs', '6f3e', 1)
+          getTag('gear/packs', 'diplomat', 1),
+          getTag('gear/packs', 'entertainer', 1)
         ]),
         getChooseGroup(1, [getTagFilter('tools', [getCondition('category', 'instrument')])]),
-        getTag('armor', 'e740', 1),
-        getTag('weapons', 'e68a', 4)
+        getTag('armor', 'leather', 1),
+        getTag('weapons', 'dagger', 4)
       ]
     }
   };
