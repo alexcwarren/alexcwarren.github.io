@@ -157,92 +157,92 @@ function storeSkills() {
     'athletics': {
       'id': pushID('71c6'),
       'name': 'Athletics',
-      'parentAbility': '8d66'
+      'parentAbility': 'STR'
     },
     'acrobatics': {
       'id': pushID('cb4b'),
       'name': 'Acrobatics',
-      'parentAbility': '5336'
+      'parentAbility': 'DEX'
     },
     'sleight_of_hand': {
       'id': pushID('a8e0'),
       'name': 'Sleight of Hand',
-      'parentAbility': '5336'
+      'parentAbility': 'DEX'
     },
     'stealth': {
       'id': pushID('94da'),
       'name': 'Stealth',
-      'parentAbility': '5336'
+      'parentAbility': 'DEX'
     },
     'arcana': {
       'id': pushID('86d9'),
       'name': 'Arcana',
-      'parentAbility': 'f676'
+      'parentAbility': 'INT'
     },
     'history': {
       'id': pushID('3f94'),
       'name': 'History',
-      'parentAbility': 'f676'
+      'parentAbility': 'INT'
     },
     'investigation': {
       'id': pushID('c68b'),
       'name': 'Investigation',
-      'parentAbility': 'f676'
+      'parentAbility': 'INT'
     },
     'nature': {
       'id': pushID('5b8c'),
       'name': 'Nature',
-      'parentAbility': 'f676'
+      'parentAbility': 'INT'
     },
     'religion': {
       'id': pushID('3783'),
       'name': 'Religion',
-      'parentAbility': 'f676'
+      'parentAbility': 'INT'
     },
     'animal_handling': {
       'id': pushID('26bb'),
       'name': 'Animal Handling',
-      'parentAbility': '8543'
+      'parentAbility': 'WIS'
     },
     'insight': {
       'id': pushID('ecd9'),
       'name': 'Insight',
-      'parentAbility': '8543'
+      'parentAbility': 'WIS'
     },
     'medicine': {
       'id': pushID('7290'),
       'name': 'Medicine',
-      'parentAbility': '8543'
+      'parentAbility': 'WIS'
     },
     'perception': {
       'id': pushID('efb6'),
       'name': 'Perception',
-      'parentAbility': '8543'
+      'parentAbility': 'WIS'
     },
     'survival': {
       'id': pushID('a75f'),
       'name': 'Survival',
-      'parentAbility': '8543'
+      'parentAbility': 'WIS'
     },
     'deception': {
       'id': pushID('9705'),
       'name': 'Deception',
-      'parentAbility': '1842'
+      'parentAbility': 'CHA'
     },
     'intimidation': {
       'id': pushID('518d'),
       'name': 'Intimidation',
-      'parentAbility': '1842'
+      'parentAbility': 'CHA'
     },
     'performance': {
       'id': pushID('978a'),
       'name': 'Performance',
-      'parentAbility': '1842'
+      'parentAbility': 'CHA'
     },
     'persuasion': {
       'id': pushID('1561'),
       'name': 'Persuasion',
-      'parentAbility': '1842'
+      'parentAbility': 'CHA'
     }
   };
 
@@ -587,8 +587,8 @@ function storeArmor() {
   var armorCategories = {
     'light': {'id': pushID('83d3'), 'name': 'Light armor'},
     'medium': {'id': pushID('d373'), 'name': 'Medium armor'},
-    'hard': {'id': pushID('edbb'), 'name': 'Hard armor'},
-    'shield': {'id': pushID('553a'), 'name': 'Shields'}
+    'heavy': {'id': pushID('edbb'), 'name': 'Heavy armor'},
+    'shield': {'id': pushID('553a'), 'name': 'Shield'}
   };
 
   var armor = {
@@ -596,7 +596,7 @@ function storeArmor() {
     'padded': {
       'id': pushID('b800'),
       'name': 'Padded',
-      'category': '83d3',
+      'category': 'light',
       'costGP': 5,
       'AC': '11+',
       'maxACmod': null,
@@ -607,7 +607,7 @@ function storeArmor() {
     'leather': {
       'id': pushID('e740'),
       'name': 'Leather',
-      'category': '83d3',
+      'category': 'light',
       'costGP': 10,
       'AC': '11+',
       'maxACmod': null,
@@ -618,7 +618,7 @@ function storeArmor() {
     'studded_leather': {
       'id': pushID('c620'),
       'name': 'Studded leather',
-      'category': '83d3',
+      'category': 'light',
       'costGP': 45,
       'AC': '12+',
       'maxACmod': null,
@@ -629,7 +629,7 @@ function storeArmor() {
     'hide': {
       'id': pushID('71b3'),
       'name': 'Hide',
-      'category': 'd373',
+      'category': 'medium',
       'costGP': 10,
       'AC': '12+',
       'maxACmod': 2,
@@ -640,7 +640,7 @@ function storeArmor() {
     'chain_shirt': {
       'id': pushID('8e08'),
       'name': 'Chain shirt',
-      'category': 'd373',
+      'category': 'medium',
       'costGP': 50,
       'AC': '13+',
       'maxACmod': 2,
@@ -651,7 +651,7 @@ function storeArmor() {
     'scale_mail': {
       'id': pushID('51e1'),
       'name': 'Scale mail',
-      'category': 'd373',
+      'category': 'medium',
       'costGP': 50,
       'AC': '14+',
       'maxACmod': 2,
@@ -662,7 +662,7 @@ function storeArmor() {
     'breastplate': {
       'id': pushID('baf8'),
       'name': 'Breastplate',
-      'category': 'd373',
+      'category': 'medium',
       'costGP': 400,
       'AC': '14+',
       'maxACmod': 2,
@@ -673,7 +673,7 @@ function storeArmor() {
     'half_plate': {
       'id': pushID('6958'),
       'name': 'Half plate',
-      'category': 'd373',
+      'category': 'medium',
       'costGP': 750,
       'AC': '15+',
       'maxACmod': 2,
@@ -684,7 +684,7 @@ function storeArmor() {
     'ring_mail': {
       'id': pushID('88e2'),
       'name': 'Ring mail',
-      'category': 'edbb',
+      'category': 'heavy',
       'costGP': 30,
       'AC': '14',
       'maxACmod': null,
@@ -695,7 +695,7 @@ function storeArmor() {
     'chain_mail': {
       'id': pushID('6af0'),
       'name': 'Chain mail',
-      'category': 'edbb',
+      'category': 'heavy',
       'costGP': 75,
       'AC': '16',
       'maxACmod': null,
@@ -706,7 +706,7 @@ function storeArmor() {
     'splint': {
       'id': pushID('3bdc'),
       'name': 'Splint',
-      'category': 'edbb',
+      'category': 'heavy',
       'costGP': 200,
       'AC': '17',
       'maxACmod': null,
@@ -717,7 +717,7 @@ function storeArmor() {
     'plate': {
       'id': pushID('43dd'),
       'name': 'Plate',
-      'category': 'edbb',
+      'category': 'heavy',
       'costGP': 1500,
       'AC': '18',
       'maxACmod': null,
@@ -728,7 +728,7 @@ function storeArmor() {
     'shield': {
       'id': pushID('a949'),
       'name': 'Shield',
-      'category': '553a',
+      'category': 'shield',
       'costGP': 10,
       'AC': '+2',
       'maxACmod': null,
@@ -765,28 +765,28 @@ function storeTools() {
     'alchemists_supplies': {
       'id': pushID('69ed'),
       'name': 'Alchemist\'s supplies',
-      'category': 'bad9',
+      'category': 'artisan',
       'costGP': 50,
       'weightLB': 8
     },
     'smiths_tools': {
       'id': pushID('72da'),
       'name': 'Smith\'s tools',
-      'category': 'bad9',
+      'category': 'artisan',
       'costGP': 20,
       'weightLB': 8
     },
     'brewers_supplies': {
       'id': pushID('cebd'),
       'name': 'Brewer\'s supplies',
-      'category': 'bad9',
+      'category': 'artisan',
       'costGP': 20,
       'weightLB': 9
     },
     'masons_tools': {
       'id': pushID('12db'),
       'name': 'Mason\'s tools',
-      'category': 'bad9',
+      'category': 'artisan',
       'costGP': 10,
       'weightLB': 8
     },
@@ -811,14 +811,14 @@ function storeGear() {
       'name': 'Explorer\'s pack',
       'costGP': 10,
       'contents': [
-        {'quantity': 1, 'id': 'eacf'},
-        {'quantity': 1, 'id': 'dd88'},
-        {'quantity': 1, 'id': 'd2ee'},
-        {'quantity': 1, 'id': '9271'},
-        {'quantity': 10, 'id': '60da'},
-        {'quantity': 10, 'id': '74e8'},
-        {'quantity': 1, 'id': '2848'},
-        {'quantity': 1, 'id': '2b9e'}
+        {'quantity': 1, 'id': 'backpack'},
+        {'quantity': 1, 'id': 'bedroll'},
+        {'quantity': 1, 'id': 'mess_kit'},
+        {'quantity': 1, 'id': 'tinderbox'},
+        {'quantity': 10, 'id': 'torch'},
+        {'quantity': 10, 'id': 'rations'},
+        {'quantity': 1, 'id': 'waterskin'},
+        {'quantity': 1, 'id': 'hempen_rope'}
       ]
     },
     'diplomat': {
@@ -826,17 +826,17 @@ function storeGear() {
       'name': 'Diplomat\'s pack',
       'costGP': 39,
       'contents': [
-        {'quantity': 1, 'id': 'b4a8'},
-        {'quantity': 2, 'id': '628c'},
-        {'quantity': 1, 'id': 'bd72'},
-        {'quantity': 1, 'id': '4faf'},
-        {'quantity': 1, 'id': '84ec'},
-        {'quantity': 1, 'id': 'f869'},
-        {'quantity': 2, 'id': '4433'},
-        {'quantity': 5, 'id': '263c'},
-        {'quantity': 1, 'id': 'd0a1'},
-        {'quantity': 1, 'id': 'e468'},
-        {'quantity': 1, 'id': 'e468'}
+        {'quantity': 1, 'id': 'chest'},
+        {'quantity': 2, 'id': 'case_map_scroll'},
+        {'quantity': 1, 'id': 'clothes_fine'},
+        {'quantity': 1, 'id': 'ink_bottle'},
+        {'quantity': 1, 'id': 'ink_pen'},
+        {'quantity': 1, 'id': 'lamp'},
+        {'quantity': 2, 'id': 'flask_oil'},
+        {'quantity': 5, 'id': 'paper'},
+        {'quantity': 1, 'id': 'vial_perfume'},
+        {'quantity': 1, 'id': 'sealing_wax'},
+        {'quantity': 1, 'id': 'soap'}
       ]
     },
     'entertainer': {
@@ -844,13 +844,13 @@ function storeGear() {
       'name': 'Entertainer\'s pack',
       'costGP': 40,
       'contents': [
-        {'quantity': 1, 'id': 'eacf'},
-        {'quantity': 1, 'id': 'dd88'},
-        {'quantity': 2, 'id': 'bb28'},
+        {'quantity': 1, 'id': 'backpack'},
+        {'quantity': 1, 'id': 'bedroll'},
+        {'quantity': 2, 'id': 'clothes_costume'},
         {'quantity': 5, 'id': '5d88'},
-        {'quantity': 5, 'id': '74e8'},
-        {'quantity': 1, 'id': '2848'},
-        getTag('tools', 'b6a6')
+        {'quantity': 5, 'id': 'rations'},
+        {'quantity': 1, 'id': 'waterskin'},
+        getTag('tools', 'disguise_kit')
       ]
     }
   };
@@ -1163,7 +1163,7 @@ function storeSubraces() {
           {'ability': 'WIS', 'mod': 1}
         ],
         'traits': [
-          '3e47'
+          'dwarven_toughness'
         ],
         'maxHP_bonus': 1
       },
@@ -1174,11 +1174,11 @@ function storeSubraces() {
           {'ability': 'STR', 'mod': 2}
         ],
         'traits': [
-          '6449'
+          'dwarven_armor_training'
         ],
         'proficiencies': [
-          getTag('armor/categories', '83d3'),
-          getTag('armor/categories', 'd373')
+          getTag('armor/categories', 'light'),
+          getTag('armor/categories', 'medium')
         ]
       }
     },
@@ -1190,8 +1190,8 @@ function storeSubraces() {
           {'ability': 'INT', 'mod': 1}
         ],
         'traits': [
-          '809d',
-          '50c0'
+          'cantrip',
+          'extra_language'
         ],
         'languages': [
           getChooseGroup(1, [getTag('languages', 'any')])
@@ -1205,8 +1205,8 @@ function storeSubraces() {
         ],
         'speed': 35,
         'traits': [
-          '132c',
-          '844d'
+          'fleet_of_foot',
+          'mask_of_the_wild'
         ]
       },
       'dark_elf': {
@@ -1216,15 +1216,15 @@ function storeSubraces() {
           {'ability': 'CHA', 'mod': 1}
         ],
         'traits': [
-          'a640',
-          '61b6',
-          '8e43',
-          'a652'
+          'superior_darkvision',
+          'sunlight_sensitivity',
+          'drow_magic',
+          'drow_weapon_training'
         ],
         'proficiencies': [
-          getTag('weapons', 'd4e8'),
-          getTag('weapons', 'c002'),
-          getTag('weapons', '306a'),
+          getTag('weapons', 'rapier'),
+          getTag('weapons', 'shortsword'),
+          getTag('weapons', 'hand_crossbow'),
         ]
       }
     }
