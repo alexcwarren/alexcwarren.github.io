@@ -1160,7 +1160,7 @@ function storeSubraces() {
         'id': pushID('58e0'),
         'name': 'Hill Dwarf',
         'increases': [
-          {'ability': '8543', 'mod': 1}
+          {'ability': 'WIS', 'mod': 1}
         ],
         'traits': [
           '3e47'
@@ -1171,7 +1171,7 @@ function storeSubraces() {
         'id': pushID('f52b'),
         'name': 'Mountain Dwarf',
         'increases': [
-          {'ability': '8d66', 'mod': 2}
+          {'ability': 'STR', 'mod': 2}
         ],
         'traits': [
           '6449'
@@ -1187,7 +1187,7 @@ function storeSubraces() {
         'id': pushID('7af4'),
         'name': 'High Elf',
         'increases': [
-          {'ability': 'f676', 'mod': 1}
+          {'ability': 'INT', 'mod': 1}
         ],
         'traits': [
           '809d',
@@ -1201,7 +1201,7 @@ function storeSubraces() {
         'id': pushID('8e7a'),
         'name': 'Wood Elf',
         'increases': [
-          {'ability': '8543', 'mod': 1}
+          {'ability': 'WIS', 'mod': 1}
         ],
         'speed': 35,
         'traits': [
@@ -1213,7 +1213,7 @@ function storeSubraces() {
         'id': pushID('5b81'),
         'name': 'Dark Elf (Drow)',
         'increases': [
-          {'ability': '1842', 'mod': 1}
+          {'ability': 'CHA', 'mod': 1}
         ],
         'traits': [
           'a640',
