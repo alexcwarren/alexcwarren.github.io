@@ -1155,79 +1155,78 @@ function storeTraits() {
 
 function storeSubraces() {
   var subraces = {
-    'hill_dwarf': {
-      'id': pushID('58e0'),
-      'name': 'Hill Dwarf',
-      'parentRace': '9726',
-      'increases': [
-        {'ability': '8543', 'mod': 1}
-      ],
-      'traits': [
-        '3e47'
-      ],
-      'maxHP_bonus': 1
+    'dwarf': {
+      'hill_dwarf': {
+        'id': pushID('58e0'),
+        'name': 'Hill Dwarf',
+        'increases': [
+          {'ability': '8543', 'mod': 1}
+        ],
+        'traits': [
+          '3e47'
+        ],
+        'maxHP_bonus': 1
+      },
+      'mountain_dwarf': {
+        'id': pushID('f52b'),
+        'name': 'Mountain Dwarf',
+        'increases': [
+          {'ability': '8d66', 'mod': 2}
+        ],
+        'traits': [
+          '6449'
+        ],
+        'proficiencies': [
+          getTag('armor/categories', '83d3'),
+          getTag('armor/categories', 'd373')
+        ]
+      }
     },
-    'mountain_dwarf': {
-      'id': pushID('f52b'),
-      'name': 'Mountain Dwarf',
-      'parentRace': '9726',
-      'increases': [
-        {'ability': '8d66', 'mod': 2}
-      ],
-      'traits': [
-        '6449'
-      ],
-      'proficiencies': [
-        getTag('armor/categories', '83d3'),
-        getTag('armor/categories', 'd373')
-      ]
-    },
-    'high_elf': {
-      'id': pushID('7af4'),
-      'name': 'High Elf',
-      'parentRace': 'e772',
-      'increases': [
-        {'ability': 'f676', 'mod': 1}
-      ],
-      'traits': [
-        '809d',
-        '50c0'
-      ],
-      'languages': [
-        getChooseGroup(1, [getTag('languages', 'any')])
-      ]
-    },
-    'wood_elf': {
-      'id': pushID('8e7a'),
-      'name': 'Wood Elf',
-      'parentRace': 'e772',
-      'increases': [
-        {'ability': '8543', 'mod': 1}
-      ],
-      'speed': 35,
-      'traits': [
-        '132c',
-        '844d'
-      ]
-    },
-    'dark_elf': {
-      'id': pushID('5b81'),
-      'name': 'Dark Elf (Drow)',
-      'parentRace': 'e772',
-      'increases': [
-        {'ability': '1842', 'mod': 1}
-      ],
-      'traits': [
-        'a640',
-        '61b6',
-        '8e43',
-        'a652'
-      ],
-      'proficiencies': [
-        getTag('weapons', 'd4e8'),
-        getTag('weapons', 'c002'),
-        getTag('weapons', '306a'),
-      ]
+    'elf': {
+      'high_elf': {
+        'id': pushID('7af4'),
+        'name': 'High Elf',
+        'increases': [
+          {'ability': 'f676', 'mod': 1}
+        ],
+        'traits': [
+          '809d',
+          '50c0'
+        ],
+        'languages': [
+          getChooseGroup(1, [getTag('languages', 'any')])
+        ]
+      },
+      'wood_elf': {
+        'id': pushID('8e7a'),
+        'name': 'Wood Elf',
+        'increases': [
+          {'ability': '8543', 'mod': 1}
+        ],
+        'speed': 35,
+        'traits': [
+          '132c',
+          '844d'
+        ]
+      },
+      'dark_elf': {
+        'id': pushID('5b81'),
+        'name': 'Dark Elf (Drow)',
+        'increases': [
+          {'ability': '1842', 'mod': 1}
+        ],
+        'traits': [
+          'a640',
+          '61b6',
+          '8e43',
+          'a652'
+        ],
+        'proficiencies': [
+          getTag('weapons', 'd4e8'),
+          getTag('weapons', 'c002'),
+          getTag('weapons', '306a'),
+        ]
+      }
     }
   };
 

@@ -37,6 +37,10 @@ div.row {
   padding: 10px;
 }
 
+#subraceDiv {
+  display: none;
+}
+
 #traits {
   height: 200px;
   width: 200px;

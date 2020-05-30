@@ -76,15 +76,16 @@
         <div class="row">
           <div class="col-md-1">
             <div class="big-box">
-              <div class="row" id="strenth">STR</div>
-              <div class="row" id="dexterity">DEX</div>
-              <div class="row" id="constitution">CON</div>
-              <div class="row" id="intelligence">INT</div>
-              <div class="row" id="wisdom">WIS</div>
-              <div class="row" id="charisma">CHA</div>
+              <div class="row" id="strenth">STR<span id="strMod" class="abilityMod"></span></div>
+              <div class="row" id="dexterity">DEX<span id="dexMod" class="abilityMod"></span></div>
+              <div class="row" id="constitution">CON<span id="conMod" class="abilityMod"></span></div>
+              <div class="row" id="intelligence">INT<span id="intMod" class="abilityMod"></span></div>
+              <div class="row" id="wisdom">WIS<span id="wisMod" class="abilityMod"></span></div>
+              <div class="row" id="charisma">CHA<span id="chaMod" class="abilityMod"></span></div>
             </div>
           </div><!-- attributes row -->
 
+          <!-- TODO Change layout to use wider space better -->
           <div class="col-md-10">
             <div class="row">
               <form>
@@ -99,9 +100,15 @@
                     <label for="race">Race</label>
                     <select class="form-control" id="race" name="race" onchange="update()" value=""></select>
                   </div>
+                  <div id="subraceDiv" class="form-group col-md-3">
+                    <label for="subrace">Subrace</label>
+                    <select class="form-control" id="subrace" name="subrace" onchange="updateSubrace()" value=""></select>
+                  </div>
+                </div>
+                <div class="row">
                   <div class="form-group col-md-3">
                     <label for="class">Class</label>
-                    <select class="form-control" id="class" name="class" onchange="update()" value=""></select>
+                    <select class="form-control" id="class" name="class" onchange="update(false)" value=""></select>
                   </div>
                 </div>
                 <div class="row">
