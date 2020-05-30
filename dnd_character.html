@@ -98,17 +98,17 @@
                 <div class="row">
                   <div class="form-group col-md-3">
                     <label for="race">Race</label>
-                    <select class="form-control" id="race" name="race" onchange="update()" value=""></select>
+                    <select class="form-control" id="race" name="race" onchange="update(this.name)" value=""></select>
                   </div>
                   <div id="subraceDiv" class="form-group col-md-3">
                     <label for="subrace">Subrace</label>
-                    <select class="form-control" id="subrace" name="subrace" onchange="updateSubrace()" value=""></select>
+                    <select class="form-control" id="subrace" name="subrace" onchange="update(this.name)" value=""></select>
                   </div>
                 </div>
                 <div class="row">
                   <div class="form-group col-md-3">
                     <label for="class">Class</label>
-                    <select class="form-control" id="class" name="class" onchange="update(false)" value=""></select>
+                    <select class="form-control" id="class" name="class" onchange="update(this.name)" value=""></select>
                   </div>
                 </div>
                 <div class="row">

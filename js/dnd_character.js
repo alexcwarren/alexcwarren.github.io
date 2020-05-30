@@ -98,43 +98,6 @@ function loadData() {
   });
 }
 
-function loadList(listID, dbRef, nullText='') {
-  if (nullText === '') {
-    nullText = '-- Select ' + listID[0].toUpperCase() + listID.slice(1) + ' --';
-  }
-
-  const select = document.getElementById(listID);
-
-  var query = database.ref('data/' + dbRef).orderByKey();
-  query.once('value').then(function(snapshot) {
-    var nullOption = document.createElement('option');
-    nullOption.text = nullText;
-    nullOption.value = '';
-    select.add(nullOption);
-
-    snapshot.forEach(function(childSnapshot) {
-      var key = childSnapshot.key;
-      // var childData = childSnapshot.val();
-      var option = document.createElement('option');
-      option.text = childSnapshot.child('name').val();
-      option.value = key;
-      select.add(option);
-    });
-  });
-}
-
-function clear() {
-  document.getElementById('speed').value = '';
-  document.getElementById('hitDice').value = '';
-  document.getElementById('traits').value = '';
-  document.getElementById('proficiencies').value = '';
-
-  var abilityMods = document.getElementsByClassName('abilityMod');
-  for (aM of abilityMods) {
-    aM.innerText = '';
-  }
-}
-
 function getVal(path) {
   var val;
 
@@ -165,6 +128,31 @@ function getVal(path) {
   }
 
   return val;
+}
+
+function loadList(listID, dbRef, nullText='') {
+  if (nullText === '') {
+    nullText = '-- Select ' + listID[0].toUpperCase() + listID.slice(1) + ' --';
+  }
+
+  const select = document.getElementById(listID);
+
+  var query = database.ref('data/' + dbRef).orderByKey();
+  query.once('value').then(function(snapshot) {
+    var nullOption = document.createElement('option');
+    nullOption.text = nullText;
+    nullOption.value = '';
+    select.add(nullOption);
+
+    snapshot.forEach(function(childSnapshot) {
+      var key = childSnapshot.key;
+      // var childData = childSnapshot.val();
+      var option = document.createElement('option');
+      option.text = childSnapshot.child('name').val();
+      option.value = key;
+      select.add(option);
+    });
+  });
 }
 
 function getProficiencies(list) {
@@ -210,10 +198,29 @@ function getProficiencies(list) {
   return profs;
 }
 
-function updateSubrace() {
+function updateSubrace(raceValue) {
+  var subraceValue = document.getElementById('subrace').value;
+  if (subraceValue === '') {
+    return;
+  }
+
+  var race = subracesVal[raceValue];
+  var subrace = race[subraceValue];
+
+  // TODO - Update traits, if they exist
+  // TODO - Update proficiencies, if they exits
+
+  for (inc of subrace.increases) {
+    var modID = inc.ability.toLowerCase() + 'Mod';
+    var mod = document.getElementById(modID);
+    if (mod.innerText !== '') {
+      alert(modID + ' already has a modifier!');
+    }
+    mod.innerText = ' +' + inc.mod;
+  }
 }
 
-function updateRace(raceChange) {
+function updateRace(raceChange, subraceChange) {
   var raceValue = document.getElementById('race').value;
 
   if (raceChange) {
@@ -226,32 +233,38 @@ function updateRace(raceChange) {
 
   var race = racesVal[raceValue];
 
-  if (raceChange && race.hasOwnProperty('subraces')) {
-    // Clear subrace select before adding new options
-    var subraceSelect = document.getElementById('subrace');
-    for (i in subraceSelect.options) {
-      subraceSelect.options[i] = null;
+  if (raceChange || subraceChange) {
+    if (raceChange && race.hasOwnProperty('subraces')) {
+      // Clear subrace select before adding new options
+      var subraceSelect = document.getElementById('subrace');
+      for (i in subraceSelect.options) {
+        subraceSelect.options[i] = null;
+      }
+
+      console.log('Loading Subrace dropdown...');
+      loadList('subrace', 'subraces/' + raceValue);
+      document.getElementById('subraceDiv').style.display = 'block';
     }
 
-    console.log('Loading Subrace dropdown...');
-    loadList('subrace', 'subraces/' + raceValue);
-    document.getElementById('subraceDiv').style.display = 'block';
-  }
+    document.getElementById('speed').value = race.speed;
 
-  document.getElementById('speed').value = race.speed;
+    var traitsTag = document.getElementById('traits');
+    for (trait of race.traits) {
+      traitsTag.value += traitsVal[trait].name + '\n';
+    }
 
-  var traitsTag = document.getElementById('traits');
-  for (trait of race.traits) {
-    traitsTag.value += traitsVal[trait].name + '\n';
+    for (inc of race.increases) {
+      var modID = inc.ability.toLowerCase() + 'Mod';
+      document.getElementById(modID).innerText = ' +' + inc.mod;
+    }
+
+    if (subraceChange) {
+      updateSubrace(raceValue)
+    }
   }
 
   var profs = getProficiencies(race.proficiencies);
   document.getElementById('proficiencies').value = profs;
-
-  for (inc of race.increases) {
-    var modID = inc.ability.toLowerCase() + 'Mod';
-    document.getElementById(modID).innerText = ' +' + inc.mod;
-  }
 }
 
 function updateClass() {
@@ -268,11 +281,38 @@ function updateClass() {
   document.getElementById('proficiencies').value = profs;
 }
 
-function update(raceChange=true) {
+function update2(raceChange, classChange, subraceChange) {
   console.log('Updating...');
-  clear();
-  updateRace(raceChange);
+
+  document.getElementById('proficiencies').value = '';
+
+  if (raceChange || subraceChange) {
+    document.getElementById('speed').value = '';
+    document.getElementById('traits').value = '';
+    var abilityMods = document.getElementsByClassName('abilityMod');
+    for (aM of abilityMods) {
+      aM.innerText = '';
+    }
+  }
+  else if (classChange) {
+    document.getElementById('hitDice').value = '';
+  }
+
+  updateRace(raceChange, subraceChange);
   updateClass();
+}
+
+function update(whatChanged) {
+  console.log('update:', whatChanged);
+  if (whatChanged === 'race') {
+    console.log('Race...');
+  }
+  else if (whatChanged === 'subrace') {
+    console.log('Subrace...');
+  }
+  else if (whatChanged === 'class') {
+    console.log('Class...');
+  }
 }
 
 window.onload = function() {
