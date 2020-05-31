@@ -175,6 +175,7 @@ function getProficiencies(list) {
           choose += '  ';
 
           if (c.id === 'any') {
+            // TODO - Complete lookup for any
             choose += c.id + ' ' + c.path + '\n';
           }
           else {
@@ -188,11 +189,14 @@ function getProficiencies(list) {
           }
         }
         else {
-          // TODO - Complete lookup of condition(s)
-          // var val = getVal(c.searchPath);
-          choose += '  ' + c.searchPath + ' with ';
+          var val = getVal(c.searchPath);
           for (x of c.conditions) {
-            choose += x.attribute + ' of ' + x.id + ', ';
+            for (i in val) {
+              var item = val[i];
+              if (item.hasOwnProperty(x.attribute) && item[x.attribute] === x.id) {
+                choose += '  ' + item.name + '\n';
+              }
+            }
           }
         }
       }
