@@ -750,7 +750,7 @@ function storeTools() {
       'id': pushID('bad9'),
       'name': 'Artisan\'s tools'
     },
-    'gaming': {
+    'gaming_set': {
       'id': pushID('e020'),
       'name': 'Gaming set'
     },
@@ -769,19 +769,68 @@ function storeTools() {
       'costGP': 50,
       'weightLB': 8
     },
-    'smiths_tools': {
-      'id': pushID('72da'),
-      'name': 'Smith\'s tools',
-      'category': 'artisan',
-      'costGP': 20,
-      'weightLB': 8
-    },
     'brewers_supplies': {
       'id': pushID('cebd'),
       'name': 'Brewer\'s supplies',
       'category': 'artisan',
       'costGP': 20,
       'weightLB': 9
+    },
+    'calligraphers_supplies': {
+      'id': pushID('70ae'),
+      'name': 'Calligrapher\'s supplies',
+      'category': 'artisan',
+      'costGP': 10,
+      'weightLB': 5
+    },
+    'carpenters_tools': {
+      'id': pushID('b9b0'),
+      'name': 'Carpenter\'s tools',
+      'category': 'artisan',
+      'costGP': 8,
+      'weightLB': 6
+    },
+    'cartographers_tools': {
+      'id': pushID('6e45'),
+      'name': 'Cartographer\'s tools',
+      'category': 'artisan',
+      'costGP': 15,
+      'weightLB': 6
+    },
+    'cobblers_tools': {
+      'id': pushID('56e4'),
+      'name': 'Cobbler\'s tools',
+      'category': 'artisan',
+      'costGP': 5,
+      'weightLB': 8
+    },
+    'cooks_utensils': {
+      'id': pushID('1c63'),
+      'name': 'Cook\'s utensils',
+      'category': 'artisan',
+      'costGP': 1,
+      'weightLB': 8
+    },
+    'glassblowers_tools': {
+      'id': pushID('11a1'),
+      'name': 'Glassblower\'s tools',
+      'category': 'artisan',
+      'costGP': 30,
+      'weightLB': 5
+    },
+    'jewelers_tools': {
+      'id': pushID('8947'),
+      'name': 'Jeweler\'s tools',
+      'category': 'artisan',
+      'costGP': 25,
+      'weightLB': 2
+    },
+    'leatherworkers_tools': {
+      'id': pushID('831b'),
+      'name': 'Leatherworker\'s tools',
+      'category': 'artisan',
+      'costGP': 5,
+      'weightLB': 5
     },
     'masons_tools': {
       'id': pushID('12db'),
@@ -790,11 +839,181 @@ function storeTools() {
       'costGP': 10,
       'weightLB': 8
     },
+    'painters_supplies': {
+      'id': pushID('6954'),
+      'name': 'Painter\'s supplies',
+      'category': 'artisan',
+      'costGP': 10,
+      'weightLB': 5
+    },
+    'potters_tools': {
+      'id': pushID('1a87'),
+      'name': 'Potter\'s tools',
+      'category': 'artisan',
+      'costGP': 10,
+      'weightLB': 3
+    },
+    'smiths_tools': {
+      'id': pushID('72da'),
+      'name': 'Smith\'s tools',
+      'category': 'artisan',
+      'costGP': 20,
+      'weightLB': 8
+    },
+    'tinkers_tools': {
+      'id': pushID('feaf'),
+      'name': 'Tinker\'s tools',
+      'category': 'artisan',
+      'costGP': 50,
+      'weightLB': 10
+    },
+    'weavers_tools': {
+      'id': pushID('1b91'),
+      'name': 'Weaver\'s tools',
+      'category': 'artisan',
+      'costGP': 1,
+      'weightLB': 5
+    },
+    'woodcarvers_tools': {
+      'id': pushID('47b6'),
+      'name': 'Woodcarver\'s tools',
+      'category': 'artisan',
+      'costGP': 1,
+      'weightLB': 5
+    },
     'disguise_kit': {
       'id': pushID('b6a6'),
       'name': 'Disguise kit',
       'costGP': 25,
       'weightLB': 3
+    },
+    'forgery_kit': {
+      'id': pushID('51c3'),
+      'name': 'Forgery kit',
+      'costGP': 15,
+      'weightLB': 5
+    },
+    'dice_set': {
+      'id': pushID('1653'),
+      'name': 'Dice set',
+      'category': 'gaming_set',
+      'costGP': 0.1,
+      'weightLB': 0
+    },
+    'dragonchess_set': {
+      'id': pushID('b979'),
+      'name': 'Dragonchess set',
+      'category': 'gaming_set',
+      'costGP': 1,
+      'weightLB': 0.5
+    },
+    'playing_card_set': {
+      'id': pushID('b2f8'),
+      'name': 'Playing card set',
+      'category': 'gaming_set',
+      'costGP': 0.5,
+      'weightLB': 0
+    },
+    'three_dragon_ante_set': {
+      'id': pushID('1c82'),
+      'name': 'Three-Dragon Ante set',
+      'category': 'gaming_set',
+      'costGP': 1,
+      'weightLB': 0
+    },
+    'herbalism_kit': {
+      'id': pushID('7f0c'),
+      'name': 'Herbalism kit',
+      'costGP': 5,
+      'weightLB': 3
+    },
+    'bagpipes': {
+      'id': pushID('d9e1'),
+      'name': 'Bagpipes',
+      'category': 'instrument',
+      'costGP': 30,
+      'weightLB': 6
+    },
+    'drum': {
+      'id': pushID('de7a'),
+      'name': 'Drum',
+      'category': 'instrument',
+      'costGP': 6,
+      'weightLB': 3
+    },
+    'dulcimer': {
+      'id': pushID('5f08'),
+      'name': 'Dulcimer',
+      'category': 'instrument',
+      'costGP': 25,
+      'weightLB': 10
+    },
+    'flute': {
+      'id': pushID('a155'),
+      'name': 'Flute',
+      'category': 'instrument',
+      'costGP': 2,
+      'weightLB': 1
+    },
+    'lute': {
+      'id': pushID('9103'),
+      'name': 'Lute',
+      'category': 'instrument',
+      'costGP': 35,
+      'weightLB': 2
+    },
+    'lyre': {
+      'id': pushID('e026'),
+      'name': 'Lyre',
+      'category': 'instrument',
+      'costGP': 30,
+      'weightLB': 2
+    },
+    'horn': {
+      'id': pushID('78fd'),
+      'name': 'Horn',
+      'category': 'instrument',
+      'costGP': 3,
+      'weightLB': 2
+    },
+    'pan_flute': {
+      'id': pushID('deac'),
+      'name': 'Pan flute',
+      'category': 'instrument',
+      'costGP': 12,
+      'weightLB': 2
+    },
+    'shawm': {
+      'id': pushID('2c9b'),
+      'name': 'Shawm',
+      'category': 'instrument',
+      'costGP': 2,
+      'weightLB': 1
+    },
+    'viol': {
+      'id': pushID('49b2'),
+      'name': 'Viol',
+      'category': 'instrument',
+      'costGP': 2,
+      'weightLB': 1
+    },
+    'navigators_tools': {
+      'id': pushID('8649'),
+      'name': 'Navigator\'s tools',
+      'costGP': 25,
+      'weightLB': 2
+    },
+    'poisoners_kit': {
+      'id': pushID('f222'),
+      'name': 'Poisener\'s kit',
+      'costGP': 50,
+      'weightLB': 2
+    },
+    'thieves_tools': {
+      'id': pushID('1c57'),
+      'name': 'Thieves\' tools',
+      'costGP': 25,
+      'weightLB': 1
     }
   };
 
