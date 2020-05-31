@@ -171,28 +171,30 @@ function getProficiencies(list) {
       var choose = 'Choose ' + p.choose.amount + ':\n';
 
       for (c of p.choose.choices) {
-        if (c.hasOwnProperty('id')) {
-          choose += '  ';
+        var choiceVal = getVal(c.path);
 
+        if (c.hasOwnProperty('id')) {
           if (c.id === 'any') {
-            // TODO - Complete lookup for any
-            choose += c.id + ' ' + c.path + '\n';
+            for (i in choiceVal) {
+              var item = choiceVal[i];
+              choose += '  ' + item.name + '\n';
+            }
           }
           else {
-            var val = getVal(c.path);
+            choose += '  ';
 
             if (c.hasOwnProperty('quantity') && c.quantity > 1) {
               choose += c.quantity + ' ';
             }
 
-            choose += val[c.id].name + '\n';
+            choose += choiceVal[c.id].name + '\n';
           }
         }
         else {
-          var val = getVal(c.searchPath);
+          var conditionVal = getVal(c.searchPath);
           for (x of c.conditions) {
-            for (i in val) {
-              var item = val[i];
+            for (i in conditionVal) {
+              var item = conditionVal[i];
               if (item.hasOwnProperty(x.attribute) && item[x.attribute] === x.id) {
                 choose += '  ' + item.name + '\n';
               }
