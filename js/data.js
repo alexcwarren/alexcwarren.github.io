@@ -1,5 +1,9 @@
 const dataRef = database.ref('data');
 
+const ANY = 'any';
+const ALL = 'all';
+const NAME = 'name';
+
 var usedIDs = [];
 
 function pushID(name) {
@@ -12,15 +16,15 @@ function pushID(name) {
 
   usedIDs.forEach(function(u) {
     if (id === u.id && name !== u.name) {
-      console.log('ERROR: ' + id + ' already used by ' + u.name);
+      console.log('ERROR: Cannot store ' + name + ': ' + id + ' already used by ' + u.name);
       return null;
     }
   });
 
   var entry = {
-    'id': id,
-    'name': name
-  }
+    'id': id
+  };
+  entry[NAME] = name;
   usedIDs.push(entry);
 
   return id;
@@ -31,14 +35,13 @@ function getNextID() {
   let minLimit = 4096; // 16^(4-1) = 16^3
   let maxLimit = 65536 - 4096; // 16^4 - 16^3
 
-  let nextID = Math.floor(Math.random() * maxLimit) + minLimit;
+  let nextID = getRandomNum(minLimit, maxLimit).toString(16);
 
   var alreadyUsed = false;
   var count = 1;
   usedIDs.forEach(function(item) {
     if (nextID === item.id) {
       alreadyUsed = true;
-      console.log(count);
       count++;
     }
   });
@@ -46,29 +49,30 @@ function getNextID() {
     return getNextID();
   }
 
-  usedIDs.push(nextID.toString(16));
-  // console.log(nextID.toString(16));
-  return nextID.toString(16);
+  usedIDs.push(nextID);
+
+  return nextID;
+}
+
+function getRandomNum(min=0, max=1) {
+  return Math.floor(Math.random() * max) + min;
 }
 
 function showUsedIDs() {
   getAbilities();
-  getSkills();
-  getLanguages();
-  // getWeaponsClasses();
-  // getWeaponsCategories();
-  // getWeapons();
   getArmor();
-  getTools();
-  getGear();
-  getTraits();
-  getSubraces();
-  getRaces();
+  getArmorTypes();
   getClasses();
-
+  getGear();
+  getLanguages();
+  getSkills();
+  getRaces();
+  getSubraces();
+  getTools();
+  getTraits();
+  getWeaponCategories();
+  getWeaponClasses();
   getWeapons();
-  getWeaponsClasses();
-  getWeaponsCategories();
 
   var message = '[';
   usedIDs.forEach(item => message += item.id + ' ' + item.name + ', ');
@@ -87,7 +91,6 @@ function show(name, data, attribute='', value='') {
         message += getEnumerationRef(value, [name, key, 'value']);
       }
     }
-    // message = message.slice(0, message.length - 2);
   }
   else {
     console.log('Every', name + ':');
@@ -117,69 +120,57 @@ function getEnumerationRef(name, layers, value='true') {
   return name + '[' + ref.slice(0, ref.length - 1) + '] = ' + value + ';\n';
 }
 
-function storeData() {
-  store(ABILITY_PATH, getAbilities(), 'Abilities');
-  store(SKILL_PATH, getSkills(), 'Skills');
-  store(LANGUAGE_PATH, getLanguages(), 'Languages');
-  store(WEAPON_CLASS_PATH, getWeaponClasses(), 'WeaponClasses');
-  store(WEAPON_CATEGORY_PATH, getWeaponCategories(), 'WeaponCategories');
-  store(WEAPON_PATH, getWeapons(), 'Weapons');
-  store(ARMOR_TYPE_PATH, getArmorTypes(), 'ArmorTypes');
-  store(ARMOR_PATH, getArmor(), 'Armor');
-  store(TOOL_CATEGORY_PATH, getToolCategories(), 'ToolCategories');
-  store(TOOL_PATH, getTools(), 'Tools');
-  store(PACK_PATH, getPacks(), 'Packs');
-  store(GEAR_PATH, getGear(), 'Gear');
-  store(TRAIT_PATH, getTraits(), 'Traits');
-  store(SUBRACE_PATH, getSubraces(), 'Subraces');
-  store(RACE_PATH, getRaces(), 'Races');
-  store(CLASS_PATH, getClasses(), 'Classes');
-}
-
-function store(path, data, name) {
-  console.log('Storing ' + name + '...');
-  var childRef = dataRef.child(path);
-  childRef.set(data);
-  console.log(name + ' stored!');
-}
-
-const ANY = 'any';
-const ALL = 'all';
+const PATH = {
+  'ABILITIES': 'abilities',
+  'ARMOR': 'armor',
+  'ARMOR_TYPES': 'armor_types',
+  'CLASSES': 'classes',
+  'GEAR': 'gear',
+  'LANGUAGES': 'languages',
+  'PACKS': 'packs',
+  'RACES': 'races',
+  'SKILLS': 'skills',
+  'SUBRACES': 'subraces',
+  'TOOL_CATEGORIES': 'tool_categories',
+  'TOOLS': 'tools',
+  'TRAITS': 'traits',
+  'WEAPON_CATEGORIES': 'weapon_categories',
+  'WEAPON_CLASSES': 'weapon_classes',
+  'WEAPONS': 'weapons'
+};
 
 /***********
 * ABILITIES
 ***********/
 
-const ABILITY_PATH = 'abilities';
-
 const ABILITY = {
   'STR': {
     'VALUE': 'STR',
-    'PATH': ABILITY_PATH
+    'PATH': PATH.ABILITIES
   },
   'DEX': {
     'VALUE': 'DEX',
-    'PATH': ABILITY_PATH
+    'PATH': PATH.ABILITIES
   },
   'CON': {
     'VALUE': 'CON',
-    'PATH': ABILITY_PATH
+    'PATH': PATH.ABILITIES
   },
   'INT': {
     'VALUE': 'INT',
-    'PATH': ABILITY_PATH
+    'PATH': PATH.ABILITIES
   },
   'WIS': {
     'VALUE': 'WIS',
-    'PATH': ABILITY_PATH
+    'PATH': PATH.ABILITIES
   },
   'CHA': {
     'VALUE': 'CHA',
-    'PATH': ABILITY_PATH
+    'PATH': PATH.ABILITIES
   },
   'ANY': {
     'VALUE': ANY,
-    'PATH': ABILITY_PATH
+    'PATH': PATH.ABILITIES
   }
 };
 
@@ -191,14 +182,14 @@ function Ability(id, name, longName, skillsList=null) {
 
   var ability = {
     'id': id,
-    'name': name,
-    'longName': longName,
-  }
+    'longName': longName
+  };
+  ability[NAME] = name;
 
   if (skillsList !== null) {
     var skills = {};
     for (s of skillsList) {
-      skills[s] = true;
+      skills[s] = PATH.SKILLS;
     }
     ability['skills'] = skills;
   }
@@ -280,84 +271,82 @@ function getAbilities() {
 * SKILLS
 ********/
 
-const SKILL_PATH = 'skills';
-
 const SKILL = {
   'ATHLETICS': {
     'VALUE': 'athletics',
-    'PATH': SKILL_PATH
+    'PATH': PATH.SKILLS
   },
   'ACROBATICS': {
     'VALUE': 'acrobatics',
-    'PATH': SKILL_PATH
+    'PATH': PATH.SKILLS
   },
   'SLEIGHT_OF_HAND': {
     'VALUE': 'sleight_of_hand',
-    'PATH': SKILL_PATH
+    'PATH': PATH.SKILLS
   },
   'STEALTH': {
     'VALUE': 'stealth',
-    'PATH': SKILL_PATH
+    'PATH': PATH.SKILLS
   },
   'ARCANA': {
     'VALUE': 'arcana',
-    'PATH': SKILL_PATH
+    'PATH': PATH.SKILLS
   },
   'HISTORY': {
     'VALUE': 'history',
-    'PATH': SKILL_PATH
+    'PATH': PATH.SKILLS
   },
   'INVESTIGATION': {
     'VALUE': 'investigation',
-    'PATH': SKILL_PATH
+    'PATH': PATH.SKILLS
   },
   'NATURE': {
     'VALUE': 'nature',
-    'PATH': SKILL_PATH
+    'PATH': PATH.SKILLS
   },
   'RELIGION': {
     'VALUE': 'religion',
-    'PATH': SKILL_PATH
+    'PATH': PATH.SKILLS
   },
   'ANIMAL_HANDLING': {
     'VALUE': 'animal_handling',
-    'PATH': SKILL_PATH
+    'PATH': PATH.SKILLS
   },
   'INSIGHT': {
     'VALUE': 'insight',
-    'PATH': SKILL_PATH
+    'PATH': PATH.SKILLS
   },
   'MEDICINE': {
     'VALUE': 'medicine',
-    'PATH': SKILL_PATH
+    'PATH': PATH.SKILLS
   },
   'PERCEPTION': {
     'VALUE': 'perception',
-    'PATH': SKILL_PATH
+    'PATH': PATH.SKILLS
   },
   'SURVIVAL': {
     'VALUE': 'survival',
-    'PATH': SKILL_PATH
+    'PATH': PATH.SKILLS
   },
   'DECEPTION': {
     'VALUE': 'deception',
-    'PATH': SKILL_PATH
+    'PATH': PATH.SKILLS
   },
   'INTIMIDATION': {
     'VALUE': 'intimidation',
-    'PATH': SKILL_PATH
+    'PATH': PATH.SKILLS
   },
   'PERFORMANCE': {
     'VALUE': 'performance',
-    'PATH': SKILL_PATH
+    'PATH': PATH.SKILLS
   },
   'PERSUASION': {
     'VALUE': 'persuasion',
-    'PATH': SKILL_PATH
+    'PATH': PATH.SKILLS
   },
   'ANY': {
     'VALUE': ANY,
-    'PATH': SKILL_PATH
+    'PATH': PATH.SKILLS
   }
 };
 
@@ -367,11 +356,13 @@ function Skill(id, name, parentAbility) {
     return null;
   }
 
-  return {
+  var skill = {
     'id': id,
-    'name': name,
     'parentAbility': parentAbility
   };
+  skill[NAME] = name;
+
+  return skill;
 }
 
 function getSkills() {
@@ -492,20 +483,47 @@ function getSkills() {
 * LANGUAGES
 ***********/
 
-const LANGUAGE_PATH = 'languages';
-
-// LANGUAGE does not have VALUE or PATH
 const LANGUAGE = {
-  'COMMON': 'common',
-  'DWARVISH': 'dwarvish',
-  'ELVISH': 'elvish',
-  'HALFLING': 'halfling',
-  'DRACONIC': 'draconic',
-  'GNOMISH': 'gnomish',
-  'ORC': 'orc',
-  'INFERNAL': 'infernal',
-  'ANY': ANY,
-  'ALL': ALL
+  'COMMON': {
+    'VALUE': 'common',
+    'PATH': PATH.LANGUAGES
+  },
+  'DWARVISH': {
+    'VALUE': 'dwarvish',
+    'PATH': PATH.LANGUAGES
+  },
+  'ELVISH': {
+    'VALUE': 'elvish',
+    'PATH': PATH.LANGUAGES
+  },
+  'HALFLING': {
+    'VALUE': 'halfling',
+    'PATH': PATH.LANGUAGES
+  },
+  'DRACONIC': {
+    'VALUE': 'draconic',
+    'PATH': PATH.LANGUAGES
+  },
+  'GNOMISH': {
+    'VALUE': 'gnomish',
+    'PATH': PATH.LANGUAGES
+  },
+  'ORC': {
+    'VALUE': 'orc',
+    'PATH': PATH.LANGUAGES
+  },
+  'INFERNAL': {
+    'VALUE': 'infernal',
+    'PATH': PATH.LANGUAGES
+  },
+  'ANY': {
+    'VALUE': ANY,
+    'PATH': PATH.LANGUAGES
+  },
+  'ALL': {
+    'VALUE': ALL,
+    'PATH': PATH.LANGUAGES
+  }
 };
 
 function Language(id, name) {
@@ -514,52 +532,54 @@ function Language(id, name) {
     return null;
   }
 
-  return {
-    'id': id,
-    'name': name
+  var language = {
+    'id': id
   };
+  language[NAME] = name;
+
+  return language;
 }
 
 function getLanguages() {
   var languages = {};
 
-  languages[LANGUAGE.COMMON] = Language(
-    pushID(LANGUAGE.COMMON),
+  languages[LANGUAGE.COMMON.VALUE] = Language(
+    pushID(LANGUAGE.COMMON.VALUE),
     'Common'
   );
 
-  languages[LANGUAGE.DWARVISH] = Language(
-    pushID(LANGUAGE.DWARVISH),
+  languages[LANGUAGE.DWARVISH.VALUE] = Language(
+    pushID(LANGUAGE.DWARVISH.VALUE),
     'Dwarvish'
   );
 
-  languages[LANGUAGE.ELVISH] = Language(
-    pushID(LANGUAGE.ELVISH),
+  languages[LANGUAGE.ELVISH.VALUE] = Language(
+    pushID(LANGUAGE.ELVISH.VALUE),
     'Elvish'
   );
 
-  languages[LANGUAGE.HALFLING] = Language(
-    pushID(LANGUAGE.HALFLING),
+  languages[LANGUAGE.HALFLING.VALUE] = Language(
+    pushID(LANGUAGE.HALFLING.VALUE),
     'Halfling'
   );
 
-  languages[LANGUAGE.DRACONIC] = Language(
-    pushID(LANGUAGE.DRACONIC),
+  languages[LANGUAGE.DRACONIC.VALUE] = Language(
+    pushID(LANGUAGE.DRACONIC.VALUE),
     'Draconic'
   );
 
-  languages[LANGUAGE.GNOMISH] = Language(
-    pushID(LANGUAGE.GNOMISH),
+  languages[LANGUAGE.GNOMISH.VALUE] = Language(
+    pushID(LANGUAGE.GNOMISH.VALUE),
     'Gnomish'
   );
 
-  languages[LANGUAGE.ORC] = Language(
-    pushID(LANGUAGE.ORC),
+  languages[LANGUAGE.ORC.VALUE] = Language(
+    pushID(LANGUAGE.ORC.VALUE),
     'Orc'
   );
 
-  languages[LANGUAGE.INFERNAL] = Language(
-    pushID(LANGUAGE.INFERNAL),
+  languages[LANGUAGE.INFERNAL.VALUE] = Language(
+    pushID(LANGUAGE.INFERNAL.VALUE),
     'Infernal'
   );
 
@@ -570,186 +590,182 @@ function getLanguages() {
 * WEAPONS
 *********/
 
-const WEAPON_PATH = 'weapons';
-const WEAPON_CLASS_PATH = 'weapon_classes';
-const WEAPON_CATEGORY_PATH = 'weapon_categories';
-
 const WEAPON = {
   'CLUB': {
     'VALUE': 'club',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'DAGGER': {
     'VALUE': 'dagger',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'GREATCLUB': {
     'VALUE': 'greatclub',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'HANDAXE': {
     'VALUE': 'handaxe',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'JAVELIN': {
     'VALUE': 'javelin',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'LIGHT_HAMMER': {
     'VALUE': 'light_hammer',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'MACE': {
     'VALUE': 'mace',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'QUARTERSTAFF': {
     'VALUE': 'quarterstaff',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'SICKLE': {
     'VALUE': 'sickle',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'SPEAR': {
     'VALUE': 'spear',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'LIGHT_CROSSBOW': {
     'VALUE': 'light_crossbow',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'DART': {
     'VALUE': 'dart',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'SHORTBOW': {
     'VALUE': 'shortbow',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'SLING': {
     'VALUE': 'sling',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'BATTLEAXE': {
     'VALUE': 'battleaxe',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'FLAIL': {
     'VALUE': 'flail',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'GLAIVE': {
     'VALUE': 'glaive',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'GREATAXE': {
     'VALUE': 'greataxe',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'GREATSWORD': {
     'VALUE': 'greatsword',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'HALBERD': {
     'VALUE': 'halberd',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'LANCE': {
     'VALUE': 'lance',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'LONGSWORD': {
     'VALUE': 'longsword',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'MAUL': {
     'VALUE': 'maul',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'MORNINGSTAR': {
     'VALUE': 'morningstar',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'PIKE': {
     'VALUE': 'pike',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'RAPIER': {
     'VALUE': 'rapier',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'SCIMITAR': {
     'VALUE': 'scimitar',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'SHORTSWORD': {
     'VALUE': 'shortsword',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'TRIDENT': {
     'VALUE': 'trident',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'WAR_PICK': {
     'VALUE': 'war_pick',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'WARHAMMER': {
     'VALUE': 'warhammer',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'WHIP': {
     'VALUE': 'whip',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'BLOWGUN': {
     'VALUE': 'blowgun',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'HAND_CROSSBOW': {
     'VALUE': 'hand_crossbow',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'HEAVY_CROSSBOW': {
     'VALUE': 'heavy_crossbow',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'LONGBOW': {
     'VALUE': 'longbow',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'NET': {
     'VALUE': 'net',
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'ANY': {
     'VALUE': ANY,
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
   'ALL': {
     'VALUE': ALL,
-    'PATH': WEAPON_PATH
+    'PATH': PATH.WEAPONS
   },
 
   'CLASS': {
     'MELEE': {
       'VALUE': 'melee',
-      'PATH': WEAPON_CLASS_PATH
+      'PATH': PATH.WEAPON_CLASSES
     },
     'RANGED': {
       'VALUE': 'ranged',
-      'PATH': WEAPON_CLASS_PATH
+      'PATH': PATH.WEAPON_CLASSES
     }
   },
   'CATEGORY': {
     'SIMPLE': {
       'VALUE': 'simple',
-      'PATH': WEAPON_CATEGORY_PATH
+      'PATH': PATH.WEAPON_CATEGORIES
     },
     'MARTIAL': {
       'VALUE': 'martial',
-      'PATH': WEAPON_CATEGORY_PATH
+      'PATH': PATH.WEAPON_CATEGORIES
     }
   },
   'DAMAGE': {
@@ -772,46 +788,50 @@ const WEAPON = {
 }
 
 function getWeaponClasses() {
+  const value = PATH.WEAPONS;
+
   var melee = {};
-  melee[WEAPON.CLUB.VALUE] = true;
-  melee[WEAPON.DAGGER.VALUE] = true;
-  melee[WEAPON.GREATCLUB.VALUE] = true;
-  melee[WEAPON.HANDAXE.VALUE] = true;
-  melee[WEAPON.JAVELIN.VALUE] = true;
-  melee[WEAPON.LIGHT_HAMMER.VALUE] = true;
-  melee[WEAPON.MACE.VALUE] = true;
-  melee[WEAPON.QUARTERSTAFF.VALUE] = true;
-  melee[WEAPON.SICKLE.VALUE] = true;
-  melee[WEAPON.SPEAR.VALUE] = true;
-  melee[WEAPON.BATTLEAXE.VALUE] = true;
-  melee[WEAPON.FLAIL.VALUE] = true;
-  melee[WEAPON.GLAIVE.VALUE] = true;
-  melee[WEAPON.GREATAXE.VALUE] = true;
-  melee[WEAPON.GREATSWORD.VALUE] = true;
-  melee[WEAPON.HALBERD.VALUE] = true;
-  melee[WEAPON.LANCE.VALUE] = true;
-  melee[WEAPON.LONGSWORD.VALUE] = true;
-  melee[WEAPON.MAUL.VALUE] = true;
-  melee[WEAPON.MORNINGSTAR.VALUE] = true;
-  melee[WEAPON.PIKE.VALUE] = true;
-  melee[WEAPON.RAPIER.VALUE] = true;
-  melee[WEAPON.SCIMITAR.VALUE] = true;
-  melee[WEAPON.SHORTSWORD.VALUE] = true;
-  melee[WEAPON.TRIDENT.VALUE] = true;
-  melee[WEAPON.WAR_PICK.VALUE] = true;
-  melee[WEAPON.WARHAMMER.VALUE] = true;
-  melee[WEAPON.WHIP.VALUE] = true;
+  melee[NAME] = 'Melee weapons';
+  melee[WEAPON.CLUB.VALUE] = value;
+  melee[WEAPON.DAGGER.VALUE] = value;
+  melee[WEAPON.GREATCLUB.VALUE] = value;
+  melee[WEAPON.HANDAXE.VALUE] = value;
+  melee[WEAPON.JAVELIN.VALUE] = value;
+  melee[WEAPON.LIGHT_HAMMER.VALUE] = value;
+  melee[WEAPON.MACE.VALUE] = value;
+  melee[WEAPON.QUARTERSTAFF.VALUE] = value;
+  melee[WEAPON.SICKLE.VALUE] = value;
+  melee[WEAPON.SPEAR.VALUE] = value;
+  melee[WEAPON.BATTLEAXE.VALUE] = value;
+  melee[WEAPON.FLAIL.VALUE] = value;
+  melee[WEAPON.GLAIVE.VALUE] = value;
+  melee[WEAPON.GREATAXE.VALUE] = value;
+  melee[WEAPON.GREATSWORD.VALUE] = value;
+  melee[WEAPON.HALBERD.VALUE] = value;
+  melee[WEAPON.LANCE.VALUE] = value;
+  melee[WEAPON.LONGSWORD.VALUE] = value;
+  melee[WEAPON.MAUL.VALUE] = value;
+  melee[WEAPON.MORNINGSTAR.VALUE] = value;
+  melee[WEAPON.PIKE.VALUE] = value;
+  melee[WEAPON.RAPIER.VALUE] = value;
+  melee[WEAPON.SCIMITAR.VALUE] = value;
+  melee[WEAPON.SHORTSWORD.VALUE] = value;
+  melee[WEAPON.TRIDENT.VALUE] = value;
+  melee[WEAPON.WAR_PICK.VALUE] = value;
+  melee[WEAPON.WARHAMMER.VALUE] = value;
+  melee[WEAPON.WHIP.VALUE] = value;
 
   var ranged = {};
-  ranged[WEAPON.LIGHT_CROSSBOW.VALUE] = true;
-  ranged[WEAPON.DART.VALUE] = true;
-  ranged[WEAPON.SHORTBOW.VALUE] = true;
-  ranged[WEAPON.SLING.VALUE] = true;
-  ranged[WEAPON.BLOWGUN.VALUE] = true;
-  ranged[WEAPON.HAND_CROSSBOW.VALUE] = true;
-  ranged[WEAPON.HEAVY_CROSSBOW.VALUE] = true;
-  ranged[WEAPON.LONGBOW.VALUE] = true;
-  ranged[WEAPON.NET.VALUE] = true;
+  ranged[NAME] = 'Ranged weapons';
+  ranged[WEAPON.LIGHT_CROSSBOW.VALUE] = value;
+  ranged[WEAPON.DART.VALUE] = value;
+  ranged[WEAPON.SHORTBOW.VALUE] = value;
+  ranged[WEAPON.SLING.VALUE] = value;
+  ranged[WEAPON.BLOWGUN.VALUE] = value;
+  ranged[WEAPON.HAND_CROSSBOW.VALUE] = value;
+  ranged[WEAPON.HEAVY_CROSSBOW.VALUE] = value;
+  ranged[WEAPON.LONGBOW.VALUE] = value;
+  ranged[WEAPON.NET.VALUE] = value;
 
   var weaponClasses = {};
   weaponClasses[WEAPON.CLASS.MELEE.VALUE] = melee;
@@ -821,46 +841,50 @@ function getWeaponClasses() {
 }
 
 function getWeaponCategories() {
+  const value = PATH.WEAPONS;
+
   var simple = {};
-  simple[WEAPON.CLUB.VALUE] = true;
-  simple[WEAPON.DAGGER.VALUE] = true;
-  simple[WEAPON.GREATCLUB.VALUE] = true;
-  simple[WEAPON.HANDAXE.VALUE] = true;
-  simple[WEAPON.JAVELIN.VALUE] = true;
-  simple[WEAPON.LIGHT_HAMMER.VALUE] = true;
-  simple[WEAPON.MACE.VALUE] = true;
-  simple[WEAPON.QUARTERSTAFF.VALUE] = true;
-  simple[WEAPON.SICKLE.VALUE] = true;
-  simple[WEAPON.SPEAR.VALUE] = true;
-  simple[WEAPON.LIGHT_CROSSBOW.VALUE] = true;
-  simple[WEAPON.DART.VALUE] = true;
-  simple[WEAPON.SHORTBOW.VALUE] = true;
-  simple[WEAPON.SLING.VALUE] = true;
+  simple[NAME] = 'Simple weapons';
+  simple[WEAPON.CLUB.VALUE] = value;
+  simple[WEAPON.DAGGER.VALUE] = value;
+  simple[WEAPON.GREATCLUB.VALUE] = value;
+  simple[WEAPON.HANDAXE.VALUE] = value;
+  simple[WEAPON.JAVELIN.VALUE] = value;
+  simple[WEAPON.LIGHT_HAMMER.VALUE] = value;
+  simple[WEAPON.MACE.VALUE] = value;
+  simple[WEAPON.QUARTERSTAFF.VALUE] = value;
+  simple[WEAPON.SICKLE.VALUE] = value;
+  simple[WEAPON.SPEAR.VALUE] = value;
+  simple[WEAPON.LIGHT_CROSSBOW.VALUE] = value;
+  simple[WEAPON.DART.VALUE] = value;
+  simple[WEAPON.SHORTBOW.VALUE] = value;
+  simple[WEAPON.SLING.VALUE] = value;
 
   var martial = {};
-  martial[WEAPON.BATTLEAXE.VALUE] = true;
-  martial[WEAPON.FLAIL.VALUE] = true;
-  martial[WEAPON.GLAIVE.VALUE] = true;
-  martial[WEAPON.GREATAXE.VALUE] = true;
-  martial[WEAPON.GREATSWORD.VALUE] = true;
-  martial[WEAPON.HALBERD.VALUE] = true;
-  martial[WEAPON.LANCE.VALUE] = true;
-  martial[WEAPON.LONGSWORD.VALUE] = true;
-  martial[WEAPON.MAUL.VALUE] = true;
-  martial[WEAPON.MORNINGSTAR.VALUE] = true;
-  martial[WEAPON.PIKE.VALUE] = true;
-  martial[WEAPON.RAPIER.VALUE] = true;
-  martial[WEAPON.SCIMITAR.VALUE] = true;
-  martial[WEAPON.SHORTSWORD.VALUE] = true;
-  martial[WEAPON.TRIDENT.VALUE] = true;
-  martial[WEAPON.WAR_PICK.VALUE] = true;
-  martial[WEAPON.WARHAMMER.VALUE] = true;
-  martial[WEAPON.WHIP.VALUE] = true;
-  martial[WEAPON.BLOWGUN.VALUE] = true;
-  martial[WEAPON.HAND_CROSSBOW.VALUE] = true;
-  martial[WEAPON.HEAVY_CROSSBOW.VALUE] = true;
-  martial[WEAPON.LONGBOW.VALUE] = true;
-  martial[WEAPON.NET.VALUE] = true;
+  martial[NAME] = 'Martial weapons';
+  martial[WEAPON.BATTLEAXE.VALUE] = value;
+  martial[WEAPON.FLAIL.VALUE] = value;
+  martial[WEAPON.GLAIVE.VALUE] = value;
+  martial[WEAPON.GREATAXE.VALUE] = value;
+  martial[WEAPON.GREATSWORD.VALUE] = value;
+  martial[WEAPON.HALBERD.VALUE] = value;
+  martial[WEAPON.LANCE.VALUE] = value;
+  martial[WEAPON.LONGSWORD.VALUE] = value;
+  martial[WEAPON.MAUL.VALUE] = value;
+  martial[WEAPON.MORNINGSTAR.VALUE] = value;
+  martial[WEAPON.PIKE.VALUE] = value;
+  martial[WEAPON.RAPIER.VALUE] = value;
+  martial[WEAPON.SCIMITAR.VALUE] = value;
+  martial[WEAPON.SHORTSWORD.VALUE] = value;
+  martial[WEAPON.TRIDENT.VALUE] = value;
+  martial[WEAPON.WAR_PICK.VALUE] = value;
+  martial[WEAPON.WARHAMMER.VALUE] = value;
+  martial[WEAPON.WHIP.VALUE] = value;
+  martial[WEAPON.BLOWGUN.VALUE] = value;
+  martial[WEAPON.HAND_CROSSBOW.VALUE] = value;
+  martial[WEAPON.HEAVY_CROSSBOW.VALUE] = value;
+  martial[WEAPON.LONGBOW.VALUE] = value;
+  martial[WEAPON.NET.VALUE] = value;
 
   var weaponCategories = {};
   weaponCategories[WEAPON.CATEGORY.SIMPLE.VALUE] = simple;
@@ -877,13 +901,13 @@ function Weapon(id, name, classType, category, costGP, damage, weightLB, propert
 
   var weapon = {
     'id': id,
-    'name': name,
     'class': classType,
     'category': category,
     'costGP': costGP,
     'damage': damage,
     'weightLB': weightLB
   };
+  weapon[NAME] = name;
 
   if (properties !== null) {
     weapon['properties'] = properties;
@@ -946,14 +970,16 @@ function Range(id, normal, max) {
 
   var name = id[0].toUpperCase() + id.slice(1);
 
-  return {
+  var range = {
     'id': id,
-    'name': name,
     'range': {
       'normal':normal,
       'max':max
     }
   };
+  range[NAME] = name;
+
+  return range;
 }
 
 function getWeapons() {
@@ -1432,112 +1458,115 @@ function getWeapons() {
 * ARMOR
 *******/
 
-const ARMOR_PATH = 'armor';
-const ARMOR_TYPE_PATH = 'armor_type';
-
 const ARMOR = {
   'PADDED': {
     'VALUE': 'padded',
-    'PATH': ARMOR_PATH
+    'PATH': PATH.ARMOR
   },
   'LEATHER': {
     'VALUE': 'leather',
-    'PATH': ARMOR_PATH
+    'PATH': PATH.ARMOR
   },
   'STUDDED_LEATHER': {
     'VALUE': 'studded_leather',
-    'PATH': ARMOR_PATH
+    'PATH': PATH.ARMOR
   },
   'HIDE': {
     'VALUE': 'hide',
-    'PATH': ARMOR_PATH
+    'PATH': PATH.ARMOR
   },
   'CHAIN_SHIRT': {
     'VALUE': 'chain_shirt',
-    'PATH': ARMOR_PATH
+    'PATH': PATH.ARMOR
   },
   'SCALE_MAIL': {
     'VALUE': 'scale_mail',
-    'PATH': ARMOR_PATH
+    'PATH': PATH.ARMOR
   },
   'BREASTPLATE': {
     'VALUE': 'breastplate',
-    'PATH': ARMOR_PATH
+    'PATH': PATH.ARMOR
   },
   'HALF_PLATE': {
     'VALUE': 'half_plate',
-    'PATH': ARMOR_PATH
+    'PATH': PATH.ARMOR
   },
   'RING_MAIL': {
     'VALUE': 'ring_mail',
-    'PATH': ARMOR_PATH
+    'PATH': PATH.ARMOR
   },
   'CHAIN_MAIL': {
     'VALUE': 'chain_mail',
-    'PATH': ARMOR_PATH
+    'PATH': PATH.ARMOR
   },
   'SPLINT': {
     'VALUE': 'splint',
-    'PATH': ARMOR_PATH
+    'PATH': PATH.ARMOR
   },
   'PLATE': {
     'VALUE': 'plate',
-    'PATH': ARMOR_PATH
+    'PATH': PATH.ARMOR
   },
   'SHIELD': {
     'VALUE': 'shield',
-    'PATH': ARMOR_PATH
+    'PATH': PATH.ARMOR
   },
   'ANY': {
     'VALUE': ANY,
-    'PATH': ARMOR_PATH
+    'PATH': PATH.ARMOR
   },
   'ALL': {
     'VALUE': ALL,
-    'PATH': ARMOR_PATH
+    'PATH': PATH.ARMOR
   },
 
   'TYPE': {
     'LIGHT': {
       'VALUE': 'light',
-      'PATH': ARMOR_TYPE_PATH
+      'PATH': PATH.ARMOR_TYPES
     },
     'MEDIUM': {
       'VALUE': 'medium',
-      'PATH': ARMOR_TYPE_PATH
+      'PATH': PATH.ARMOR_TYPES
     },
     'HEAVY': {
       'VALUE': 'heavy',
-      'PATH': ARMOR_TYPE_PATH
+      'PATH': PATH.ARMOR_TYPES
     },
     'SHIELD': {
       'VALUE': 'shield',
-      'PATH': ARMOR_TYPE_PATH
+      'PATH': PATH.ARMOR_TYPES
     }
   }
 }
 
 function getArmorTypes() {
+  const value = PATH.ARMOR;
+
   var light = {};
-  light[ARMOR.PADDED.VALUE] = true;
-  light[ARMOR.LEATHER.VALUE] = true;
-  light[ARMOR.STUDDED_LEATHER.VALUE] = true;
+  light[NAME] = 'Light armor';
+  light[ARMOR.PADDED.VALUE] = value;
+  light[ARMOR.LEATHER.VALUE] = value;
+  light[ARMOR.STUDDED_LEATHER.VALUE] = value;
 
   var medium = {};
-  medium[ARMOR.HIDE.VALUE] = true;
-  medium[ARMOR.CHAIN_SHIRT.VALUE] = true;
-  medium[ARMOR.SCALE_MAIL.VALUE] = true;
-  medium[ARMOR.BREASTPLATE.VALUE] = true;
-  medium[ARMOR.HALF_PLATE.VALUE] = true;
+  medium[NAME] = 'Medium armor';
+  medium[ARMOR.HIDE.VALUE] = value;
+  medium[ARMOR.CHAIN_SHIRT.VALUE] = value;
+  medium[ARMOR.SCALE_MAIL.VALUE] = value;
+  medium[ARMOR.BREASTPLATE.VALUE] = value;
+  medium[ARMOR.HALF_PLATE.VALUE] = value;
 
   var heavy = {};
-  heavy[ARMOR.RING_MAIL.VALUE] = true;
-  heavy[ARMOR.CHAIN_MAIL.VALUE] = true;
-  heavy[ARMOR.SPLINT.VALUE] = true;
-  heavy[ARMOR.PLATE.VALUE] = true;
+  heavy[NAME] = 'Heavy armor';
+  heavy[ARMOR.RING_MAIL.VALUE] = value;
+  heavy[ARMOR.CHAIN_MAIL.VALUE] = value;
+  heavy[ARMOR.SPLINT.VALUE] = value;
+  heavy[ARMOR.PLATE.VALUE] = value;
 
   var shield = {};
-  shield[ARMOR.SHIELD.VALUE] = true;
+  shield[NAME] = 'Shields';
+  shield[ARMOR.SHIELD.VALUE] = value;
 
   var armorTypes = {};
   armorTypes[ARMOR.TYPE.LIGHT.VALUE] = light;
@@ -1554,9 +1583,8 @@ function Armor(id, name, type, costGP, baseAC, stealthDisAdv, weightLB, isModifi
     return null;
   }
 
-  return {
+  var armor = {
     'id': id,
-    'name': name,
     'type': type,
     'costGP': costGP,
     'baseAC': baseAC,
@@ -1566,13 +1594,16 @@ function Armor(id, name, type, costGP, baseAC, stealthDisAdv, weightLB, isModifi
     'hasMaxAC': hasMaxAC,
     'minSTR': minSTR
   };
+  armor[NAME] = name;
+
+  return armor;
 }
 
 function getArmor() {
   const armor = {
     'padded': Armor(
       pushID('padded'),
-      'Padded',
+      'Padded armor',
       ARMOR.TYPE.LIGHT.VALUE,
       5,
       11,
@@ -1582,7 +1613,7 @@ function getArmor() {
     ),
     'leather': Armor(
       pushID('leather'),
-      'Leather',
+      'Leather armor',
       ARMOR.TYPE.LIGHT.VALUE,
       10,
       11,
@@ -1592,7 +1623,7 @@ function getArmor() {
     ),
     'studded_leather': Armor(
       pushID('studded_leather'),
-      'Studded leather',
+      'Studded leather armor',
       ARMOR.TYPE.LIGHT.VALUE,
       45,
       12,
@@ -1602,7 +1633,7 @@ function getArmor() {
     ),
     'hide': Armor(
       pushID('hide'),
-      'Hide',
+      'Hide armor',
       ARMOR.TYPE.MEDIUM.VALUE,
       10,
       12,
@@ -1613,7 +1644,7 @@ function getArmor() {
     ),
     'chain_shirt': Armor(
       pushID('chain_shirt'),
-      'Chain shirt',
+      'Chain shirt armor',
       ARMOR.TYPE.MEDIUM.VALUE,
       50,
       13,
@@ -1624,7 +1655,7 @@ function getArmor() {
     ),
     'scale_mail': Armor(
       pushID('scale_mail'),
-      'Scale mail',
+      'Scale mail armor',
       ARMOR.TYPE.MEDIUM.VALUE,
       50,
       14,
@@ -1635,7 +1666,7 @@ function getArmor() {
     ),
     'breastplate': Armor(
       pushID('breastplate'),
-      'Breastplate',
+      'Breastplate armor',
       ARMOR.TYPE.MEDIUM.VALUE,
       400,
       14,
@@ -1646,7 +1677,7 @@ function getArmor() {
     ),
     'half_plate': Armor(
       pushID('half_plate'),
-      'Half plate',
+      'Half plate armor',
       ARMOR.TYPE.MEDIUM.VALUE,
       750,
       15,
@@ -1657,7 +1688,7 @@ function getArmor() {
     ),
     'ring_mail': Armor(
       pushID('ring_mail'),
-      'Ring mail',
+      'Ring mail armor',
       ARMOR.TYPE.HEAVY.VALUE,
       30,
       14,
@@ -1666,7 +1697,7 @@ function getArmor() {
     ),
     'chain_mail': Armor(
       pushID('chain_mail'),
-      'Chain mail',
+      'Chain mail armor',
       ARMOR.TYPE.HEAVY.VALUE,
       75,
       16,
@@ -1678,7 +1709,7 @@ function getArmor() {
     ),
     'splint': Armor(
       pushID('splint'),
-      'Splint',
+      'Splint armor',
       ARMOR.TYPE.HEAVY.VALUE,
       200,
       17,
@@ -1690,7 +1721,7 @@ function getArmor() {
     ),
     'plate': Armor(
       pushID('plate'),
-      'Plate',
+      'Plate armor',
       ARMOR.TYPE.HEAVY.VALUE,
       1500,
       18,
@@ -1718,216 +1749,218 @@ function getArmor() {
 * TOOLS
 *******/
 
-const TOOL_PATH = 'tools';
-const TOOL_CATEGORY_PATH = 'tool_categories';
-
 const TOOL = {
   'ALCHEMISTS_SUPPLIES': {
     'VALUE': 'alchemists_supplies',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'BREWERS_SUPPLIES': {
     'VALUE': 'brewers_supplies',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'CALLIGRAPHERS_SUPPLIES': {
     'VALUE': 'calligraphers_supplies',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'CARPENTERS_TOOLS': {
     'VALUE': 'carpenters_tools',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'CARTOGRAPHERS_TOOLS': {
     'VALUE': 'cartographers_tools',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'COBBLERS_TOOLS': {
     'VALUE': 'cobblers_tools',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'COOKS_UTENSILS': {
     'VALUE': 'cooks_utensils',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'GLASSBLOWERS_TOOLS': {
     'VALUE': 'glassblowers_tools',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'JEWELERS_TOOLS': {
     'VALUE': 'jewelers_tools',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'LEATHERWORKERS_TOOLS': {
     'VALUE': 'leatherworkers_tools',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'MASONS_TOOLS': {
     'VALUE': 'masons_tools',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'PAINTERS_SUPPLIES': {
     'VALUE': 'painters_supplies',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'POTTERS_TOOLS': {
     'VALUE': 'potters_tools',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'SMITHS_TOOLS': {
     'VALUE': 'smiths_tools',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'TINKERS_TOOLS': {
     'VALUE': 'tinkers_tools',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'WEAVERS_TOOLS': {
     'VALUE': 'weavers_tools',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'WOODCARVERS_TOOLS': {
     'VALUE': 'woodcarvers_tools',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'DISGUISE_KIT': {
     'VALUE': 'disguise_kit',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'FORGERY_KIT': {
     'VALUE': 'forgery_kit',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'DICE_SET': {
     'VALUE': 'dice_set',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'DRAGONCHESS_SET': {
     'VALUE': 'dragonchess_set',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'PLAYING_CARD_SET': {
     'VALUE': 'playing_card_set',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'THREE_DRAGON_ANTE_SET': {
     'VALUE': 'three_dragon_ante_set',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'HERBALISM_KIT': {
     'VALUE': 'herbalism_kit',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'BAGPIPES': {
     'VALUE': 'bagpipes',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'DRUM': {
     'VALUE': 'drum',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'DULCIMER': {
     'VALUE': 'dulcimer',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'FLUTE': {
     'VALUE': 'flute',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'LUTE': {
     'VALUE': 'lute',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'LYRE': {
     'VALUE': 'lyre',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'HORN': {
     'VALUE': 'horn',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'PAN_FLUTE': {
     'VALUE': 'pan_flute',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'SHAWM': {
     'VALUE': 'shawm',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'VIOL': {
     'VALUE': 'viol',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'NAVIGATORS_TOOLS': {
     'VALUE': 'navigators_tools',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'POISONERS_KIT': {
     'VALUE': 'poisoners_kit',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'THIEVES_TOOLS': {
     'VALUE': 'thieves_tools',
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
   'ANY': {
     'VALUE': ANY,
-    'PATH': TOOL_PATH
+    'PATH': PATH.TOOLS
   },
 
   'CATEGORY': {
     'ARTISAN': {
       'VALUE': 'artisan',
-      'PATH': TOOL_CATEGORY_PATH
+      'PATH': PATH.TOOL_CATEGORIES
     },
     'GAMING_SET': {
       'VALUE': 'gaming_set',
-      'PATH': TOOL_CATEGORY_PATH
+      'PATH': PATH.TOOL_CATEGORIES
     },
     'MUSICAL_INSTRUMENT': {
       'VALUE': 'musical_instrument',
-      'PATH': TOOL_CATEGORY_PATH
+      'PATH': PATH.TOOL_CATEGORIES
     }
   }
 };
 
 function getToolCategories() {
+  const value = PATH.TOOLS;
+
   var artisan = {};
-  artisan[TOOL.ALCHEMISTS_SUPPLIES.VALUE] = true;
-  artisan[TOOL.BREWERS_SUPPLIES.VALUE] = true;
-  artisan[TOOL.CALLIGRAPHERS_SUPPLIES.VALUE] = true;
-  artisan[TOOL.CARPENTERS_TOOLS.VALUE] = true;
-  artisan[TOOL.CARTOGRAPHERS_TOOLS.VALUE] = true;
-  artisan[TOOL.COBBLERS_TOOLS.VALUE] = true;
-  artisan[TOOL.COOKS_UTENSILS.VALUE] = true;
-  artisan[TOOL.GLASSBLOWERS_TOOLS.VALUE] = true;
-  artisan[TOOL.JEWELERS_TOOLS.VALUE] = true;
-  artisan[TOOL.LEATHERWORKERS_TOOLS.VALUE] = true;
-  artisan[TOOL.MASONS_TOOLS.VALUE] = true;
-  artisan[TOOL.PAINTERS_SUPPLIES.VALUE] = true;
-  artisan[TOOL.POTTERS_TOOLS.VALUE] = true;
-  artisan[TOOL.SMITHS_TOOLS.VALUE] = true;
-  artisan[TOOL.TINKERS_TOOLS.VALUE] = true;
-  artisan[TOOL.WEAVERS_TOOLS.VALUE] = true;
-  artisan[TOOL.WOODCARVERS_TOOLS.VALUE] = true;
+  artisan[NAME] = 'Artisan\'s tools';
+  artisan[TOOL.ALCHEMISTS_SUPPLIES.VALUE] = value;
+  artisan[TOOL.BREWERS_SUPPLIES.VALUE] = value;
+  artisan[TOOL.CALLIGRAPHERS_SUPPLIES.VALUE] = value;
+  artisan[TOOL.CARPENTERS_TOOLS.VALUE] = value;
+  artisan[TOOL.CARTOGRAPHERS_TOOLS.VALUE] = value;
+  artisan[TOOL.COBBLERS_TOOLS.VALUE] = value;
+  artisan[TOOL.COOKS_UTENSILS.VALUE] = value;
+  artisan[TOOL.GLASSBLOWERS_TOOLS.VALUE] = value;
+  artisan[TOOL.JEWELERS_TOOLS.VALUE] = value;
+  artisan[TOOL.LEATHERWORKERS_TOOLS.VALUE] = value;
+  artisan[TOOL.MASONS_TOOLS.VALUE] = value;
+  artisan[TOOL.PAINTERS_SUPPLIES.VALUE] = value;
+  artisan[TOOL.POTTERS_TOOLS.VALUE] = value;
+  artisan[TOOL.SMITHS_TOOLS.VALUE] = value;
+  artisan[TOOL.TINKERS_TOOLS.VALUE] = value;
+  artisan[TOOL.WEAVERS_TOOLS.VALUE] = value;
+  artisan[TOOL.WOODCARVERS_TOOLS.VALUE] = value;
 
   var gaming_set = {};
-  gaming_set[TOOL.DICE_SET.VALUE] = true;
-  gaming_set[TOOL.DRAGONCHESS_SET.VALUE] = true;
-  gaming_set[TOOL.PLAYING_CARD_SET.VALUE] = true;
-  gaming_set[TOOL.THREE_DRAGON_ANTE_SET.VALUE] = true;
+  gaming_set[NAME] = 'Gaming sets';
+  gaming_set[TOOL.DICE_SET.VALUE] = value;
+  gaming_set[TOOL.DRAGONCHESS_SET.VALUE] = value;
+  gaming_set[TOOL.PLAYING_CARD_SET.VALUE] = value;
+  gaming_set[TOOL.THREE_DRAGON_ANTE_SET.VALUE] = value;
 
   var musical_instrument = {};
-  musical_instrument[TOOL.BAGPIPES.VALUE] = true;
-  musical_instrument[TOOL.DRUM.VALUE] = true;
-  musical_instrument[TOOL.DULCIMER.VALUE] = true;
-  musical_instrument[TOOL.FLUTE.VALUE] = true;
-  musical_instrument[TOOL.LUTE.VALUE] = true;
-  musical_instrument[TOOL.LYRE.VALUE] = true;
-  musical_instrument[TOOL.HORN.VALUE] = true;
-  musical_instrument[TOOL.PAN_FLUTE.VALUE] = true;
-  musical_instrument[TOOL.SHAWM.VALUE] = true;
-  musical_instrument[TOOL.VIOL.VALUE] = true;
+  musical_instrument[NAME] = 'Musical instruments';
+  musical_instrument[TOOL.BAGPIPES.VALUE] = value;
+  musical_instrument[TOOL.DRUM.VALUE] = value;
+  musical_instrument[TOOL.DULCIMER.VALUE] = value;
+  musical_instrument[TOOL.FLUTE.VALUE] = value;
+  musical_instrument[TOOL.LUTE.VALUE] = value;
+  musical_instrument[TOOL.LYRE.VALUE] = value;
+  musical_instrument[TOOL.HORN.VALUE] = value;
+  musical_instrument[TOOL.PAN_FLUTE.VALUE] = value;
+  musical_instrument[TOOL.SHAWM.VALUE] = value;
+  musical_instrument[TOOL.VIOL.VALUE] = value;
 
   var toolCategories = {};
   toolCategories[TOOL.CATEGORY.ARTISAN.VALUE] = artisan;
@@ -1945,10 +1978,10 @@ function Tool(id, name, costGP, weightLB, category=null) {
 
   var tool = {
     'id': id,
-    'name': name,
     'costGP': costGP,
     'weightLB': weightLB
   };
+  tool[NAME] = name;
 
   if (category !== null) {
     tool['category'] = category;
@@ -2221,55 +2254,122 @@ function getTools() {
 * GEAR
 ******/
 
-const PACK_PATH = 'packs';
-
 const PACK = {
   'DIPLOMAT': {
     'VALUE': 'diplomat',
-    'PATH': PACK_PATH
+    'PATH': PATH.PACKS
   },
   'ENTERTAINER': {
     'VALUE': 'entertainer',
-    'PATH': PACK_PATH
+    'PATH': PATH.PACKS
   },
   'EXPLORER': {
     'VALUE': 'explorer',
-    'PATH': PACK_PATH
+    'PATH': PATH.PACKS
   },
   'ANY': {
     'VALUE': ANY,
-    'PATH': PACK_PATH
+    'PATH': PATH.PACKS
   }
 };
 
-const GEAR_PATH = 'gear';
-
-// GEAR does not have VALUE or PATH
 const GEAR = {
-  'BACKPACK': 'backpack',
-  'WATERSKIN': 'waterskin',
-  'BEDROLL': 'bedroll',
-  'MESS_KIT': 'mess_kit',
-  'TINDERBOX': 'tinderbox',
-  'TORCH': 'torch',
-  'RATIONS': 'rations',
-  'HEMPEN_ROPE': 'hempen_rope',
-  'CHEST': 'chest',
-  'CASE_MAP_SCROLL': 'case_map_scroll',
-  'CLOTHES_FINE': 'clothes_fine',
-  'CLOTHES_COSTUME': 'clothes_costume',
-  'INK_BOTTLE_EMPTY': 'ink_bottle_empty',
-  'INK_BOTTLE': 'ink_bottle',
-  'INK_PEN': 'ink_pen',
-  'LAMP': 'lamp',
-  'FLASK_EMPTY': 'flask_empty',
-  'FLASK_OIL': 'flask_oil',
-  'PAPER': 'paper',
-  'VIAL_EMPTY': 'vial_empty',
-  'VIAL_PERFUME': 'vial_perfume',
-  'SEALING_WAX': 'sealing_wax',
-  'CANDLE': 'candle',
-  'SOAP': 'soap'
+  'BACKPACK': {
+    'VALUE': 'backpack',
+    'PATH': PATH.GEAR
+  },
+  'WATERSKIN': {
+    'VALUE': 'waterskin',
+    'PATH': PATH.GEAR
+  },
+  'BEDROLL': {
+    'VALUE': 'bedroll',
+    'PATH': PATH.GEAR
+  },
+  'MESS_KIT': {
+    'VALUE': 'mess_kit',
+    'PATH': PATH.GEAR
+  },
+  'TINDERBOX': {
+    'VALUE': 'tinderbox',
+    'PATH': PATH.GEAR
+  },
+  'TORCH': {
+    'VALUE': 'torch',
+    'PATH': PATH.GEAR
+  },
+  'RATIONS': {
+    'VALUE': 'rations',
+    'PATH': PATH.GEAR
+  },
+  'HEMPEN_ROPE': {
+    'VALUE': 'hempen_rope',
+    'PATH': PATH.GEAR
+  },
+  'CHEST': {
+    'VALUE': 'chest',
+    'PATH': PATH.GEAR
+  },
+  'CASE_MAP_SCROLL': {
+    'VALUE': 'case_map_scroll',
+    'PATH': PATH.GEAR
+  },
+  'CLOTHES_FINE': {
+    'VALUE': 'clothes_fine',
+    'PATH': PATH.GEAR
+  },
+  'CLOTHES_COSTUME': {
+    'VALUE': 'clothes_costume',
+    'PATH': PATH.GEAR
+  },
+  'INK_BOTTLE_EMPTY': {
+    'VALUE': 'ink_bottle_empty',
+    'PATH': PATH.GEAR
+  },
+  'INK_BOTTLE': {
+    'VALUE': 'ink_bottle',
+    'PATH': PATH.GEAR
+  },
+  'INK_PEN': {
+    'VALUE': 'ink_pen',
+    'PATH': PATH.GEAR
+  },
+  'LAMP': {
+    'VALUE': 'lamp',
+    'PATH': PATH.GEAR
+  },
+  'FLASK_EMPTY': {
+    'VALUE': 'flask_empty',
+    'PATH': PATH.GEAR
+  },
+  'FLASK_OIL': {
+    'VALUE': 'flask_oil',
+    'PATH': PATH.GEAR
+  },
+  'PAPER': {
+    'VALUE': 'paper',
+    'PATH': PATH.GEAR
+  },
+  'VIAL_EMPTY': {
+    'VALUE': 'vial_empty',
+    'PATH': PATH.GEAR
+  },
+  'VIAL_PERFUME': {
+    'VALUE': 'vial_perfume',
+    'PATH': PATH.GEAR
+  },
+  'SEALING_WAX': {
+    'VALUE': 'sealing_wax',
+    'PATH': PATH.GEAR
+  },
+  'CANDLE': {
+    'VALUE': 'candle',
+    'PATH': PATH.GEAR
+  },
+  'SOAP': {
+    'VALUE': 'soap',
+    'PATH': PATH.GEAR
+  }
 };
 
 function Pack(id, name, costGP, contentsList) {
@@ -2280,9 +2380,9 @@ function Pack(id, name, costGP, contentsList) {
 
   var pack = {
     'id': id,
-    'name': name,
     'costGP': costGP
   };
+  pack[NAME] = name;
 
   var contents = {};
   for (content of contentsList) {
@@ -2313,14 +2413,14 @@ function getPacks() {
     'Explorer\'s pack',
     10,
     [
-      Content(1, GEAR.BACKPACK),
-      Content(1, GEAR.BEDROLL),
-      Content(1, GEAR.MESS_KIT),
-      Content(1, GEAR.TINDERBOX),
-      Content(10, GEAR.TORCH),
-      Content(10, GEAR.RATIONS),
-      Content(1, GEAR.WATERSKIN),
-      Content(1, GEAR.HEMPEN_ROPE)
+      Content(1, GEAR.BACKPACK.VALUE),
+      Content(1, GEAR.BEDROLL.VALUE),
+      Content(1, GEAR.MESS_KIT.VALUE),
+      Content(1, GEAR.TINDERBOX.VALUE),
+      Content(10, GEAR.TORCH.VALUE),
+      Content(10, GEAR.RATIONS.VALUE),
+      Content(1, GEAR.WATERSKIN.VALUE),
+      Content(1, GEAR.HEMPEN_ROPE.VALUE)
     ]
   );
 
@@ -2329,17 +2429,17 @@ function getPacks() {
     'Diplomat\'s pack',
     39,
     [
-      Content(1, GEAR.CHEST),
-      Content(2, GEAR.CASE_MAP_SCROLL),
-      Content(1, GEAR.CLOTHES_FINE),
-      Content(1, GEAR.INK_BOTTLE),
-      Content(1, GEAR.INK_PEN),
-      Content(1, GEAR.LAMP),
-      Content(2, GEAR.FLASK_OIL),
-      Content(5, GEAR.PAPER),
-      Content(1, GEAR.VIAL_PERFUME),
-      Content(1, GEAR.SEALING_WAX),
-      Content(1, GEAR.SOAP)
+      Content(1, GEAR.CHEST.VALUE),
+      Content(2, GEAR.CASE_MAP_SCROLL.VALUE),
+      Content(1, GEAR.CLOTHES_FINE.VALUE),
+      Content(1, GEAR.INK_BOTTLE.VALUE),
+      Content(1, GEAR.INK_PEN.VALUE),
+      Content(1, GEAR.LAMP.VALUE),
+      Content(2, GEAR.FLASK_OIL.VALUE),
+      Content(5, GEAR.PAPER.VALUE),
+      Content(1, GEAR.VIAL_PERFUME.VALUE),
+      Content(1, GEAR.SEALING_WAX.VALUE),
+      Content(1, GEAR.SOAP.VALUE)
     ]
   );
 
@@ -2348,12 +2448,12 @@ function getPacks() {
     'Entertainer\'s pack',
     40,
     [
-      Content(1, GEAR.BACKPACK),
-      Content(1, GEAR.BEDROLL),
-      Content(2, GEAR.CLOTHES_COSTUME),
-      Content(5, GEAR.CANDLE),
-      Content(5, GEAR.RATIONS),
-      Content(1, GEAR.WATERSKIN),
+      Content(1, GEAR.BACKPACK.VALUE),
+      Content(1, GEAR.BEDROLL.VALUE),
+      Content(2, GEAR.CLOTHES_COSTUME.VALUE),
+      Content(5, GEAR.CANDLE.VALUE),
+      Content(5, GEAR.RATIONS.VALUE),
+      Content(1, GEAR.WATERSKIN.VALUE),
       Content(1, TOOL.DISGUISE_KIT.VALUE)
     ]
   );
@@ -2369,10 +2469,10 @@ function Gear(id, name, costGP, weightLB, container=null, packs=null) {
 
   var gear = {
     'id': id,
-    'name': name,
     'costGP': costGP,
     'weightLB': weightLB
   };
+  gear[NAME] = name;
 
   if (container !== null) {
     for (key of Object.keys(container)) {
@@ -2396,7 +2496,7 @@ function PackList(list) {
   var packs = {};
 
   for (l of list) {
-    packs[l] = true;
+    packs[l] = PATH.PACKS;
   }
 
   return packs;
@@ -2449,8 +2549,8 @@ function Container(volume, volumeUnit, weightLimit=null, weightUnit=null, isFull
 function getGear(id, name) {
   var gear = {};
 
-  gear[GEAR.BACKPACK] = Gear(
-    pushID(GEAR.BACKPACK),
+  gear[GEAR.BACKPACK.VALUE] = Gear(
+    pushID(GEAR.BACKPACK.VALUE),
     'Backpack',
     2,
     5,
@@ -2461,8 +2561,8 @@ function getGear(id, name) {
     ])
   );
 
-  gear[GEAR.WATERSKIN] = Gear(
-    pushID(GEAR.WATERSKIN),
+  gear[GEAR.WATERSKIN.VALUE] = Gear(
+    pushID(GEAR.WATERSKIN.VALUE),
     'Waterskin',
     0.2,
     5,
@@ -2473,8 +2573,8 @@ function getGear(id, name) {
     ])
   );
 
-  gear[GEAR.BEDROLL] = Gear(
-    pushID(GEAR.BEDROLL),
+  gear[GEAR.BEDROLL.VALUE] = Gear(
+    pushID(GEAR.BEDROLL.VALUE),
     'Bedroll',
     1,
     7,
@@ -2484,8 +2584,8 @@ function getGear(id, name) {
     ])
   );
 
-  gear[GEAR.MESS_KIT] = Gear(
-    pushID(GEAR.MESS_KIT),
+  gear[GEAR.MESS_KIT.VALUE] = Gear(
+    pushID(GEAR.MESS_KIT.VALUE),
     'Mess kit',
     0.2,
     1,
@@ -2494,8 +2594,8 @@ function getGear(id, name) {
     ])
   );
 
-  gear[GEAR.TINDERBOX] = Gear(
-    pushID(GEAR.TINDERBOX),
+  gear[GEAR.TINDERBOX.VALUE] = Gear(
+    pushID(GEAR.TINDERBOX.VALUE),
     'Tinderbox',
     0.5,
     1,
@@ -2504,8 +2604,8 @@ function getGear(id, name) {
     ])
   );
 
-  gear[GEAR.TORCH] = Gear(
-    pushID(GEAR.TORCH),
+  gear[GEAR.TORCH.VALUE] = Gear(
+    pushID(GEAR.TORCH.VALUE),
     'Torch',
     0.01,
     1,
@@ -2514,8 +2614,8 @@ function getGear(id, name) {
     ])
   );
 
-  gear[GEAR.RATIONS] = Gear(
-    pushID(GEAR.RATIONS),
+  gear[GEAR.RATIONS.VALUE] = Gear(
+    pushID(GEAR.RATIONS.VALUE),
     'Rations (1 day)',
     0.5,
     2,
@@ -2525,8 +2625,8 @@ function getGear(id, name) {
     ])
   );
 
-  gear[GEAR.HEMPEN_ROPE] = Gear(
-    pushID(GEAR.HEMPEN_ROPE),
+  gear[GEAR.HEMPEN_ROPE.VALUE] = Gear(
+    pushID(GEAR.HEMPEN_ROPE.VALUE),
     'Rope, hempen (50 feet)',
     1,
     10,
@@ -2535,8 +2635,8 @@ function getGear(id, name) {
     ])
   );
 
-  gear[GEAR.CHEST] = Gear(
-    pushID(GEAR.CHEST),
+  gear[GEAR.CHEST.VALUE] = Gear(
+    pushID(GEAR.CHEST.VALUE),
     'Chest',
     5,
     25,
@@ -2546,8 +2646,8 @@ function getGear(id, name) {
     ])
   );
 
-  gear[GEAR.CASE_MAP_SCROLL] = Gear(
-    pushID(GEAR.CASE_MAP_SCROLL),
+  gear[GEAR.CASE_MAP_SCROLL.VALUE] = Gear(
+    pushID(GEAR.CASE_MAP_SCROLL.VALUE),
     'Case, map or scroll',
     1,
     1,
@@ -2557,8 +2657,8 @@ function getGear(id, name) {
     ])
   );
 
-  gear[GEAR.CLOTHES_FINE] = Gear(
-    pushID(GEAR.CLOTHES_FINE),
+  gear[GEAR.CLOTHES_FINE.VALUE] = Gear(
+    pushID(GEAR.CLOTHES_FINE.VALUE),
     'Clothes, fine',
     15,
     6,
@@ -2567,8 +2667,8 @@ function getGear(id, name) {
     ])
   );
 
-  gear[GEAR.CLOTHES_COSTUME] = Gear(
-    pushID(GEAR.CLOTHES_COSTUME),
+  gear[GEAR.CLOTHES_COSTUME.VALUE] = Gear(
+    pushID(GEAR.CLOTHES_COSTUME.VALUE),
     'Clothes, costume',
     5,
     4,
@@ -2577,16 +2677,16 @@ function getGear(id, name) {
     ])
   );
 
-  gear[GEAR.INK_BOTTLE_EMPTY] = Gear(
-    pushID(GEAR.INK_BOTTLE_EMPTY),
+  gear[GEAR.INK_BOTTLE_EMPTY.VALUE] = Gear(
+    pushID(GEAR.INK_BOTTLE_EMPTY.VALUE),
     'Ink (1 ounce bottle)',
     10,
     0,
     Container(1, UNIT.VOLUME.OUNCE)
   );
 
-  gear[GEAR.INK_BOTTLE] = Gear(
-    pushID(GEAR.INK_BOTTLE),
+  gear[GEAR.INK_BOTTLE.VALUE] = Gear(
+    pushID(GEAR.INK_BOTTLE.VALUE),
     'Ink (1 ounce bottle)',
     10,
     0,
@@ -2596,8 +2696,8 @@ function getGear(id, name) {
     ])
   );
 
-  gear[GEAR.INK_PEN] = Gear(
-    pushID(GEAR.INK_PEN),
+  gear[GEAR.INK_PEN.VALUE] = Gear(
+    pushID(GEAR.INK_PEN.VALUE),
     'Ink pen',
     0.02,
     0,
@@ -2606,8 +2706,8 @@ function getGear(id, name) {
     ])
   );
 
-  gear[GEAR.LAMP] = Gear(
-    pushID(GEAR.LAMP),
+  gear[GEAR.LAMP.VALUE] = Gear(
+    pushID(GEAR.LAMP.VALUE),
     'Lamp',
     0.5,
     1,
@@ -2616,16 +2716,16 @@ function getGear(id, name) {
     ])
   );
 
-  gear[GEAR.FLASK_EMPTY] = Gear(
-    pushID(GEAR.FLASK_EMPTY),
+  gear[GEAR.FLASK_EMPTY.VALUE] = Gear(
+    pushID(GEAR.FLASK_EMPTY.VALUE),
     'Flask',
     0.02,
     1,
     Container(1.5, UNIT.VOLUME.PINT)
   );
 
-  gear[GEAR.FLASK_OIL] = Gear(
-    pushID(GEAR.FLASK_OIL),
+  gear[GEAR.FLASK_OIL.VALUE] = Gear(
+    pushID(GEAR.FLASK_OIL.VALUE),
     'Flask',
     0.1,
     1,
@@ -2635,8 +2735,8 @@ function getGear(id, name) {
     ])
   );
 
-  gear[GEAR.PAPER] = Gear(
-    pushID(GEAR.PAPER),
+  gear[GEAR.PAPER.VALUE] = Gear(
+    pushID(GEAR.PAPER.VALUE),
     'Paper (one sheet)',
     0.2,
     0,
@@ -2645,16 +2745,16 @@ function getGear(id, name) {
     ])
   );
 
-  gear[GEAR.VIAL_EMPTY] = Gear(
-    pushID(GEAR.VIAL_EMPTY),
+  gear[GEAR.VIAL_EMPTY.VALUE] = Gear(
+    pushID(GEAR.VIAL_EMPTY.VALUE),
     'Vial',
     1,
     0,
     Container(4, UNIT.VOLUME.OUNCE)
   );
 
-  gear[GEAR.VIAL_PERFUME] = Gear(
-    pushID(GEAR.VIAL_PERFUME),
+  gear[GEAR.VIAL_PERFUME.VALUE] = Gear(
+    pushID(GEAR.VIAL_PERFUME.VALUE),
     'Vial',
     5,
     0,
@@ -2664,8 +2764,8 @@ function getGear(id, name) {
     ])
   );
 
-  gear[GEAR.SEALING_WAX] = Gear(
-    pushID(GEAR.SEALING_WAX),
+  gear[GEAR.SEALING_WAX.VALUE] = Gear(
+    pushID(GEAR.SEALING_WAX.VALUE),
     'Sealing wax',
     0.5,
     0,
@@ -2674,8 +2774,8 @@ function getGear(id, name) {
     ])
   );
 
-  gear[GEAR.CANDLE] = Gear(
-    pushID(GEAR.CANDLE),
+  gear[GEAR.CANDLE.VALUE] = Gear(
+    pushID(GEAR.CANDLE.VALUE),
     'Candle',
     0.01,
     0,
@@ -2684,7 +2784,7 @@ function getGear(id, name) {
     ])
   );
 
-  gear[GEAR.SOAP] = Gear(
+  gear[GEAR.SOAP.VALUE] = Gear(
     pushID(GEAR.SOAP),
     'Soap',
     0.02,
@@ -2701,27 +2801,79 @@ function getGear(id, name) {
 * TRAITS
 ********/
 
-const TRAIT_PATH = 'traits';
-// TRAIT does not have VALUE or PATH
 const TRAIT = {
-  'DARKVISION': 'darkvision',
-  'DWARVEN_RESILIENCE': 'dwarven_resilience',
-  'DWARVEN_COMBAT_TRAINING': 'dwarven_combat_training',
-  'STONECUNNING': 'stonecunning',
-  'DWARVEN_TOUGHNESS': 'dwarven_toughness',
-  'DWARVEN_ARMOR_TRAINING': 'dwarven_armor_training',
-  'KEEN_SENSES': 'keen_senses',
-  'FEY_ANCESTRY': 'fey_ancestry',
-  'TRANCE': 'trance',
-  'ELF_WEAPON_TRAINING': 'elf_weapon_training',
-  'CANTRIP': 'cantrip',
-  'EXTRA_LANGUAGE': 'extra_language',
-  'FLEET_OF_FOOT': 'fleet_of_foot',
-  'MASK_OF_THE_WILD': 'mask_of_the_wild',
-  'SUPERIOR_DARKVISION': 'superior_darkvision',
-  'SUNLIGHT_SENSITIVITY': 'sunlight_sensitivity',
-  'DROW_MAGIC': 'drow_magic',
-  'DROW_WEAPON_TRAINING': 'drow_weapon_training'
+  'DARKVISION': {
+    'VALUE': 'darkvision',
+    'PATH': PATH.TRAIT
+  },
+  'DWARVEN_RESILIENCE': {
+    'VALUE': 'dwarven_resilience',
+    'PATH': PATH.TRAIT
+  },
+  'DWARVEN_COMBAT_TRAINING': {
+    'VALUE': 'dwarven_combat_training',
+    'PATH': PATH.TRAIT
+  },
+  'STONECUNNING': {
+    'VALUE': 'stonecunning',
+    'PATH': PATH.TRAIT
+  },
+  'DWARVEN_TOUGHNESS': {
+    'VALUE': 'dwarven_toughness',
+    'PATH': PATH.TRAIT
+  },
+  'DWARVEN_ARMOR_TRAINING': {
+    'VALUE': 'dwarven_armor_training',
+    'PATH': PATH.TRAIT
+  },
+  'KEEN_SENSES': {
+    'VALUE': 'keen_senses',
+    'PATH': PATH.TRAIT
+  },
+  'FEY_ANCESTRY': {
+    'VALUE': 'fey_ancestry',
+    'PATH': PATH.TRAIT
+  },
+  'TRANCE': {
+    'VALUE': 'trance',
+    'PATH': PATH.TRAIT
+  },
+  'ELF_WEAPON_TRAINING': {
+    'VALUE': 'elf_weapon_training',
+    'PATH': PATH.TRAIT
+  },
+  'CANTRIP': {
+    'VALUE': 'cantrip',
+    'PATH': PATH.TRAIT
+  },
+  'EXTRA_LANGUAGE': {
+    'VALUE': 'extra_language',
+    'PATH': PATH.TRAIT
+  },
+  'FLEET_OF_FOOT': {
+    'VALUE': 'fleet_of_foot',
+    'PATH': PATH.TRAIT
+  },
+  'MASK_OF_THE_WILD': {
+    'VALUE': 'mask_of_the_wild',
+    'PATH': PATH.TRAIT
+  },
+  'SUPERIOR_DARKVISION': {
+    'VALUE': 'superior_darkvision',
+    'PATH': PATH.TRAIT
+  },
+  'SUNLIGHT_SENSITIVITY': {
+    'VALUE': 'sunlight_sensitivity',
+    'PATH': PATH.TRAIT
+  },
+  'DROW_MAGIC': {
+    'VALUE': 'drow_magic',
+    'PATH': PATH.TRAIT
+  },
+  'DROW_WEAPON_TRAINING': {
+    'VALUE': 'drow_weapon_training',
+    'PATH': PATH.TRAIT
+  }
 };
 
 function Trait(id, name, desc) {
@@ -2730,120 +2882,122 @@ function Trait(id, name, desc) {
     return null;
   }
 
-  return {
+  var trait = {
     'id': id,
-    'name': name,
     'desc': desc
   };
+  trait[NAME] = name;
+
+  return trait;
 }
 
 function getTraits() {
   const traits = {};
 
-  traits[TRAIT.DARKVISION] = Trait(
-    pushID(TRAIT.DARKVISION),
+  traits[TRAIT.DARKVISION.VALUE] = Trait(
+    pushID(TRAIT.DARKVISION.VALUE),
     'Darkvision',
     'You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it w ere dim light. You can’t discern color in darkness, only shades of gray.'
   );
 
-  traits[TRAIT.DWARVEN_RESILIENCE] = Trait(
-    pushID(TRAIT.DWARVEN_RESILIENCE),
+  traits[TRAIT.DWARVEN_RESILIENCE.VALUE] = Trait(
+    pushID(TRAIT.DWARVEN_RESILIENCE.VALUE),
     'Dwarven Resilience',
     'You have advantage on saving throws against poison, and you have resistance against poison damage.'
   );
 
-  traits[TRAIT.DWARVEN_COMBAT_TRAINING] = Trait(
-    pushID(TRAIT.DWARVEN_COMBAT_TRAINING),
+  traits[TRAIT.DWARVEN_COMBAT_TRAINING.VALUE] = Trait(
+    pushID(TRAIT.DWARVEN_COMBAT_TRAINING.VALUE),
     'Dwarven Combat Training',
     'You have proficiency with the battleaxe, handaxe, throwing hammer, and warhammer.'
   );
 
-  traits[TRAIT.STONECUNNING] = Trait(
-    pushID(TRAIT.STONECUNNING),
+  traits[TRAIT.STONECUNNING.VALUE] = Trait(
+    pushID(TRAIT.STONECUNNING.VALUE),
     'Stonecunning',
     'Whenever you make an Intelligence (History) check related to the origin of stonework, you are considered proficient in the History skill and add double your proficiency bonus to the check, instead of your normal proficiency bonus.'
   );
 
-  traits[TRAIT.DWARVEN_TOUGHNESS] = Trait(
-    pushID(TRAIT.DWARVEN_TOUGHNESS),
+  traits[TRAIT.DWARVEN_TOUGHNESS.VALUE] = Trait(
+    pushID(TRAIT.DWARVEN_TOUGHNESS.VALUE),
     'Dwarven Toughness',
     'Your hit point maximum increases by 1, and it increases by 1 every time you gain a level.'
   );
 
-  traits[TRAIT.DWARVEN_ARMOR_TRAINING] = Trait(
-    pushID(TRAIT.DWARVEN_ARMOR_TRAINING),
+  traits[TRAIT.DWARVEN_ARMOR_TRAINING.VALUE] = Trait(
+    pushID(TRAIT.DWARVEN_ARMOR_TRAINING.VALUE),
     'Dwarven Armor Training',
     'You have proficiency with light and medium armor.'
   );
 
-  traits[TRAIT.KEEN_SENSES] = Trait(
-    pushID(TRAIT.KEEN_SENSES),
+  traits[TRAIT.KEEN_SENSES.VALUE] = Trait(
+    pushID(TRAIT.KEEN_SENSES.VALUE),
     'Keen Senses',
     'You have proficiency in the Perception skill.'
   );
 
-  traits[TRAIT.FEY_ANCESTRY] = Trait(
-    pushID(TRAIT.FEY_ANCESTRY),
+  traits[TRAIT.FEY_ANCESTRY.VALUE] = Trait(
+    pushID(TRAIT.FEY_ANCESTRY.VALUE),
     'Fey Ancestry',
     'You have advantage on saving throws against being charmed, and magic can’t put you to sleep.'
   );
 
-  traits[TRAIT.TRANCE] = Trait(
-    pushID(TRAIT.TRANCE),
+  traits[TRAIT.TRANCE.VALUE] = Trait(
+    pushID(TRAIT.TRANCE.VALUE),
     'Trance',
     'Elves don’t need to sleep. Instead, they meditate deeply, remaining semiconscious, for 4 hours a day. (The Common word for such meditation is “trance.”) While meditating, you can dream after a fashion; such dreams are actually mental exercises that have become reflexive through years of practice. After resting in this way, you gain the same benefit that a human does from 8 hours of sleep.'
   );
 
-  traits[TRAIT.ELF_WEAPON_TRAINING] = Trait(
-    pushID(TRAIT.ELF_WEAPON_TRAINING),
+  traits[TRAIT.ELF_WEAPON_TRAINING.VALUE] = Trait(
+    pushID(TRAIT.ELF_WEAPON_TRAINING.VALUE),
     'Elf Weapon Training',
     'You have proficiency with the longsword, shortsword, shortbow, and longbow.'
   );
 
-  traits[TRAIT.CANTRIP] = Trait(
-    pushID(TRAIT.CANTRIP),
+  traits[TRAIT.CANTRIP.VALUE] = Trait(
+    pushID(TRAIT.CANTRIP.VALUE),
     'Cantrip',
     'You know one cantrip of your choice from the wizard spell list. Intelligence is your spellcasting ability for it.'
   );
 
-  traits[TRAIT.EXTRA_LANGUAGE] = Trait(
-    pushID(TRAIT.EXTRA_LANGUAGE),
+  traits[TRAIT.EXTRA_LANGUAGE.VALUE] = Trait(
+    pushID(TRAIT.EXTRA_LANGUAGE.VALUE),
     'Extra Language',
     'You can speak, read, and write one extra language of your choice.'
   );
 
-  traits[TRAIT.FLEET_OF_FOOT] = Trait(
-    pushID(TRAIT.FLEET_OF_FOOT),
+  traits[TRAIT.FLEET_OF_FOOT.VALUE] = Trait(
+    pushID(TRAIT.FLEET_OF_FOOT.VALUE),
     'Fleet of Foot',
     'Your base walking speed increases to 35 feet.'
   );
 
-  traits[TRAIT.MASK_OF_THE_WILD] = Trait(
-    pushID(TRAIT.MASK_OF_THE_WILD),
+  traits[TRAIT.MASK_OF_THE_WILD.VALUE] = Trait(
+    pushID(TRAIT.MASK_OF_THE_WILD.VALUE),
     'Mask of the Wild',
     'You can attempt to hide even when you are only lightly obscured by foliage, heavy rain, falling snow, mist, and other natural phenomena.'
   );
 
-  traits[TRAIT.SUPERIOR_DARKVISION] = Trait(
-    pushID(TRAIT.SUPERIOR_DARKVISION),
+  traits[TRAIT.SUPERIOR_DARKVISION.VALUE] = Trait(
+    pushID(TRAIT.SUPERIOR_DARKVISION.VALUE),
     'Superior Darkvision',
     'Your darkvision has a radius of 120 feet.'
   );
 
-  traits[TRAIT.SUNLIGHT_SENSITIVITY] = Trait(
-    pushID(TRAIT.SUNLIGHT_SENSITIVITY),
+  traits[TRAIT.SUNLIGHT_SENSITIVITY.VALUE] = Trait(
+    pushID(TRAIT.SUNLIGHT_SENSITIVITY.VALUE),
     'Sunlight Sensitivity',
     'You have disadvantage on attack rolls and on Wisdom (Perception) checks that rely on sight when you, the target of your attack, or whatever you are trying to perceive is in direct sunlight.'
   );
 
-  traits[TRAIT.DROW_MAGIC] = Trait(
-    pushID(TRAIT.DROW_MAGIC),
+  traits[TRAIT.DROW_MAGIC.VALUE] = Trait(
+    pushID(TRAIT.DROW_MAGIC.VALUE),
     'Drow Magic',
     'You know the dancing lights cantrip. When you reach 3rd level, you can cast the faerie fire spell once per day. When you reach 5th level, you can also cast the darkness spell once per day. Charisma is your spellcasting ability for these spells.'
   );
 
-  traits[TRAIT.DROW_WEAPON_TRAINING] = Trait(
-    pushID(TRAIT.DROW_WEAPON_TRAINING),
+  traits[TRAIT.DROW_WEAPON_TRAINING.VALUE] = Trait(
+    pushID(TRAIT.DROW_WEAPON_TRAINING.VALUE),
     'Drow Weapon Training',
     'You have proficiency with rapiers, shortswords, and hand crossbows.'
   );
@@ -2855,15 +3009,27 @@ function getTraits() {
 * RACES
 *******/
 
-const SUBRACE_PATH = 'subraces';
-
-// SUBRACE does not have VALUE or PATH
 const SUBRACE = {
-  'HILL_DWARF': 'hill_dwarf',
-  'MOUNTAIN_DWARF': 'mountain_dwarf',
-  'HIGH_ELF': 'high_elf',
-  'WOOD_ELF': 'wood_elf',
-  'DARK_ELF': 'dark_elf'
+  'HILL_DWARF': {
+    'VALUE': 'hill_dwarf',
+    'PATH': PATH.SUBRACE
+  },
+  'MOUNTAIN_DWARF': {
+    'VALUE': 'mountain_dwarf',
+    'PATH': PATH.SUBRACE
+  },
+  'HIGH_ELF': {
+    'VALUE': 'high_elf',
+    'PATH': PATH.SUBRACE
+  },
+  'WOOD_ELF': {
+    'VALUE': 'wood_elf',
+    'PATH': PATH.SUBRACE
+  },
+  'DARK_ELF': {
+    'VALUE': 'dark_elf',
+    'PATH': PATH.SUBRACE
+  }
 };
 
 function Subrace(id, name, increasesList, traitsList, maxHP_bonus=0, profsList=null, languagesList=null, speed=null) {
@@ -2873,9 +3039,9 @@ function Subrace(id, name, increasesList, traitsList, maxHP_bonus=0, profsList=n
   }
 
   var subrace = {
-    'id': id,
-    'name': name
+    'id': id
   };
+  subrace[NAME] = name;
 
   var increases = {};
   for (i of increasesList) {
@@ -2885,7 +3051,7 @@ function Subrace(id, name, increasesList, traitsList, maxHP_bonus=0, profsList=n
 
   var traits = {};
   for (t of traitsList) {
-    traits[t] = true;
+    traits[t] = PATH.TRAITS;
   }
   subrace['traits'] = traits;
 
@@ -2904,7 +3070,7 @@ function Subrace(id, name, increasesList, traitsList, maxHP_bonus=0, profsList=n
   if (languagesList !== null) {
     var languages = {};
     for (l of languagesList) {
-      languages[l] = true;
+      languages[l] = PATH.LANGUAGES;
     }
     subrace['languages'] = languages;
   }
@@ -2930,25 +3096,25 @@ function Increase(ability, mod) {
 
 function getSubraces() {
   var dwarf = {};
-  dwarf[SUBRACE.HILL_DWARF] = Subrace(
-    pushID(SUBRACE.HILL_DWARF),
+  dwarf[SUBRACE.HILL_DWARF.VALUE] = Subrace(
+    pushID(SUBRACE.HILL_DWARF.VALUE),
     'Hill Dwarf',
     [
       Increase(ABILITY.WIS.VALUE, 1)
     ],
     [
-      TRAIT.DWARVEN_TOUGHNESS
+      TRAIT.DWARVEN_TOUGHNESS.VALUE
     ],
     1
   );
-  dwarf[SUBRACE.MOUNTAIN_DWARF] = Subrace(
-    pushID(SUBRACE.MOUNTAIN_DWARF),
+  dwarf[SUBRACE.MOUNTAIN_DWARF.VALUE] = Subrace(
+    pushID(SUBRACE.MOUNTAIN_DWARF.VALUE),
     'Mountain Dwarf',
     [
       Increase(ABILITY.STR.VALUE, 2)
     ],
     [
-      TRAIT.DWARVEN_ARMOR_TRAINING
+      TRAIT.DWARVEN_ARMOR_TRAINING.VALUE
     ],
     0,
     [
@@ -2958,45 +3124,45 @@ function getSubraces() {
   );
 
   var elf = {};
-  elf[SUBRACE.HIGH_ELF] = Subrace(
-    pushID(SUBRACE.HIGH_ELF),
+  elf[SUBRACE.HIGH_ELF.VALUE] = Subrace(
+    pushID(SUBRACE.HIGH_ELF.VALUE),
     'High Elf',
     [
       Increase(ABILITY.INT.VALUE, 1)
     ],
     [
-      TRAIT.CANTRIP,
-      TRAIT.EXTRA_LANGUAGE
+      TRAIT.CANTRIP.VALUE,
+      TRAIT.EXTRA_LANGUAGE.VALUE
     ],
     0,
     null,
     [
-      LANGUAGE.ANY
+      LANGUAGE.ANY.VALUE
     ]
   );
-  elf[SUBRACE.WOOD_ELF] = Subrace(
-    pushID(SUBRACE.WOOD_ELF),
+  elf[SUBRACE.WOOD_ELF.VALUE] = Subrace(
+    pushID(SUBRACE.WOOD_ELF.VALUE),
     'Wood Elf',
     [
       Increase(ABILITY.WIS.VALUE, 1)
     ],
     [
-      TRAIT.FLEET_OF_FOOT,
-      TRAIT.MASK_OF_THE_WILD
+      TRAIT.FLEET_OF_FOOT.VALUE,
+      TRAIT.MASK_OF_THE_WILD.VALUE
     ],
     35
   );
-  elf[SUBRACE.DARK_ELF] = Subrace(
-    pushID(SUBRACE.DARK_ELF),
+  elf[SUBRACE.DARK_ELF.VALUE] = Subrace(
+    pushID(SUBRACE.DARK_ELF.VALUE),
     'Dark Elf (Drow)',
     [
       Increase(ABILITY.CHA.VALUE, 1)
     ],
     [
-      TRAIT.SUPERIOR_DARKVISION,
-      TRAIT.SUNLIGHT_SENSITIVITY,
-      TRAIT.DROW_MAGIC,
-      TRAIT.DROW_WEAPON_TRAINING
+      TRAIT.SUPERIOR_DARKVISION.VALUE,
+      TRAIT.SUNLIGHT_SENSITIVITY.VALUE,
+      TRAIT.DROW_MAGIC.VALUE,
+      TRAIT.DROW_WEAPON_TRAINING.VALUE
     ],
     0,
     [
@@ -3007,25 +3173,49 @@ function getSubraces() {
   );
 
   var subraces = {};
-  subraces[RACE.DWARF] = dwarf;
-  subraces[RACE.ELF] = elf;
+  subraces[RACE.DWARF.VALUE] = dwarf;
+  subraces[RACE.ELF.VALUE] = elf;
 
   return subraces;
 }
 
-const RACE_PATH = 'races';
-
-// RACE does not have VALUE or PATH
 const RACE = {
-  'DWARF': 'dwarf',
-  'ELF': 'elf',
-  'HALFLING': 'halfling',
-  'HUMAN': 'human',
-  'DRAGONBRON': 'dragonborn',
-  'GNOME': 'gnome',
-  'HALF_ELF': 'half_elf',
-  'HALF_ORC': 'half_orc',
-  'TIEFLING': 'tiefling'
+  'DWARF': {
+    'VALUE': 'dwarf',
+    'PATH': PATH.RACE
+  },
+  'ELF': {
+    'VALUE': 'elf',
+    'PATH': PATH.RACE
+  },
+  'HALFLING': {
+    'VALUE': 'halfling',
+    'PATH': PATH.RACE
+  },
+  'HUMAN': {
+    'VALUE': 'human',
+    'PATH': PATH.RACE
+  },
+  'DRAGONBRON': {
+    'VALUE': 'dragonborn',
+    'PATH': PATH.RACE
+  },
+  'GNOME': {
+    'VALUE': 'gnome',
+    'PATH': PATH.RACE
+  },
+  'HALF_ELF': {
+    'VALUE': 'half_elf',
+    'PATH': PATH.RACE
+  },
+  'HALF_ORC': {
+    'VALUE': 'half_orc',
+    'PATH': PATH.RACE
+  },
+  'TIEFLING': {
+    'VALUE': 'tiefling',
+    'PATH': PATH.RACE
+  }
 };
 
 function Race(id, name, increasesList, speed, traitsList, profsList, languagesList, subracesList, maxHP_bonus=0) {
@@ -3036,9 +3226,9 @@ function Race(id, name, increasesList, speed, traitsList, profsList, languagesLi
 
   var race = {
     'id': id,
-    'name': name,
     'speed': speed
   };
+  race[NAME] = name;
 
   var increases = {};
   for (i of increasesList) {
@@ -3048,7 +3238,7 @@ function Race(id, name, increasesList, speed, traitsList, profsList, languagesLi
 
   var traits = {};
   for (t of traitsList) {
-    traits[t] = true;
+    traits[t] = PATH.TRAITS;
   }
   race['traits'] = traits;
 
@@ -3060,7 +3250,6 @@ function Race(id, name, increasesList, speed, traitsList, profsList, languagesLi
   var choiceCount = 1;
   for (p of profsList) {
     if (p.hasOwnProperty(CHOOSE)) {
-      delete p[CHOOSE];
       proficiencies['choice' + choiceCount] = p;
       choiceCount++;
     }
@@ -3072,7 +3261,7 @@ function Race(id, name, increasesList, speed, traitsList, profsList, languagesLi
 
   var languages = {};
   for (l of languagesList) {
-    languages[l] = true;
+    languages[l] = PATH.LANGUAGES;
   }
   race['languages'] = languages;
 
@@ -3150,18 +3339,18 @@ function Condition(list, quantity=1) {
 function getRaces() {
   var races = {};
 
-  races[RACE.DWARF] = Race(
-    pushID(RACE.DWARF),
+  races[RACE.DWARF.VALUE] = Race(
+    pushID(RACE.DWARF.VALUE),
     'Dwarf',
     [
       Increase(ABILITY.CON.VALUE, 2)
     ],
     25,
     [
-      TRAIT.DARKVISION,
-      TRAIT.DWARVEN_RESILIENCE,
-      TRAIT.DWARVEN_COMBAT_TRAINING,
-      TRAIT.STONECUNNING
+      TRAIT.DARKVISION.VALUE,
+      TRAIT.DWARVEN_RESILIENCE.VALUE,
+      TRAIT.DWARVEN_COMBAT_TRAINING.VALUE,
+      TRAIT.STONECUNNING.VALUE
     ],
     [
       WEAPON.BATTLEAXE,
@@ -3178,29 +3367,29 @@ function getRaces() {
       )
     ],
     [
-      LANGUAGE.COMMON,
-      LANGUAGE.DWARVISH
+      LANGUAGE.COMMON.VALUE,
+      LANGUAGE.DWARVISH.VALUE
     ],
     [
-      SUBRACE.HILL_DWARF,
-      SUBRACE.MOUNTAIN_DWARF
+      SUBRACE.HILL_DWARF.VALUE,
+      SUBRACE.MOUNTAIN_DWARF.VALUE
     ],
     0
   );
 
-  races[RACE.ELF] = Race(
-    pushID(RACE.ELF),
+  races[RACE.ELF.VALUE] = Race(
+    pushID(RACE.ELF.VALUE),
     'Elf',
     [
       Increase(ABILITY.DEX.VALUE, 2)
     ],
     30,
     [
-      TRAIT.DARKVISION,
-      TRAIT.KEEN_SENSES,
-      TRAIT.FEY_ANCESTRY,
-      TRAIT.TRANCE,
-      TRAIT.ELF_WEAPON_TRAINING
+      TRAIT.DARKVISION.VALUE,
+      TRAIT.KEEN_SENSES.VALUE,
+      TRAIT.FEY_ANCESTRY.VALUE,
+      TRAIT.TRANCE.VALUE,
+      TRAIT.ELF_WEAPON_TRAINING.VALUE
     ],
     [
       SKILL.PERCEPTION,
@@ -3210,13 +3399,13 @@ function getRaces() {
       WEAPON.LONGBOW
     ],
     [
-      LANGUAGE.COMMON,
-      LANGUAGE.ELVISH
+      LANGUAGE.COMMON.VALUE,
+      LANGUAGE.ELVISH.VALUE
     ],
     [
-      SUBRACE.HIGH_ELF,
-      SUBRACE.WOOD_ELF,
-      SUBRACE.DARK_ELF
+      SUBRACE.HIGH_ELF.VALUE,
+      SUBRACE.WOOD_ELF.VALUE,
+      SUBRACE.DARK_ELF.VALUE
     ],
     0
   );
@@ -3228,12 +3417,15 @@ function getRaces() {
 * CLASSES
 *********/
 
-const CLASS_PATH = 'classes';
-
-// CLASS does not have VALUE or PATH
 const CLASS = {
-  'BARBARIAN': 'barbarian',
-  'BARD': 'bard'
+  'BARBARIAN': {
+    'VALUE': 'barbarian',
+    'PATH': PATH.CLASS
+  },
+  'BARD': {
+    'VALUE': 'bard',
+    'PATH': PATH.CLASS
+  }
 };
 
 function Class(id, name, hitDice, profsList, equipmentList) {
@@ -3244,15 +3436,14 @@ function Class(id, name, hitDice, profsList, equipmentList) {
 
   var classObj = {
     'id': id,
-    'name': name,
     'hitDice': hitDice
   };
+  classObj[NAME] = name;
 
   var proficiencies = {};
   var choiceCount = 1;
   for (p of profsList) {
     if (p.hasOwnProperty(CHOOSE)) {
-      delete p[CHOOSE];
       proficiencies['choice' + choiceCount] = p;
       choiceCount++;
     }
@@ -3266,7 +3457,6 @@ function Class(id, name, hitDice, profsList, equipmentList) {
   choiceCount = 1;
   for (e of equipmentList) {
     if (e.hasOwnProperty(CHOOSE)) {
-      delete e[CHOOSE];
       equipment['choice' + choiceCount] = e;
       choiceCount++;
     }
@@ -3311,8 +3501,8 @@ function Equipment(item, quantity=1) {
 function getClasses() {
   var classes = {};
 
-  classes[CLASS.BARBARIAN] = Class(
-    pushID(CLASS.BARBARIAN),
+  classes[CLASS.BARBARIAN.VALUE] = Class(
+    pushID(CLASS.BARBARIAN.VALUE),
     'Barbarian',
     HitDice(1, 12),
     [
@@ -3355,8 +3545,8 @@ function getClasses() {
     ]
   );
 
-  classes[CLASS.BARD] = Class(
-    pushID(CLASS.BARD),
+  classes[CLASS.BARD.VALUE] = Class(
+    pushID(CLASS.BARD.VALUE),
     'Bard',
     HitDice(1, 8),
     [
@@ -3409,4 +3599,55 @@ function getClasses() {
   );
 
   return classes;
+}
+
+class DbRef {
+  constructor(name, path, getData=null) {
+    this.name = name;
+    this.query = dataRef.child(path);
+
+    if (getData !== null) {
+      this.getData = getData;
+      this.data = this.getData();
+    }
+
+    this.loadVal();
+  }
+
+  loadVal() {
+    var dbRef = this;
+    this.query.on('value', function(snap) {
+      dbRef.val = snap.val();
+    });
+  }
+
+  store() {
+    console.log('Storing ' + this.name + '...');
+    this.query.set(this.data);
+    console.log(this.name + ' stored!');
+  }
+}
+
+var dbRefs = {};
+dbRefs[PATH.ABILITIES] = new DbRef('Abilities', PATH.ABILITIES, getAbilities);
+dbRefs[PATH.ARMOR] = new DbRef('Armor', PATH.ARMOR, getArmor);
+dbRefs[PATH.ARMOR_TYPES] = new DbRef('Armor types', PATH.ARMOR_TYPES, getArmorTypes);
+dbRefs[PATH.CLASSES] = new DbRef('Classes', PATH.CLASSES, getClasses);
+dbRefs[PATH.GEAR] = new DbRef('Gear', PATH.GEAR, getGear);
+dbRefs[PATH.LANGUAGES] = new DbRef('Languages', PATH.LANGUAGES, getLanguages);
+dbRefs[PATH.PACKS] = new DbRef('Packs', PATH.PACKS, getPacks);
+dbRefs[PATH.RACES] = new DbRef('Races', PATH.RACES, getRaces);
+dbRefs[PATH.SKILLS] = new DbRef('Skills', PATH.SKILLS, getSkills);
+dbRefs[PATH.SUBRACES] = new DbRef('Subraces', PATH.SUBRACES, getSubraces);
+dbRefs[PATH.TOOL_CATEGORIES] = new DbRef('Tool categories', PATH.TOOL_CATEGORIES, getToolCategories);
+dbRefs[PATH.TOOLS] = new DbRef('Tools', PATH.TOOLS, getTools);
+dbRefs[PATH.TRAITS] = new DbRef('Traits', PATH.TRAITS, getTraits);
+dbRefs[PATH.WEAPON_CATEGORIES] = new DbRef('Weapon categories', PATH.WEAPON_CATEGORIES, getWeaponCategories);
+dbRefs[PATH.WEAPON_CLASSES] = new DbRef('Weapon classes', PATH.WEAPON_CLASSES, getWeaponClasses);
+dbRefs[PATH.WEAPONS] = new DbRef('Weapons', PATH.WEAPONS, getWeapons);
+
+function storeData() {
+  for (key in dbRefs) {
+    dbRefs[key].store();
+  }
 }

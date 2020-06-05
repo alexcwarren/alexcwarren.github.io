@@ -67,11 +67,6 @@
     </nav>
 
     <div class="container">
-      <div class = "container">
-        <button type="button" onclick="storeData()">Store</button>
-        <button type="button" onclick="getNextID()">Get ID</button>
-      </div>
-
       <div class="container">
         <div class="row">
           <div class="col-md-1">
@@ -82,41 +77,54 @@
               <div class="row ability" id="int-row">INT</span><span id="intMod" class="abilityMod"></span></div>
               <div class="row ability" id="wis-row">WIS</span><span id="wisMod" class="abilityMod"></span></div>
               <div class="row ability" id="cha-row">CHA</span><span id="chaMod" class="abilityMod"></span></div>
+
+              <div class="row">
+                <div class="form-group side-column">
+                  <label for="speed">Speed</label>
+                  <input type="text" class="form-control" id="speed" name="speed" value="" disabled>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group side-column">
+                  <label for="hitDice">Hit Dice</label>
+                  <input type="text" class="form-control" id="hitDice" name="hitDice" value="" disabled>
+                </div>
+              </div>
             </div>
           </div><!-- attributes row -->
 
           <!-- TODO Change layout to use wider space better -->
-          <div class="col-md-10">
+          <div class="col-md-5">
             <div class="row">
               <form>
                 <div class="row">
-                  <div class="form-group col-md-6">
+                  <div class="form-group col-md-8">
                     <label for="characterName">Character Name</label>
                     <input type="text" class="form-control" id="characterName" name="characterName" value="" placeholder="Character name">
                   </div>
                 </div>
                 <div class="row">
-                  <div class="form-group col-md-3">
+                  <div class="form-group col-md-6">
                     <label for="race">Race</label>
                     <select class="form-control" id="race" name="race" onchange="update(this.name)" value=""></select>
                   </div>
-                  <div id="subraceDiv" class="form-group col-md-3">
+                  <div id="subraceDiv" class="form-group col-md-6">
                     <label for="subrace">Subrace</label>
                     <select class="form-control" id="subrace" name="subrace" onchange="update(this.name)" value=""></select>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="form-group col-md-3">
+                  <div class="form-group col-md-5">
                     <label for="class">Class</label>
                     <select class="form-control" id="class" name="class" onchange="update(this.name)" value=""></select>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="form-group col-md-1">
+                  <div class="form-group col-md-2">
                     <label for="age">Age</label>
                     <input type="text" class="form-control" id="age" name="age" value="">
                   </div>
-                  <div class="form-group col-md-3">
+                  <div class="form-group col-md-5">
                     <label for="alignment">Alignment</label>
                     <select class="form-control" id="alignment" name="alignment" value=""></select>
                   </div>
@@ -125,36 +133,23 @@
               </form>
             </div>
           </div><!-- form col -->
-        </div><!-- master row -->
 
-        <div class="container">
-          <form>
-            <div class="row">
-              <div class="form-group col-md-1">
-                <label for="speed">Speed</label>
-                <input type="text" class="form-control" id="speed" name="speed" value="" disabled>
+          <div class="col-md-6">
+            <form>
+              <div class="row">
+                <div class="form-group col-md-5">
+                  <label for="">Proficiencies</label>
+                  <div id="proficiencies"></div>
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="">Traits</label>
+                  <div id="traits"></div>
+                </div>
               </div>
-              <div class="form-group col-md-1">
-                <label for="hitDice">Hit Dice</label>
-                <input type="text" class="form-control" id="hitDice" name="hitDice" value="" disabled>
-              </div>
-              <!-- <div class="form-group col-md-1">
-                <label for=""></label>
-                <input type="text" class="form-control" id="" name="" value="" disabled>
-              </div> -->
-            </div>
-            <div class="row">
-              <div class="form-group col-md-4">
-                <label for="">Proficiencies</label>
-                <textarea class="form-control" id="proficiencies" name="proficiencies" disabled></textarea>
-              </div>
-              <div class="form-group col-md-3">
-                <label for="">Traits</label>
-                <textarea class="form-control" id="traits" name="traits" disabled></textarea>
-              </div>
-            </div>
-          </form>
-        </div>
+            </form>
+          </div>
+
+        </div><!-- master row -->
       </div><!-- inner container -->
     </div>
 

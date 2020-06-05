@@ -1,133 +1,9 @@
-var abilitiesQuery = database.ref('data/abilities/');
-var abilitiesVal;
-
-var racesQuery = database.ref('data/races/');
-var racesVal;
-
-var classesQuery = database.ref('data/classes/');
-var classesVal;
-
-var traitsQuery = database.ref('data/traits/');
-var traitsVal;
-
-var armorQuery = database.ref('data/armor/');
-var armorVal;
-
-var weaponsQuery = database.ref('data/weapons/');
-var weaponsVal;
-
-var armorCategoriesQuery = database.ref('data/armor/categories');
-var armorCategoriesVal;
-
-var weaponsCategoriesQuery = database.ref('data/weapons/categories');
-var weaponsCategoriesVal;
-
-var skillsQuery = database.ref('data/skills/');
-var skillsVal;
-
-var toolsQuery = database.ref('data/tools/');
-var toolsVal;
-
-var subracesQuery = database.ref('data/subraces');
-var subracesVal;
-
-function saveCharacter() {
-  var userId = firebase.auth().currentUser.uid;
-
-  var character = {
-    name: document.getElementById('characterName').value
-  };
-  console.log(character);
-
-  var dataRef = database.ref('users/' + userId + '/data/characters');
-  dataRef.set(character);
-}
-
 function loadData() {
-  console.log('Loading form data...');
-
   console.log('Loading Race dropdown...');
-  loadList('race', 'races', '-- Select Race --');
+  loadList('race', dbRefs.races);
 
   console.log('Loading Class dropdown...');
-  loadList('class', 'classes', '-- Select Class --');
-
-  // Make initial queries here since first query is undefined (for some reason)
-  abilitiesQuery.on('value', function(snap) {
-    abilitiesVal = snap.val();
-  });
-
-  racesQuery.on('value', function(snap) {
-    racesVal = snap.val();
-  });
-
-  classesQuery.on('value', function(snap) {
-    classesVal = snap.val();
-  });
-
-  traitsQuery.on('value', function(snap) {
-    traitsVal = snap.val();
-  });
-
-  armorQuery.on('value', function(snap) {
-    armorVal = snap.val();
-  });
-
-  weaponsQuery.on('value', function(snap) {
-    weaponsVal = snap.val();
-  });
-
-  armorCategoriesQuery.on('value', function(snap) {
-    armorCategoriesVal = snap.val();
-  });
-
-  weaponsCategoriesQuery.on('value', function(snap) {
-    weaponsCategoriesVal = snap.val();
-  });
-
-  skillsQuery.on('value', function(snap) {
-    skillsVal = snap.val();
-  });
-
-  toolsQuery.on('value', function(snap) {
-    toolsVal = snap.val();
-  });
-
-  subracesQuery.on('value', function(snap) {
-    subracesVal = snap.val();
-  });
-}
-
-function getVal(path) {
-  var val;
-
-  switch(path) {
-    case 'armor':
-      val = armorVal;
-      break;
-    case 'weapons':
-      val = weaponsVal;
-      break;
-    case 'tools':
-      val = toolsVal;
-      break;
-    case 'skills':
-      val = skillsVal;
-      break;
-    case 'abilities':
-      val = abilitiesVal;
-      break;
-    case 'armor/categories':
-      val = armorCategoriesVal;
-      break;
-    case 'weapons/categories':
-      val = weaponsCategoriesVal;
-      break;
-    default:
-      val = null;
-  }
-
-  return val;
+  loadList('class', dbRefs.classes);
 }
 
 function loadList(listID, dbRef, nullText='') {
@@ -137,8 +13,7 @@ function loadList(listID, dbRef, nullText='') {
 
   const select = document.getElementById(listID);
 
-  var query = database.ref('data/' + dbRef).orderByKey();
-  query.once('value').then(function(snapshot) {
+  dbRef.query.once('value').then(function(snapshot) {
     var nullOption = document.createElement('option');
     nullOption.text = nullText;
     nullOption.value = '';
@@ -146,35 +21,66 @@ function loadList(listID, dbRef, nullText='') {
 
     snapshot.forEach(function(childSnapshot) {
       var key = childSnapshot.key;
-      // var childData = childSnapshot.val();
       var option = document.createElement('option');
-      option.text = childSnapshot.child('name').val();
+      option.text = childSnapshot.child(NAME).val();
       option.value = key;
       select.add(option);
     });
   });
 }
 
-function getProficiencies(list) {
+function getProficiencies2(list) {
   if (list === undefined) {
     return [];
   }
 
   var profs = [];
 
-  for (p of list) {
-    if (p.hasOwnProperty('id')) {
-      var val = getVal(p.path);
-      profs.push(val[p.id].name + '\n');
-    }
-    else {
-      var choose = 'Choose ' + p.choose.amount + ':\n';
+  for (lKey in list) {
+    var p = list[lKey];
 
-      for (c of p.choose.choices) {
-        var choiceVal = getVal(c.path);
+    if (p.hasOwnProperty(CHOOSE)) {
+      var amount = Object.keys(p)[0];;
+      var choose = 'Choose ' + amount + ':\n';
 
-        if (c.hasOwnProperty('id')) {
-          if (c.id === 'any') {
+      var choices = p[amount];
+
+      for (cKey in choices) {
+        var c = choices[cKey];
+
+        if (c.hasOwnProperty(CONDITIONS)) {
+          for (cdKey in c.conditions) {
+            var path = c.conditions[cdKey];
+
+            var conditionVal = dbRefs[path].val;
+
+            var items = null;
+            var itemsVal = null;
+
+            if (cdKey === ANY) {
+              items = conditionVal;
+              itemsVal = conditionVal;
+            }
+            else {
+              items = conditionVal[cdKey];
+              var firstItemKey = Object.keys(items)[0];
+              var itemsPath = items[firstItemKey];
+              itemsVal = dbRefs[itemsPath].val;
+            }
+
+            for (itemKey in items) {
+              var item = itemsVal[itemKey];
+
+              choose += '  ' + item.name + '\n';
+            }
+          }
+        }
+        else {
+          c['id'] = cKey;
+
+          var choiceVal = dbRefs[c.path].val;
+
+          if (c.id === ANY) {
             for (i in choiceVal) {
               var item = choiceVal[i];
               choose += '  ' + item.name + '\n';
@@ -190,20 +96,30 @@ function getProficiencies(list) {
             choose += choiceVal[c.id].name + '\n';
           }
         }
-        else {
-          var conditionVal = getVal(c.searchPath);
-          for (x of c.conditions) {
-            for (i in conditionVal) {
-              var item = conditionVal[i];
-              if (item.hasOwnProperty(x.attribute) && item[x.attribute] === x.id) {
-                choose += '  ' + item.name + '\n';
-              }
-            }
-          }
-        }
       }
 
       profs.push(choose);
+    }
+    else {
+      var profRef = dbRefs[p];
+      var prof = profRef.val[lKey];
+
+      if (prof.hasOwnProperty(NAME)) {
+        profs.push(profRef.val[lKey].name + '\n');
+      }
+      else {
+        var pPath = null;
+        var pRef = null;
+
+        for (pKey in prof) {
+          if (pPath === null) {
+            pPath = prof[pKey];
+            pRef = dbRefs[pPath];
+          }
+
+          profs.push(pRef.val[pKey].name + '\n');
+        }
+      }
     }
   }
 
@@ -251,7 +167,7 @@ function updateSubrace() {
   }
 
   console.log('Loading Subrace dropdown...');
-  loadList('subrace', 'subraces/' + raceValue);
+  loadList('subrace', new DbRef(raceValue + ' subraces', PATH.SUBRACES + '/' + raceValue));
   document.getElementById('subraceDiv').style.display = 'block';
 }
 
@@ -265,7 +181,7 @@ function updateAbilities() {
   if (raceValue === '') {
     return;
   }
-  var race = racesVal[raceValue];
+  var race = dbRefs.races.val[raceValue];
 
   addAbilityModifiers(race.increases);
 
@@ -273,21 +189,24 @@ function updateAbilities() {
   if (subraceValue === '') {
     return;
   }
-  race = subracesVal[raceValue];
+  race = dbRefs.subraces.val[raceValue];
   var subrace = race[subraceValue];
 
   addAbilityModifiers(subrace.increases);
 }
 
 function addAbilityModifiers(modList) {
-  for (m of modList) {
-    var modID = m.ability.toLowerCase() + 'Mod';
+  for (key in modList) {
+    var ability = key;
+    var abilityMod = modList[key];
+
+    var modID = ability.toLowerCase() + 'Mod';
     var mod = document.getElementById(modID);
     if (mod.innerText !== '') {
       alert(modID + ' already has a modifier!');
       return;
     }
-    mod.innerText = ' +' + m.mod;
+    mod.innerText = ' +' + abilityMod;
   }
 }
 
@@ -299,7 +218,7 @@ function updateSpeed() {
   if (raceValue === '') {
     return;
   }
-  var race = racesVal[raceValue];
+  var race = dbRefs.races.val[raceValue];
 
   speed.value = race.speed;
 
@@ -307,8 +226,8 @@ function updateSpeed() {
   if (subraceValue === '') {
     return;
   }
-  race = subracesVal[raceValue];
-  var subrace = race[subraceValue];
+  var subraces = dbRefs.subraces.val[raceValue];
+  var subrace = subraces[subraceValue];
 
   if (subrace.hasOwnProperty('speed')) {
     speed.value = subrace.speed;
@@ -317,78 +236,279 @@ function updateSpeed() {
 
 function updateProficiencies() {
   var proficiencies = document.getElementById('proficiencies');
-  proficiencies.value = '';
+  removeChildren(proficiencies);
 
   var profs = new Set();
 
   var raceValue = document.getElementById('race').value;
   if (raceValue !== '') {
-    var race = racesVal[raceValue];
-    var raceProfs = getProficiencies(race.proficiencies);
+    var race = dbRefs.races.val[raceValue];
 
-    raceProfs.forEach(prof => profs.add(prof));
+    addProficiencies(profs, race.proficiencies);
   }
 
   var subraceValue = document.getElementById('subrace').value;
   if (subraceValue !== '') {
-    race = subracesVal[raceValue];
-    var subrace = race[subraceValue];
-    var subraceProfs = getProficiencies(subrace.proficiencies);
+    var subraces = dbRefs.subraces.val[raceValue];
+    var subrace = subraces[subraceValue];
 
-    subraceProfs.forEach(prof => profs.add(prof));
+    addProficiencies(profs, subrace.proficiencies);
   }
 
   var classValue = document.getElementById('class').value;
   if (classValue !== '') {
-    var clss = classesVal[classValue];
-    var classProfs = getProficiencies(clss.proficiencies);
+    var clss = dbRefs.classes.val[classValue];
 
-    classProfs.forEach(prof => profs.add(prof));
+    addProficiencies(profs, clss.proficiencies);
   }
-
-  var profsText = '';
 
   var abilities = document.getElementsByClassName('row ability');
   for (a of abilities) {
     a.style.fontWeight = 'normal';
   }
 
+  var choiceCount = 1;
+
   profs.forEach(function(prof) {
-    profsText += prof;
+    var div = document.createElement('div');
+
+    if (typeof prof === typeof Object()) {
+      if (prof.hasOwnProperty(CHOOSE)) {
+          var amount = Object.keys(prof)[0];
+          var choices = prof[amount];
+          var choiceName = 'choice' + choiceCount;
+          choiceCount++;
+
+          var label = document.createElement('label');
+          label.innerText = 'Choose ' + amount + ':';
+          label.htmlFor = choiceName;
+          label.className = 'choice';
+          div.appendChild(label);
+
+          for (choiceKey in choices) {
+            var innerDiv = document.createElement('div');
+
+            var choiceData = choices[choiceKey]
+
+            if (choiceData.hasOwnProperty(CONDITIONS)) {
+              var conditions = choiceData[CONDITIONS];
+
+              var commonItems = [];
+              var firstIteration = true;
+              for (conditionKey in conditions) {
+                var conditionPath = conditions[conditionKey];
+                var tableData = dbRefs[conditionPath].val;
+
+                var conditionData = null;
+                var itemsPath = null;
+
+                if (conditionKey === ANY) {
+                  conditionData = tableData;
+                  itemsPath = conditionPath;
+                }
+                else {
+                  conditionData = tableData[conditionKey];
+                  var firstItem = Object.keys(conditionData)[0];
+                  itemsPath = conditionData[firstItem];
+                }
+
+                var items = [];
+                for (itemKey in conditionData) {
+                  if (itemKey !== NAME) {
+                    var itemsData = dbRefs[itemsPath].val;
+                    var item = {
+                      'id': itemsData[itemKey].id,
+                      'name': itemsData[itemKey].name
+                    };
+                    items.push(item);
+                  }
+                }
+
+                if (!firstIteration) {
+                  // Find common values
+                  commonItems.filter(item => items.includes(item));
+                }
+                else {
+                  commonItems = Object.assign([], items);
+                }
+
+                firstIteration = false;
+              }
+
+              for (i in commonItems) {
+                var innerMostDiv = document.createElement('div');
+                var item = commonItems[i];
+                var input = document.createElement('input');
+
+                if (amount > 1) {
+                  input.type = 'checkbox';
+                  input.name = item.name;
+                  input.className = 'choice profCheckbox' + choiceCount;
+                  input.setAttribute('onclick', 'limitChecks(' + amount + ', this.className)');
+                }
+                else {
+                  input.type = 'radio';
+                  input.name = choiceName;
+                  input.className = 'choice';
+                }
+
+                input.value = item.id; // TODO - Find a suitable value here
+                innerMostDiv.appendChild(input);
+
+                var choiceLabel = document.createElement('label');
+                choiceLabel.innerText = item.name;
+                choiceLabel.className = 'choice';
+                innerMostDiv.appendChild(choiceLabel);
+
+                innerDiv.appendChild(innerMostDiv);
+              }
+
+              div.appendChild(innerDiv);
+            }
+            else {
+              var choiceTable = dbRefs[choiceData.path].val;
+              var choice = choiceTable[choiceKey];
+
+              var innerMostDiv = document.createElement('div');
+              var input = document.createElement('input');
+
+              if (amount > 1) {
+                input.type = 'checkbox';
+                input.name = choice.name;
+                input.className = 'choice profCheckbox' + choiceCount
+                input.setAttribute('onclick', 'limitChecks(' + amount + ', this.className)');
+              }
+              else {
+                input.type = 'radio';
+                input.name = choiceName;
+                input.className = 'choice';
+              }
+
+              input.value = choice.id;
+              innerDiv.appendChild(input);
+
+              var choiceLabel = document.createElement('label');
+              choiceLabel.innerText = choice.name;
+              choiceLabel.className = 'choice';
+              innerDiv.appendChild(choiceLabel);
+
+              div.appendChild(innerDiv);
+            }
+        }
+      }
+      else {
+        console.log('ERROR: Proficiency is unknown object');
+      }
+    }
 
     // Check for proficiencies in abilities
-    if (prof.includes('STR') || prof.includes('DEX') || prof.includes('CON')
-     || prof.includes('INT') || prof.includes('WIS') || prof.includes('CHA')) {
+    else if (prof.hasOwnProperty('STR') || prof.hasOwnProperty('DEX') || prof.hasOwnProperty('CON')
+     || prof.hasOwnProperty('INT') || prof.hasOwnProperty('WIS') || prof.hasOwnProperty('CHA')) {
 
-       var rowID = prof.match(/[A-Z]{3}/g)[0].toLowerCase() + '-row';
+       var profKey = Object.keys(prof)[0];
+       var rowID = profKey.match(/[A-Z]{3}/g)[0].toLowerCase() + '-row';
        var row = document.getElementById(rowID);
        row.style.fontWeight = '900';
     }
-  });
+    else {
+      var p = document.createElement('p');
+      p.innerText = prof;
+      div.appendChild(p);
+    }
 
-  proficiencies.value = profsText;
+    proficiencies.appendChild(div);
+  });
+}
+
+function limitChecks(limit, className) {
+  var profCheckboxes = document.getElementsByClassName(className);
+
+  var checkedCount = 0;
+  var limitReached = false;
+
+  for (key in profCheckboxes) {
+    var cbx = profCheckboxes[key];
+
+    if (cbx.type === 'checkbox') {
+      if (cbx.checked) {
+        checkedCount++;
+      }
+    }
+
+    if (checkedCount >= limit) {
+      limitReached = true;
+      break;
+    }
+  }
+
+  for (key in profCheckboxes) {
+    var cbx = profCheckboxes[key];
+
+    if (cbx.type === 'checkbox') {
+      if (limitReached) {
+        cbx.disabled = cbx.checked ? false : true;
+      }
+      else {
+        cbx.disabled = false;
+      }
+    }
+  }
+}
+
+function addProficiencies(set, list) {
+  for (key in list) {
+    var prof = list[key];
+
+    if (typeof prof === typeof 'string') {
+      var path = prof;
+      var pathVal = dbRefs[path].val;
+      prof = pathVal[key].name;
+    }
+
+    set.add(prof);
+  }
+}
+
+function removeChildren(div) {
+  var child = div.lastElementChild;
+  while (child) {
+    div.removeChild(child);
+    child = div.lastElementChild;
+  }
 }
 
 function updateTraits() {
   var traitsObj = document.getElementById('traits');
-  traitsObj.value = '';
+  removeChildren(traitsObj);
 
   var traits = new Set();
 
   var raceValue = document.getElementById('race').value;
   if (raceValue !== '') {
-    var race = racesVal[raceValue];
-    race.traits.forEach(trait => traits.add(traitsVal[trait].name + '\n'));
+    var race = dbRefs.races.val[raceValue];
+    massAppendToSet(traits, race.traits, dbRefs.traits.val);
   }
 
   var subraceValue = document.getElementById('subrace').value;
   if (subraceValue !== '') {
-    race = subracesVal[raceValue];
-    var subrace = race[subraceValue];
-    subrace.traits.forEach(trait => traits.add(traitsVal[trait].name + '\n'));
+    subraces = dbRefs.subraces.val[raceValue];
+    var subrace = subraces[subraceValue];
+    massAppendToSet(traits, subrace.traits, dbRefs.traits.val);
   }
 
-  traits.forEach(trait => traitsObj.value += trait);
+  traits.forEach(function(trait) {
+    var div = document.createElement('div');
+    div.innerText = trait;
+
+    traitsObj.appendChild(div);
+  });
+}
+
+function massAppendToSet(set, list, dbVal) {
+  for (key in list) {
+    var item = list[key];
+    set.add(dbVal[key].name + '\n');
+  }
 }
 
 function updateHitDice() {
@@ -399,7 +519,7 @@ function updateHitDice() {
   if (classValue === '') {
     return;
   }
-  var clss = classesVal[classValue];
+  var clss = dbRefs.classes.val[classValue];
 
   hitDice.value = clss.hitDice.text;
 }
