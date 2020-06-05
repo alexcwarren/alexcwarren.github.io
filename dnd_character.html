@@ -55,10 +55,13 @@
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="dnd_character.html">Character Form</a>
                 <a class="dropdown-item" href="dnd_roll.html">Roll Dashboard</a>
+                <!-- <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Something else here</a> -->
               </div>
             </li>
             <li class="nav-item"><a href="arkham.html">Arkham</a></li>
             <li class="nav-item"><a href="wedding.html">Wedding</a></li>
+            <li class="nav-item"><a id="sign-in-tab" href="profile.html">Sign In</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -69,76 +72,85 @@
         <div class="row">
           <div class="col-md-1">
             <div class="big-box">
-              <div class="row" id="strenth">STR</div>
-              <div class="row" id="dexterity">DEX</div>
-              <div class="row" id="constitution">CON</div>
-              <div class="row" id="intelligence">INT</div>
-              <div class="row" id="wisdom">WIS</div>
-              <div class="row" id="charisma">CHA</div>
+              <div class="row ability" id="str-row">STR</span><span id="strMod" class="abilityMod"></span></div>
+              <div class="row ability" id="dex-row">DEX</span><span id="dexMod" class="abilityMod"></span></div>
+              <div class="row ability" id="con-row">CON</span><span id="conMod" class="abilityMod"></span></div>
+              <div class="row ability" id="int-row">INT</span><span id="intMod" class="abilityMod"></span></div>
+              <div class="row ability" id="wis-row">WIS</span><span id="wisMod" class="abilityMod"></span></div>
+              <div class="row ability" id="cha-row">CHA</span><span id="chaMod" class="abilityMod"></span></div>
+
+              <div class="row">
+                <div class="form-group side-column">
+                  <label for="speed">Speed</label>
+                  <input type="text" class="form-control" id="speed" name="speed" value="" disabled>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group side-column">
+                  <label for="hitDice">Hit Dice</label>
+                  <input type="text" class="form-control" id="hitDice" name="hitDice" value="" disabled>
+                </div>
+              </div>
             </div>
           </div><!-- attributes row -->
 
-          <div class="col-md-10">
+          <!-- TODO Change layout to use wider space better -->
+          <div class="col-md-5">
             <div class="row">
               <form>
                 <div class="row">
-                  <div class="form-group col-md-6">
+                  <div class="form-group col-md-8">
                     <label for="characterName">Character Name</label>
                     <input type="text" class="form-control" id="characterName" name="characterName" value="" placeholder="Character name">
                   </div>
                 </div>
                 <div class="row">
-                  <div class="form-group col-md-3">
+                  <div class="form-group col-md-6">
                     <label for="race">Race</label>
-                    <select class="form-control" id="race" name="race" onchange="" value=""></select>
+                    <select class="form-control" id="race" name="race" onchange="update(this.name)" value=""></select>
                   </div>
-                  <div class="form-group col-md-3">
-                    <label for="class">Class</label>
-                    <select class="form-control" id="class" name="class" onchange="" value=""></select>
+                  <div id="subraceDiv" class="form-group col-md-6">
+                    <label for="subrace">Subrace</label>
+                    <select class="form-control" id="subrace" name="subrace" onchange="update(this.name)" value=""></select>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="form-group col-md-1">
+                  <div class="form-group col-md-5">
+                    <label for="class">Class</label>
+                    <select class="form-control" id="class" name="class" onchange="update(this.name)" value=""></select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-2">
                     <label for="age">Age</label>
                     <input type="text" class="form-control" id="age" name="age" value="">
                   </div>
-                  <div class="form-group col-md-3">
+                  <div class="form-group col-md-5">
                     <label for="alignment">Alignment</label>
                     <select class="form-control" id="alignment" name="alignment" value=""></select>
                   </div>
                 </div>
-                <button type="submit" class="btn btn-primary" onclick="">Save</button>
+                <button type="submit" class="btn btn-primary" onclick="saveCharacter()">Save</button>
               </form>
             </div>
           </div><!-- form col -->
-        </div><!-- master row -->
 
-        <div class="container">
-          <form>
-            <div class="row">
-              <div class="form-group col-md-1">
-                <label for="speed">Speed</label>
-                <input type="text" class="form-control" id="speed" name="speed" value="" disabled>
+          <div class="col-md-6">
+            <form>
+              <div class="row">
+                <div class="form-group col-md-5">
+                  <label for="">Proficiencies</label>
+                  <div id="proficiencies"></div>
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="">Traits</label>
+                  <div id="traits"></div>
+                </div>
               </div>
-              <div class="form-group col-md-1">
-                <label for="hitDice">Hit Dice</label>
-                <input type="text" class="form-control" id="hitDice" name="hitDice" value="" disabled>
-              </div>
-            </div>
-            <div class="row">
-              <div class="form-group col-md-6">
-                <label for="">Traits</label>
-                <textarea class="form-control" id="traits" name="traits" disabled></textarea>
-              </div>
-            </div>
-            <div class="row">
-              <div class="form-group col-md-6">
-                <label for="">Proficiencies</label>
-                <textarea class="form-control" id="proficiencies" name="proficiencies" disabled></textarea>
-              </div>
-            </div>
-          </form>
-        </div>
+            </form>
+          </div>
+
+        </div><!-- master row -->
       </div><!-- inner container -->
     </div>
 
@@ -150,5 +162,19 @@
     <script src="js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <!-- <script src="js/ie10-viewport-bug-workaround.js"></script> -->
+
+    <!-- Firebase core JavaScript
+    ================================================== -->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-app.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-analytics.js"></script>
+
+    <script src="js/firebase.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/dnd_character.js"></script>
   </body>
 </html>

@@ -122,5 +122,6 @@ function clearLog() {
     document.getElementById('log').innerHTML = '';
 }
 
-// window.onload = function() {
-// };
+window.onload = function() {
+  initApp();
+};
