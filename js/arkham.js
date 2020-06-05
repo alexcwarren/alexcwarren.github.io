@@ -88,3 +88,7 @@ function legend() {
     tabletRow[1].innerHTML = '-4. If there is a <strong><em>Ghoul</em></strong> enemy at your location, take 1 damage and 1 horror.';
   }
 }
+
+window.onload = function() {
+  initApp();
+};
