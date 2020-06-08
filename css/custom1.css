@@ -37,6 +37,34 @@ div.row {
   padding: 10px;
 }
 
+#subraceDiv {
+  display: none;
+}
+
+#traits {
+  height: 215px;
+  width: 200px;
+}
+
+#proficiencies {
+  height: 400px;
+  width: 200px;
+}
+
+input.choice {
+  margin-left: 10%;
+  margin-right: 5%;
+  display: inline;
+}
+
+label.choice {
+  font-weight: normal;
+}
+
+div.side-column input {
+  width: 75%;
+}
+
 .dropdown-menu {
   background: #222;
 }

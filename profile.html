@@ -7,6 +7,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
+    <!-- <link rel="icon" href="../../favicon.ico"> -->
 
     <title>alexcwarren.com</title>
 
@@ -47,7 +48,7 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="nav-item"><a href="index.html">Home</a></li>
-            <li class="nav-item dropdown active">
+            <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 DnD
               </a>
@@ -60,98 +61,21 @@
             </li>
             <li class="nav-item"><a href="arkham.html">Arkham</a></li>
             <li class="nav-item"><a href="wedding.html">Wedding</a></li>
-            <li class="nav-item"><a id="sign-in-tab" href="profile.html">Sign In</a></li>
+            <li class="nav-item active"><a id="sign-in-tab" href="profile.html">Sign In</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-1">
-            <div class="big-box">
-              <div class="row ability" id="str-row">STR</span><span id="strMod" class="abilityMod"></span></div>
-              <div class="row ability" id="dex-row">DEX</span><span id="dexMod" class="abilityMod"></span></div>
-              <div class="row ability" id="con-row">CON</span><span id="conMod" class="abilityMod"></span></div>
-              <div class="row ability" id="int-row">INT</span><span id="intMod" class="abilityMod"></span></div>
-              <div class="row ability" id="wis-row">WIS</span><span id="wisMod" class="abilityMod"></span></div>
-              <div class="row ability" id="cha-row">CHA</span><span id="chaMod" class="abilityMod"></span></div>
+      <div class="row">
+        <p class="" id="sign-in-status">You are Signed Out</p>
+      </div>
+      <div class="row">
+        <button id="sign-in">Sign in with Google</button>
+      </div>
+    </div><!-- /.container -->
 
-              <div class="row">
-                <div class="form-group side-column">
-                  <label for="speed">Speed</label>
-                  <input type="text" class="form-control" id="speed" name="speed" value="" disabled>
-                </div>
-              </div>
-              <div class="row">
-                <div class="form-group side-column">
-                  <label for="hitDice">Hit Dice</label>
-                  <input type="text" class="form-control" id="hitDice" name="hitDice" value="" disabled>
-                </div>
-              </div>
-            </div>
-          </div><!-- attributes row -->
-
-          <!-- TODO Change layout to use wider space better -->
-          <div class="col-md-5">
-            <div class="row">
-              <form>
-                <div class="row">
-                  <div class="form-group col-md-8">
-                    <label for="characterName">Character Name</label>
-                    <input type="text" class="form-control" id="characterName" name="characterName" value="" placeholder="Character name">
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="form-group col-md-6">
-                    <label for="race">Race</label>
-                    <select class="form-control" id="race" name="race" onchange="update(this.name)" value=""></select>
-                  </div>
-                  <div id="subraceDiv" class="form-group col-md-6">
-                    <label for="subrace">Subrace</label>
-                    <select class="form-control" id="subrace" name="subrace" onchange="update(this.name)" value=""></select>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="form-group col-md-5">
-                    <label for="class">Class</label>
-                    <select class="form-control" id="class" name="class" onchange="update(this.name)" value=""></select>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="form-group col-md-2">
-                    <label for="age">Age</label>
-                    <input type="text" class="form-control" id="age" name="age" value="">
-                  </div>
-                  <div class="form-group col-md-5">
-                    <label for="alignment">Alignment</label>
-                    <select class="form-control" id="alignment" name="alignment" value=""></select>
-                  </div>
-                </div>
-                <button type="submit" class="btn btn-primary" onclick="saveCharacter()">Save</button>
-              </form>
-            </div>
-          </div><!-- form col -->
-
-          <div class="col-md-6">
-            <form>
-              <div class="row">
-                <div class="form-group col-md-5">
-                  <label for="">Proficiencies</label>
-                  <div id="proficiencies"></div>
-                </div>
-                <div class="form-group col-md-3">
-                  <label for="">Traits</label>
-                  <div id="traits"></div>
-                </div>
-              </div>
-            </form>
-          </div>
-
-        </div><!-- master row -->
-      </div><!-- inner container -->
-    </div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -173,7 +97,7 @@
     <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-analytics.js"></script>
 
     <script src="js/firebase.js"></script>
-    <script src="js/data.js"></script>
-    <script src="js/dnd_character.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/profile.js"></script>
   </body>
 </html>
