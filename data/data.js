@@ -126,6 +126,7 @@ const PATH = {
   'ARMOR_TYPES': 'armor_types',
   'CLASSES': 'classes',
   'GEAR': 'gear',
+  'GEAR_TYPES': 'gear_types',
   'LANGUAGES': 'languages',
   'PACKS': 'packs',
   'RACES': 'races',
@@ -2255,8 +2256,16 @@ function getTools() {
 ******/
 
 const PACK = {
+  'BURGLAR': {
+    'VALUE': 'burglar',
+    'PATH': PATH.PACKS
+  },
   'DIPLOMAT': {
     'VALUE': 'diplomat',
+    'PATH': PATH.PACKS
+  },
+  'DUNEONEER': {
+    'VALUE': 'dungeoneer',
     'PATH': PATH.PACKS
   },
   'ENTERTAINER': {
@@ -2267,6 +2276,14 @@ const PACK = {
     'VALUE': 'explorer',
     'PATH': PATH.PACKS
   },
+  'PRIEST': {
+    'VALUE': 'priest',
+    'PATH': PATH.PACKS
+  },
+  'SCHOLAR': {
+    'VALUE': 'scholar',
+    'PATH': PATH.PACKS
+  },
   'ANY': {
     'VALUE': ANY,
     'PATH': PATH.PACKS
@@ -2274,6 +2291,314 @@ const PACK = {
 };
 
 const GEAR = {
+  'VIAL_ACID': {
+    'VALUE': 'vial_acid',
+    'PATH': PATH.GEAR
+  },
+  'FLASK_ALCHEMISTS_FIRE': {
+    'VALUE': 'flask_alchemists_fire',
+    'PATH': PATH.GEAR
+  },
+  'VIAL_ANTITOXIN': {
+    'VALUE': 'vial_antitoxin',
+    'PATH': PATH.GEAR
+  },
+  'BALL_BEARINGS_BAG_1000': {
+    'VALUE': 'ball_bearings_bag_1000',
+    'PATH': PATH.GEAR
+  },
+  'CALTROPS_BAG_20': {
+    'VALUE': 'caltrops_bag_20',
+    'PATH': PATH.GEAR
+  },
+  'CHAIN': {
+    'VALUE': 'chain',
+    'PATH': PATH.GEAR
+  },
+  'CHALK': {
+    'VALUE': 'chalk',
+    'PATH': PATH.GEAR
+  },
+  'FLASK_HOLY_WATER': {
+    'VALUE': 'flask_holy_water',
+    'PATH': PATH.GEAR
+  },
+  'JUG': {
+    'VALUE': 'jug',
+    'PATH': PATH.GEAR
+  },
+  'LADDER': {
+    'VALUE': 'ladder',
+    'PATH': PATH.GEAR
+  },
+  'PARCHMENT': {
+    'VALUE': 'parchment',
+    'PATH': PATH.GEAR
+  },
+  'VIAL_POISON': {
+    'VALUE': 'vial_poison',
+    'PATH': PATH.GEAR
+  },
+  'POLE': {
+    'VALUE': 'pole',
+    'PATH': PATH.GEAR
+  },
+  'ROPE_SILK': {
+    'VALUE': 'rope_silk',
+    'PATH': PATH.GEAR
+  },
+  'BOTTLE': {
+    'VALUE': 'bottle',
+    'PATH': PATH.GEAR
+  },
+  'ABACUS': {
+    'VALUE': 'abacus',
+    'PATH': PATH.GEAR
+  },
+  'ARROWS_20': {
+    'VALUE': 'arrows_20',
+    'PATH': PATH.GEAR
+  },
+  'BLOWGUN_NEEDLES_50': {
+    'VALUE': 'blowgun_needles_50',
+    'PATH': PATH.GEAR
+  },
+  'CROSSBOW_BOLTS_20': {
+    'VALUE': 'crossbow_bolts_20',
+    'PATH': PATH.GEAR
+  },
+  'SLING_BULLETS_20': {
+    'VALUE': 'sling_bullets_20',
+    'PATH': PATH.GEAR
+  },
+  'CRYSTAL': {
+    'VALUE': 'crystal',
+    'PATH': PATH.GEAR
+  },
+  'ORB': {
+    'VALUE': 'orb',
+    'PATH': PATH.GEAR
+  },
+  'ROD': {
+    'VALUE': 'rod',
+    'PATH': PATH.GEAR
+  },
+  'STAFF': {
+    'VALUE': 'staff',
+    'PATH': PATH.GEAR
+  },
+  'WAND': {
+    'VALUE': 'wand',
+    'PATH': PATH.GEAR
+  },
+  'BARREL': {
+    'VALUE': 'barrel',
+    'PATH': PATH.GEAR
+  },
+  'BASKET': {
+    'VALUE': 'basket',
+    'PATH': PATH.GEAR
+  },
+  'BELL': {
+    'VALUE': 'bell',
+    'PATH': PATH.GEAR
+  },
+  'BLANKET': {
+    'VALUE': 'blanket',
+    'PATH': PATH.GEAR
+  },
+  'BLOCK_AND_TACKLE': {
+    'VALUE': 'block_and_tackle',
+    'PATH': PATH.GEAR
+  },
+  'BOOK': {
+    'VALUE': 'book',
+    'PATH': PATH.GEAR
+  },
+  'BOOK_LORE': {
+    'VALUE': 'book_lore',
+    'PATH': PATH.GEAR
+  },
+  'BUCKET': {
+    'VALUE': 'bucket',
+    'PATH': PATH.GEAR
+  },
+  'CASE_CROSSBOW_BOLT': {
+    'VALUE': 'case_crossbow_bolt',
+    'PATH': PATH.GEAR
+  },
+  'CLIMBERS_KIT': {
+    'VALUE': 'climbers_kit',
+    'PATH': PATH.GEAR
+  },
+  'CLOTHES_COMMON': {
+    'VALUE': 'clothes_common',
+    'PATH': PATH.GEAR
+  },
+  'CLOTHES_TRAVELERS': {
+    'VALUE': 'clothes_travelers',
+    'PATH': PATH.GEAR
+  },
+  'COMPONENT_POUCH': {
+    'VALUE': 'component_pouch',
+    'PATH': PATH.GEAR
+  },
+  'CROWBAR': {
+    'VALUE': 'crowbar',
+    'PATH': PATH.GEAR
+  },
+  'SPRIG_OF_MISTLETOE': {
+    'VALUE': 'sprig_of_mistletoe',
+    'PATH': PATH.GEAR
+  },
+  'TOTEM': {
+    'VALUE': 'totem',
+    'PATH': PATH.GEAR
+  },
+  'WOODEN_STAFF': {
+    'VALUE': 'wooden_staff',
+    'PATH': PATH.GEAR
+  },
+  'YEW_WAND': {
+    'VALUE': 'yew_wand',
+    'PATH': PATH.GEAR
+  },
+  'FISHING_TACKLE': {
+    'VALUE': 'fishing_tackle',
+    'PATH': PATH.GEAR
+  },
+  'GRAPPLING_HOOK': {
+    'VALUE': 'grappling_hook',
+    'PATH': PATH.GEAR
+  },
+  'HAMMER': {
+    'VALUE': 'hammer',
+    'PATH': PATH.GEAR
+  },
+  'HAMMER_SLEDGE': {
+    'VALUE': 'hammer_sledge',
+    'PATH': PATH.GEAR
+  },
+  'HEALERS_KIT': {
+    'VALUE': 'healers_kit',
+    'PATH': PATH.GEAR
+  },
+  'AMULET': {
+    'VALUE': 'amulet',
+    'PATH': PATH.GEAR
+  },
+  'EMBLEM': {
+    'VALUE': 'emblem',
+    'PATH': PATH.GEAR
+  },
+  'RELIQUARY': {
+    'VALUE': 'reliquary',
+    'PATH': PATH.GEAR
+  },
+  'HOURGLASS': {
+    'VALUE': 'hourglass',
+    'PATH': PATH.GEAR
+  },
+  'HUNTING_TRAP': {
+    'VALUE': 'hunting_trap',
+    'PATH': PATH.GEAR
+  },
+  'LANTERN_BULLSEYE': {
+    'VALUE': 'lantern_bullseye',
+    'PATH': PATH.GEAR
+  },
+  'LANTERN_HOODED': {
+    'VALUE': 'lantern_hooded',
+    'PATH': PATH.GEAR
+  },
+  'LOCK': {
+    'VALUE': 'lock',
+    'PATH': PATH.GEAR
+  },
+  'MAGNIFYING_GLASS': {
+    'VALUE': 'magnifying_glass',
+    'PATH': PATH.GEAR
+  },
+  'MANACLES': {
+    'VALUE': 'manacles',
+    'PATH': PATH.GEAR
+  },
+  'MIRROR_STEEL': {
+    'VALUE': 'mirror_steel',
+    'PATH': PATH.GEAR
+  },
+  'PICK_MINERS': {
+    'VALUE': 'pick_miners',
+    'PATH': PATH.GEAR
+  },
+  'PITON': {
+    'VALUE': 'piton',
+    'PATH': PATH.GEAR
+  },
+  'POT_IRON': {
+    'VALUE': 'pot_iron',
+    'PATH': PATH.GEAR
+  },
+  'POTION_OF_HEALING': {
+    'VALUE': 'potion_of_healing',
+    'PATH': PATH.GEAR
+  },
+  'POUCH': {
+    'VALUE': 'pouch',
+    'PATH': PATH.GEAR
+  },
+  'QUIVER': {
+    'VALUE': 'quiver',
+    'PATH': PATH.GEAR
+  },
+  'RAM_PORTABLE': {
+    'VALUE': 'ram_portable',
+    'PATH': PATH.GEAR
+  },
+  'ROBES': {
+    'VALUE': 'robes',
+    'PATH': PATH.GEAR
+  },
+  'SACK': {
+    'VALUE': 'sack',
+    'PATH': PATH.GEAR
+  },
+  'SCALE_MERCHANTS': {
+    'VALUE': 'scale_merchants',
+    'PATH': PATH.GEAR
+  },
+  'SHOVEL': {
+    'VALUE': 'shovel',
+    'PATH': PATH.GEAR
+  },
+  'SIGNAL_WHISTLE': {
+    'VALUE': 'signal_whistle',
+    'PATH': PATH.GEAR
+  },
+  'SIGNET_RING': {
+    'VALUE': 'signet_ring',
+    'PATH': PATH.GEAR
+  },
+  'SPELLBOOK': {
+    'VALUE': 'spellbook',
+    'PATH': PATH.GEAR
+  },
+  'SPIKES_IRON_10': {
+    'VALUE': 'spikes_iron_10',
+    'PATH': PATH.GEAR
+  },
+  'SPYGLASS': {
+    'VALUE': 'spyglass',
+    'PATH': PATH.GEAR
+  },
+  'TENT_TWO_PERSON': {
+    'VALUE': 'tent_two_person',
+    'PATH': PATH.GEAR
+  },
+  'WHETSTONE': {
+    'VALUE': 'whetstone',
+    'PATH': PATH.GEAR
+  },
   'BACKPACK': {
     'VALUE': 'backpack',
     'PATH': PATH.GEAR
@@ -2322,10 +2647,6 @@ const GEAR = {
     'VALUE': 'clothes_costume',
     'PATH': PATH.GEAR
   },
-  'INK_BOTTLE_EMPTY': {
-    'VALUE': 'ink_bottle_empty',
-    'PATH': PATH.GEAR
-  },
   'INK_BOTTLE': {
     'VALUE': 'ink_bottle',
     'PATH': PATH.GEAR
@@ -2369,6 +2690,64 @@ const GEAR = {
   'SOAP': {
     'VALUE': 'soap',
     'PATH': PATH.GEAR
+  },
+  'BOX_EMPTY': {
+    'VALUE': 'box_empty',
+    'PATH': PATH.GEAR
+  },
+  'BOX_ALMS': {
+    'VALUE': 'box_alms',
+    'PATH': PATH.GEAR
+  },
+  'INCENSE_BLOCK': {
+    'VALUE': 'incense_block'
+  },
+  'CENSER': {
+    'VALUE': 'censer',
+    'PATH': PATH.GEAR
+  },
+  'VESTMENTS': {
+    'VALUE': 'vestments',
+    'PATH': PATH.GEAR
+  },
+  'BAG_EMPTY': {
+    'VALUE': 'bag_empty',
+    'PATH': PATH.GEAR
+  },
+  'BAG_SAND': {
+    'VALUE': 'bag_sand',
+    'PATH': PATH.GEAR
+  },
+  'STRING_10FT': {
+    'VALUE': 'string_10ft',
+    'PATH': PATH.GEAR
+  },
+
+  'TYPE': {
+    'AMMUNITION': {
+      'VALUE': 'ammunition',
+      'PATH': PATH.GEAR_TYPES
+    },
+    'ARCANE_FOCUS': {
+      'VALUE': 'arcane_focus',
+      'PATH': PATH.GEAR_TYPES
+    },
+    'DRUIDIC_FOCUS': {
+      'VALUE': 'druidic_foucs',
+      'PATH': PATH.GEAR_TYPES
+    },
+    'HOLY_SYMBOL': {
+      'VALUE': 'holy_symbol',
+      'PATH': PATH.GEAR_TYPES
+    },
+    'CONTAINER': {
+      'VALUE': 'container',
+      'PATH': PATH.GEAR_TYPES
+    },
+    'COMPONENT': {
+      'VALUE': 'component',
+      'PATH': PATH.GEAR_TYPES
+    }
   }
 };
 
@@ -2458,10 +2837,12 @@ function getPacks() {
     ]
   );
 
+  // TODO - Add remaining packs
+
   return packs;
 }
 
-function Gear(id, name, costGP, weightLB, container=null, packs=null) {
+function Gear(id, name, costGP, weightLB, container=null, packs=null, type=null) {
   if (arguments.length < 4) {
     console.log('ERROR: Missing required arguments');
     return null;
@@ -2484,6 +2865,10 @@ function Gear(id, name, costGP, weightLB, container=null, packs=null) {
     gear['packs'] = packs;
   }
 
+  if (type !== null) {
+    gear['type'] = type;
+  }
+
   return gear;
 }
 
@@ -2502,10 +2887,11 @@ function PackList(list) {
   return packs;
 }
 
-// UNIT does not have VALUE or PATH
+// UNIT does not use VALUE or PATH
 const UNIT = {
   'VOLUME': {
     'FT3': 'cubic feet',
+    'IN3': 'cubic inches',
     'GALLON': 'gallons',
     'PINT': 'pint',
     'OUNCE': 'ounces'
@@ -2518,7 +2904,7 @@ const UNIT = {
   }
 };
 
-function Container(volume, volumeUnit, weightLimit=null, weightUnit=null, isFull=false, contents={}) {
+function Container(volume, volumeUnit, weightLimit=null, weightUnit=null, isFull=false, contents={}, strapped=null) {
   if (arguments.length < 2) {
     console.log('ERROR: Missing required arguments');
     return null;
@@ -2543,22 +2929,982 @@ function Container(volume, volumeUnit, weightLimit=null, weightUnit=null, isFull
     return null;
   }
 
+  if (strapped !== null) {
+    container['strapped'] = strapped;
+  }
+
   return container;
 }
 
-function getGear(id, name) {
+function getGearTypes() {
+  var ammunition = {};
+  // ammunition[NAME] = 'Ammunition';
+  ammunition[GEAR.ARROWS_20.VALUE] = PATH.GEAR;
+  ammunition[GEAR.BLOWGUN_NEEDLES_50.VALUE] = PATH.GEAR;
+  ammunition[GEAR.CROSSBOW_BOLTS_20.VALUE] = PATH.GEAR;
+  ammunition[GEAR.SLING_BULLETS_20.VALUE] = PATH.GEAR;
+
+  var arcaneFocus = {};
+  // arcaneFocus[NAME] = 'Arcane focus';
+  arcaneFocus[GEAR.CRYSTAL.VALUE] = PATH.GEAR;
+  arcaneFocus[GEAR.ORB.VALUE] = PATH.GEAR;
+  arcaneFocus[GEAR.ROD.VALUE] = PATH.GEAR;
+  arcaneFocus[GEAR.STAFF.VALUE] = PATH.GEAR;
+  arcaneFocus[GEAR.WAND.VALUE] = PATH.GEAR;
+
+  var druidicFocus = {};
+  // druidicFocus[NAME] = 'Druidic focus';
+  druidicFocus[GEAR.SPRIG_OF_MISTLETOE.VALUE] = PATH.GEAR;
+  druidicFocus[GEAR.TOTEM.VALUE] = PATH.GEAR;
+  druidicFocus[GEAR.WOODEN_STAFF.VALUE] = PATH.GEAR;
+  druidicFocus[GEAR.YEW_WAND.VALUE] = PATH.GEAR;
+
+  var holySymbols = {};
+  // holySymbols[NAME] = 'Holy symbol';
+  holySymbols[GEAR.AMULET.VALUE] = PATH.GEAR;
+  holySymbols[GEAR.EMBLEM.VALUE] = PATH.GEAR;
+  holySymbols[GEAR.RELIQUARY.VALUE] = PATH.GEAR;
+
+  var containers = {};
+  // containers[NAME] = 'Container';
+  containers[GEAR.BACKPACK.VALUE] = PATH.GEAR;
+  containers[GEAR.BAG_EMPTY.VALUE] = PATH.GEAR;
+  containers[GEAR.BAG_SAND.VALUE] = PATH.GEAR;
+  containers[GEAR.BARREL.VALUE] = PATH.GEAR;
+  containers[GEAR.BASKET.VALUE] = PATH.GEAR;
+  containers[GEAR.BOTTLE.VALUE] = PATH.GEAR;
+  containers[GEAR.BOX_EMPTY.VALUE] = PATH.GEAR;
+  containers[GEAR.BOX_ALMS.VALUE] = PATH.GEAR;
+  containers[GEAR.BUCKET.VALUE] = PATH.GEAR;
+  containers[GEAR.CHEST.VALUE] = PATH.GEAR;
+  containers[GEAR.FLASK_EMPTY.VALUE] = PATH.GEAR;
+  containers[GEAR.FLASK_OIL.VALUE] = PATH.GEAR;
+  containers[GEAR.FLASK_HOLY_WATER.VALUE] = PATH.GEAR;
+  containers[GEAR.FLASK_ALCHEMISTS_FIRE.VALUE] = PATH.GEAR;
+  containers[GEAR.JUG.VALUE] = PATH.GEAR;
+  containers[GEAR.POT_IRON.VALUE] = PATH.GEAR;
+  containers[GEAR.POUCH.VALUE] = PATH.GEAR;
+  containers[GEAR.COMPONENT_POUCH.VALUE] = PATH.GEAR;
+  containers[GEAR.SACK.VALUE] = PATH.GEAR;
+  containers[GEAR.VIAL_EMPTY.VALUE] = PATH.GEAR;
+  containers[GEAR.VIAL_ACID.VALUE] = PATH.GEAR;
+  containers[GEAR.VIAL_POISON.VALUE] = PATH.GEAR;
+  containers[GEAR.VIAL_PERFUME.VALUE] = PATH.GEAR;
+  containers[GEAR.VIAL_ANTITOXIN.VALUE] = PATH.GEAR;
+  containers[GEAR.WATERSKIN.VALUE] = PATH.GEAR;
+  containers[GEAR.POTION_OF_HEALING.VALUE] = PATH.GEAR;
+
+  var components = {};
+  // components[NAME] = 'Components';
+  components[GEAR.INCENSE_BLOCK.VALUE] = PATH.GEAR;
+  // TODO - Add remaining components
+
+  var gearTypes = {};
+  gearTypes[GEAR.TYPE.AMMUNITION.VALUE] = ammunition;
+  gearTypes[GEAR.TYPE.ARCANE_FOCUS.VALUE] = arcaneFocus;
+  gearTypes[GEAR.TYPE.DRUIDIC_FOCUS.VALUE] = druidicFocus;
+  gearTypes[GEAR.TYPE.HOLY_SYMBOL.VALUE] = holySymbols;
+  gearTypes[GEAR.TYPE.CONTAINER.VALUE] = containers;
+  gearTypes[GEAR.TYPE.COMPONENT.VALUE] = components;
+
+  return gearTypes;
+}
+
+// function getGear(id, name) {
+function getGear() {
   var gear = {};
+
+  gear[GEAR.STRING_10FT.VALUE] = Gear(
+    pushID(GEAR.STRING_10FT.VALUE),
+    'String (10-feet)',
+    0,
+    0,
+    null,
+    PackList([
+      PACK.BURGLAR.VALUE
+    ])
+  );
+
+  gear[GEAR.BOX_EMPTY.VALUE] = Gear(
+    pushID(GEAR.BOX_EMPTY.VALUE),
+    'Box, empty',
+    0, // TODO
+    0, // TODO
+    Container(), // TODO
+    null,
+    GEAR.TYPE.CONTAINER
+  );
+
+  gear[GEAR.BOX_ALMS.VALUE] = Gear(
+    pushID(GEAR.BOX_ALMS.VALUE),
+    'Alms box',
+    0, // TODO
+    0, // TODO
+    Container(), // TODO
+    PackList([
+      PACK.PRIEST.VALUE
+    ]),
+    GEAR.TYPE.CONTAINER
+  );
+
+  gear[GEAR.INCENSE_BLOCK.VALUE] = Gear(
+    pushID(GEAR.INCENSE_BLOCK.VALUE),
+    'Block of incense',
+    0, // TODO
+    0, // TODO
+    null,
+    PackList([
+      PACK.PRIEST.VALUE
+    ]),
+    GEAR.TYPE.COMPONENT
+  );
+
+  gear[GEAR.CENSER.VALUE] = Gear(
+    pushID(GEAR.CENSER.VALUE),
+    'Censer',
+    0, // TODO
+    0, // TODO
+    null,
+    PackList([
+      PACK.PRIEST.VALUE
+    ])
+  );
+
+  gear[GEAR.VESTMENTS.VALUE] = Gear(
+    pushID(GEAR.VESTMENTS.VALUE),
+    'Vestments',
+    0, // TODO
+    0, // TODO
+    null,
+    PackList([
+      PACK.PRIEST.VALUE
+    ])
+  );
+
+  gear[GEAR.BAG_EMPTY.VALUE] = Gear(
+    pushID(GEAR.BAG_EMPTY.VALUE),
+    'Bag, empty',
+    0, // TODO
+    0, // TODO
+    Container(), // TODO
+    null,
+    GEAR.TYPE.CONTAINER
+  );
+
+  gear[GEAR.BAG_SAND.VALUE] = Gear(
+    pushID(GEAR.BAG_SAND.VALUE),
+    pushID(GEAR.BAG_EMPTY.VALUE),
+    'Bag of sand',
+    0, // TODO
+    0, // TODO
+    Container(), // TODO
+    PackList([
+      PACK.PRIEST.SCHOLAR
+    ]),
+    GEAR.TYPE.CONTAINER
+  );
+
+  // TODO - Check remaining gear for inclusion in Packs
+
+  gear[GEAR.ABACUS.VALUE] = Gear(
+    pushID(GEAR.ABACUS.VALUE),
+    'Abacus',
+    2,
+    2
+  );
+
+  gear[GEAR.VIAL_ACID.VALUE] = Gear(
+    pushID(GEAR.VIAL_ACID.VALUE),
+    'Acid (vial)',
+    25,
+    1,
+    Container(4, UNIT.VOLUME.OUNCE, null, null, true, {'acid': true}),
+    null,
+    GEAR.TYPE.CONTAINER
+  );
+
+  gear[GEAR.FLASK_ALCHEMISTS_FIRE.VALUE] = Gear(
+    pushID(GEAR.FLASK_ALCHEMISTS_FIRE.VALUE),
+    'Alchemist\'s fire (flask)',
+    50,
+    1,
+    Container(1, UNIT.VOLUME.PINT, null, null, true, {'alchemist\'s fire': true}),
+    null,
+    GEAR.TYPE.CONTAINER
+  );
+
+  gear[GEAR.ARROWS_20.VALUE] = Gear(
+    pushID(GEAR.ARROWS_20.VALUE),
+    'Arrows (20)',
+    1,
+    1,
+    null,
+    null,
+    GEAR.TYPE.AMMUNITION
+  );
+
+  gear[GEAR.BLOWGUN_NEEDLES_50.VALUE] = Gear(
+    pushID(GEAR.BLOWGUN_NEEDLES_50.VALUE),
+    'Blowgun needles (50)',
+    1,
+    1,
+    null,
+    null,
+    GEAR.TYPE.AMMUNITION
+  );
+
+  gear[GEAR.CROSSBOW_BOLTS_20.VALUE] = Gear(
+    pushID(GEAR.CROSSBOW_BOLTS_20.VALUE),
+    'Crossbow bolts (20)',
+    1,
+    1.5,
+    null,
+    null,
+    GEAR.TYPE.AMMUNITION
+  );
+
+  gear[GEAR.SLING_BULLETS_20.VALUE] = Gear(
+    pushID(GEAR.SLING_BULLETS_20.VALUE),
+    'Sling bullets (20)',
+    400,
+    1.5,
+    null,
+    null,
+    GEAR.TYPE.AMMUNITION
+  );
+
+  gear[GEAR.VIAL_ANTITOXIN.VALUE] = Gear(
+    pushID(GEAR.VIAL_ANTITOXIN.VALUE),
+    'Antitoxin (vial)',
+    50,
+    0,
+    Container(4, UNIT.VOLUME.OUNCE, null, null, true, {'antitoxin': true}),
+    null,
+    GEAR.TYPE.CONTAINER
+  );
+
+  gear[GEAR.CRYSTAL.VALUE] = Gear(
+    pushID(GEAR.CRYSTAL.VALUE),
+    'Crystal',
+    10,
+    1,
+    null,
+    null,
+    GEAR.TYPE.ARCANE_FOCUS
+  );
+
+  gear[GEAR.ORB.VALUE] = Gear(
+    pushID(GEAR.ORB.VALUE),
+    'Orb',
+    20,
+    3,
+    null,
+    null,
+    GEAR.TYPE.ARCANE_FOCUS
+  );
+
+  gear[GEAR.ROD.VALUE] = Gear(
+    pushID(GEAR.ROD.VALUE),
+    'Rod',
+    10,
+    2,
+    null,
+    null,
+    GEAR.TYPE.ARCANE_FOCUS
+  );
+
+  gear[GEAR.STAFF.VALUE] = Gear(
+    pushID(GEAR.STAFF.VALUE),
+    'Staff',
+    5,
+    4,
+    null,
+    null,
+    GEAR.TYPE.ARCANE_FOCUS
+  );
+
+  gear[GEAR.WAND.VALUE] = Gear(
+    pushID(GEAR.WAND.VALUE),
+    'Wand',
+    10,
+    1,
+    null,
+    null,
+    GEAR.TYPE.ARCANE_FOCUS
+  );
+
+  gear[GEAR.BALL_BEARINGS_BAG_1000.VALUE] = Gear(
+    pushID(GEAR.BALL_BEARINGS_BAG_1000.VALUE),
+    'Ball bearings (bag of 1,000)',
+    1,
+    2,
+    Container(5, UNIT.VOLUME.IN3, 2, UNIT.WEIGHT.LB, true, {'ball bearings': true}),
+    null,
+    GEAR.TYPE.CONTAINER
+  );
+
+  gear[GEAR.BARREL.VALUE] = Gear(
+    pushID(GEAR.BARREL.VALUE),
+    'Barrel',
+    2,
+    70,
+    Container(40, UNIT.VOLUME.GALLON),
+    null,
+    GEAR.TYPE.CONTAINER
+  );
+
+  gear[GEAR.BASKET.VALUE] = Gear(
+    pushID(GEAR.BASKET.VALUE),
+    'Basket',
+    40,
+    2,
+    Container(2, UNIT.VOLUME.FT3, 40, UNIT.WEIGHT.LB),
+    null,
+    GEAR.TYPE.CONTAINER
+  );
+
+  gear[GEAR.BELL.VALUE] = Gear(
+    pushID(GEAR.BELL.VALUE),
+    'Bell',
+    1,
+    0,
+    null,
+    PackList([
+      PACK.BURGLAR.VALUE
+    ])
+  );
+
+  gear[GEAR.BLANKET.VALUE] = Gear(
+    pushID(GEAR.BLANKET.VALUE),
+    'Blanket',
+    50,
+    3,
+    null,
+    PackList([
+      PACK.PRIEST.VALUE
+    ])
+  );
+
+  gear[GEAR.BLOCK_AND_TACKLE.VALUE] = Gear(
+    pushID(GEAR.BLOCK_AND_TACKLE.VALUE),
+    'Block and tackle',
+    1,
+    5,
+    null,
+    null
+  );
+
+  gear[GEAR.BOOK.VALUE] = Gear(
+    pushID(GEAR.BOOK.VALUE),
+    'Book',
+    25,
+    5,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.BOOK_LORE.VALUE] = Gear(
+    pushID(GEAR.BOOK_LORE.VALUE),
+    'Book of lore',
+    25,
+    5,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Bottle, glass',
+    2,
+    2,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Bucket',
+    500,
+    2,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Caltrops (bag of 20)',
+    1,
+    2,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Case, crossbow bolt',
+    1,
+    1,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Chain (10 feet)',
+    5,
+    10,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Chalk (1 piece)',
+    100,
+    0,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Climber\'s kit',
+    25,
+    12,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Clothes, common',
+    50,
+    3,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Clothes, traveler\'s',
+    2,
+    4,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Component pouch',
+    25,
+    2,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Crowbar',
+    2,
+    5,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Sprig of mistletoe',
+    1,
+    0,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Totem',
+    1,
+    0,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Wooden staff',
+    5,
+    4,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Yew wand',
+    10,
+    1,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Fishing tackle',
+    1,
+    4,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Grappling hook',
+    2,
+    4,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Hammer',
+    1,
+    3,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Hammer, sledge',
+    2,
+    10,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Healer\'s kit',
+    5,
+    3,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Amulet',
+    5,
+    1,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Emblem',
+    5,
+    0,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Reliquary',
+    5,
+    2,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Holy water (flask)',
+    25,
+    1,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Hourglass',
+    25,
+    1,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Hunting trap',
+    5,
+    25,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Jug or pitcher',
+    200,
+    4,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Ladder (10-foot)',
+    10,
+    25,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Lantern, bullseye',
+    10,
+    2,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Lantern, hooded',
+    5,
+    2,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Lock',
+    10,
+    1,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Magnifying glass',
+    100,
+    0,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Manacles',
+    2,
+    6,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Mirror, steel',
+    5,
+    0.5,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Parchment (one sheet)',
+    10,
+    0,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Pick, miner\'s',
+    2,
+    10,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Piton',
+    500,
+    0.25,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Poison, basic (vial)',
+    100,
+    0,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Pole (10-foot)',
+    500,
+    7,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Pot, iron',
+    2,
+    10,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Potion of healing',
+    50,
+    0.5,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Pouch',
+    50,
+    1,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Quiver',
+    1,
+    1,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Ram, portable',
+    4,
+    35,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Robes',
+    1,
+    4,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Rope, silk (50 feet)',
+    10,
+    5,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Sack',
+    100,
+    0.5,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Scale, merchant\'s',
+    5,
+    3,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Shovel',
+    2,
+    5,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Signal whistle',
+    500,
+    0,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Signet ring',
+    5,
+    0,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Spellbook',
+    50,
+    3,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Spikes, iron (10)',
+    1,
+    5,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Spyglass',
+    1000,
+    1,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Tent, two-person',
+    2,
+    20,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.VALUE] = Gear(
+    pushID(GEAR.VALUE),
+    'Whetstone',
+    100,
+    1,
+    null,
+    null,
+    null
+  );
+
+  gear[GEAR.BOTTLE.VALUE] = Gear(
+    pushID(GEAR.BOTTLE.VALUE),
+    'Bottle, empty',
+    2,
+    2,
+    Container(1.5, UNIT.VOLUME.PINT),
+    null,
+    GEAR.TYPE.CONTAINER
+  );
+
+  gear[GEAR.POTION_OF_HEALING.VALUE] = Gear(
+    pushID(GEAR.POTION_OF_HEALING.VALUE),
+    'Potion of healing',
+    50,
+    2,
+    Container(4, UNIT.VOLUME.OUNCE, null, null, true, {'healing potion': true}),
+    null,
+    GEAR.TYPE.CONTAINER
+  );
 
   gear[GEAR.BACKPACK.VALUE] = Gear(
     pushID(GEAR.BACKPACK.VALUE),
     'Backpack',
     2,
     5,
-    Container(1, UNIT.VOLUME.FT3, 30, UNIT.WEIGHT.LB),
+    Container(1, UNIT.VOLUME.FT3, 30, UNIT.WEIGHT.LB, {}, {}),
     PackList([
       PACK.ENTERTAINER.VALUE,
       PACK.EXPLORER.VALUE
-    ])
+    ]),
+    GEAR.TYPE.CONTAINER
   );
 
   gear[GEAR.WATERSKIN.VALUE] = Gear(
@@ -2570,7 +3916,8 @@ function getGear(id, name) {
     PackList([
       PACK.ENTERTAINER.VALUE,
       PACK.EXPLORER.VALUE
-    ])
+    ]),
+    GEAR.TYPE.CONTAINER
   );
 
   gear[GEAR.BEDROLL.VALUE] = Gear(
@@ -2643,7 +3990,8 @@ function getGear(id, name) {
     Container(12, UNIT.VOLUME.FT3, 300, UNIT.WEIGHT.LB),
     PackList([
       PACK.DIPLOMAT.VALUE
-    ])
+    ]),
+    GEAR.TYPE.CONTAINER
   );
 
   gear[GEAR.CASE_MAP_SCROLL.VALUE] = Gear(
@@ -2654,7 +4002,8 @@ function getGear(id, name) {
     Container(1, UNIT.COUNT.MAP_SCROLL),
     PackList([
       PACK.DIPLOMAT.VALUE
-    ])
+    ]),
+    GEAR.TYPE.CONTAINER
   );
 
   gear[GEAR.CLOTHES_FINE.VALUE] = Gear(
@@ -2677,14 +4026,6 @@ function getGear(id, name) {
     ])
   );
 
-  gear[GEAR.INK_BOTTLE_EMPTY.VALUE] = Gear(
-    pushID(GEAR.INK_BOTTLE_EMPTY.VALUE),
-    'Ink (1 ounce bottle)',
-    10,
-    0,
-    Container(1, UNIT.VOLUME.OUNCE)
-  );
-
   gear[GEAR.INK_BOTTLE.VALUE] = Gear(
     pushID(GEAR.INK_BOTTLE.VALUE),
     'Ink (1 ounce bottle)',
@@ -2693,7 +4034,8 @@ function getGear(id, name) {
     Container(1, UNIT.VOLUME.OUNCE, null, null, true, {'ink': true}),
     PackList([
       PACK.DIPLOMAT.VALUE
-    ])
+    ]),
+    GEAR.TYPE.CONTAINER
   );
 
   gear[GEAR.INK_PEN.VALUE] = Gear(
@@ -2721,7 +4063,8 @@ function getGear(id, name) {
     'Flask',
     0.02,
     1,
-    Container(1.5, UNIT.VOLUME.PINT)
+    Container(1.5, UNIT.VOLUME.PINT),
+    GEAR.TYPE.CONTAINER
   );
 
   gear[GEAR.FLASK_OIL.VALUE] = Gear(
@@ -2732,7 +4075,8 @@ function getGear(id, name) {
     Container(1.5, UNIT.VOLUME.PINT, null, null, true, {'oil': true}),
     PackList([
       PACK.DIPLOMAT.VALUE
-    ])
+    ]),
+    GEAR.TYPE.CONTAINER
   );
 
   gear[GEAR.PAPER.VALUE] = Gear(
@@ -2750,7 +4094,8 @@ function getGear(id, name) {
     'Vial',
     1,
     0,
-    Container(4, UNIT.VOLUME.OUNCE)
+    Container(4, UNIT.VOLUME.OUNCE),
+    GEAR.TYPE.CONTAINER
   );
 
   gear[GEAR.VIAL_PERFUME.VALUE] = Gear(
@@ -2761,7 +4106,8 @@ function getGear(id, name) {
     Container(4, UNIT.VOLUME.OUNCE, null, null, true, {'perfume': true}),
     PackList([
       PACK.DIPLOMAT.VALUE
-    ])
+    ]),
+    GEAR.TYPE.CONTAINER
   );
 
   gear[GEAR.SEALING_WAX.VALUE] = Gear(
@@ -3634,6 +4980,7 @@ dbRefs[PATH.ARMOR] = new DbRef('Armor', PATH.ARMOR, getArmor);
 dbRefs[PATH.ARMOR_TYPES] = new DbRef('Armor types', PATH.ARMOR_TYPES, getArmorTypes);
 dbRefs[PATH.CLASSES] = new DbRef('Classes', PATH.CLASSES, getClasses);
 dbRefs[PATH.GEAR] = new DbRef('Gear', PATH.GEAR, getGear);
+dbRefs[PATH.GEAR_TYPES] = new DbRef('Gear types', PATH.GEAR_TYPES, getGearTypes);
 dbRefs[PATH.LANGUAGES] = new DbRef('Languages', PATH.LANGUAGES, getLanguages);
 dbRefs[PATH.PACKS] = new DbRef('Packs', PATH.PACKS, getPacks);
 dbRefs[PATH.RACES] = new DbRef('Races', PATH.RACES, getRaces);
