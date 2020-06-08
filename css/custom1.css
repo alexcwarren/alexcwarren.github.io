@@ -37,6 +37,15 @@ div.row {
   padding: 10px;
 }
 
+.timer-button {
+  font-size: 20px;
+  margin: 5px;
+}
+
+div.stopwatch span {
+  font-size: 40px;
+}
+
 #subraceDiv {
   display: none;
 }

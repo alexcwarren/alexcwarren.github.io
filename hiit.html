@@ -68,6 +68,19 @@
     </nav>
 
     <div class="container">
+      <div class="stopwatch">
+        <div class="timer-buttons">
+          <input type="button" class="timer-button" id="start-button" name="start-timer" value="Start" onclick="startTimer()">
+          <input type="button" class="timer-button" id="stop-button" name="stop-timer" value="Stop" onclick="stopTimer()" disabled>
+          <input type="button" class="timer-button" id="reset-button" name="reset-timer" value="Reset" onclick="resetTimer()">
+        </div>
+
+        <span class="time-field" id="minutes">00</span>
+        <span>:</span>
+        <span class="time-field" id="seconds">00</span>
+        <span>.</span>
+        <span class="time-field" id="milliseconds">000</span>
+      </div>
     </div><!-- /.container -->
 
 
