@@ -1,13 +1,3 @@
-// Buttons
-const startButton = document.getElementById('start-button');
-const stopButton = document.getElementById('stop-button');
-const resetButton = document.getElementById('reset-button');
-
-// Stopwatch time fields
-const minutesField = document.getElementById('minutes');
-const secondsField = document.getElementById('seconds');
-const millisecondsField = document.getElementById('milliseconds');
-
 var counter = null;
 var startTime = null;
 
@@ -37,6 +27,11 @@ function resetTimer() {
   stopTime = 0;
 }
 
+// Buttons
+const startButton = document.getElementById('start-button');
+const stopButton = document.getElementById('stop-button');
+const resetButton = document.getElementById('reset-button');
+
 function setDisabled(start, stop, reset) {
   startButton.disabled = start;
   stopButton.disabled = stop;
@@ -57,6 +52,11 @@ function updateTime() {
 function getMinutes(milli) {return Math.floor((milli/1000) / 60);}
 function getSeconds(milli, min) {return Math.floor((milli - min*60*1000) / 1000);}
 function getMilliseconds(milli, min, sec) {return milli - min*60*1000 - sec*60;}
+
+// Stopwatch time fields
+const minutesField = document.getElementById('minutes');
+const secondsField = document.getElementById('seconds');
+const millisecondsField = document.getElementById('milliseconds');
 
 function setTime(min=0, sec=0, milli=0) {
   minutesField.innerText = min.toString().padStart(2, '0');
