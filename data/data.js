@@ -1,4 +1,4 @@
-const dataRef = database.ref('data');
+const dataRef = database.ref('dnd_data');
 
 const ANY = 'any';
 const ALL = 'all';
@@ -2264,7 +2264,7 @@ const PACK = {
     'VALUE': 'diplomat',
     'PATH': PATH.PACKS
   },
-  'DUNEONEER': {
+  'DUNGEONEER': {
     'VALUE': 'dungeoneer',
     'PATH': PATH.PACKS
   },
@@ -2691,10 +2691,6 @@ const GEAR = {
     'VALUE': 'soap',
     'PATH': PATH.GEAR
   },
-  'BOX_EMPTY': {
-    'VALUE': 'box_empty',
-    'PATH': PATH.GEAR
-  },
   'BOX_ALMS': {
     'VALUE': 'box_alms',
     'PATH': PATH.GEAR
@@ -2710,16 +2706,16 @@ const GEAR = {
     'VALUE': 'vestments',
     'PATH': PATH.GEAR
   },
-  'BAG_EMPTY': {
-    'VALUE': 'bag_empty',
-    'PATH': PATH.GEAR
-  },
   'BAG_SAND': {
     'VALUE': 'bag_sand',
     'PATH': PATH.GEAR
   },
   'STRING_10FT': {
     'VALUE': 'string_10ft',
+    'PATH': PATH.GEAR
+  },
+  'SMALL_KNIFE': {
+    'VALUE': 'small_knife',
     'PATH': PATH.GEAR
   },
 
@@ -2787,17 +2783,24 @@ function Content(quanity, item) {
 
 function getPacks() {
   var packs = {};
-  packs[PACK.EXPLORER.VALUE] = Pack(
-    pushID(PACK.EXPLORER.VALUE),
-    'Explorer\'s pack',
-    10,
+
+  packs[PACK.BURGLAR.VALUE] = Pack(
+    pushID(PACK.BURGLAR.VALUE),
+    'Burglar\'s pack',
+    16,
     [
       Content(1, GEAR.BACKPACK.VALUE),
-      Content(1, GEAR.BEDROLL.VALUE),
-      Content(1, GEAR.MESS_KIT.VALUE),
+      Content(1, GEAR.CALTROPS_BAG_20.VALUE),
+      Content(1, GEAR.STRING_10FT.VALUE),
+      Content(1, GEAR.BELL.VALUE),
+      Content(5, GEAR.CANDLE.VALUE),
+      Content(1, GEAR.CROWBAR.VALUE),
+      Content(1, GEAR.HAMMER.VALUE),
+      Content(10, GEAR.PITON.VALUE),
+      Content(1, GEAR.LANTERN_HOODED.VALUE),
+      Content(2, GEAR.FLASK_OIL.VALUE),
+      Content(5, GEAR.RATIONS.VALUE),
       Content(1, GEAR.TINDERBOX.VALUE),
-      Content(10, GEAR.TORCH.VALUE),
-      Content(10, GEAR.RATIONS.VALUE),
       Content(1, GEAR.WATERSKIN.VALUE),
       Content(1, GEAR.HEMPEN_ROPE.VALUE)
     ]
@@ -2822,6 +2825,23 @@ function getPacks() {
     ]
   );
 
+  packs[PACK.DUNGEONEER.VALUE] = Pack(
+    pushID(PACK.DUNGEONEER.VALUE),
+    'Dungeoneer\'s pack',
+    12,
+    [
+      Content(1, GEAR.BACKPACK.VALUE),
+      Content(1, GEAR.CROWBAR.VALUE),
+      Content(1, GEAR.HAMMER.VALUE),
+      Content(10, GEAR.PITON.VALUE),
+      Content(10, GEAR.TORCH.VALUE),
+      Content(1, GEAR.TINDERBOX.VALUE),
+      Content(10, GEAR.RATIONS.VALUE),
+      Content(1, GEAR.WATERSKIN.VALUE),
+      Content(1, GEAR.HEMPEN_ROPE.VALUE)
+    ]
+  );
+
   packs[PACK.ENTERTAINER.VALUE] = Pack(
     pushID(PACK.ENTERTAINER.VALUE),
     'Entertainer\'s pack',
@@ -2837,7 +2857,54 @@ function getPacks() {
     ]
   );
 
-  // TODO - Add remaining packs
+  packs[PACK.EXPLORER.VALUE] = Pack(
+    pushID(PACK.EXPLORER.VALUE),
+    'Explorer\'s pack',
+    10,
+    [
+      Content(1, GEAR.BACKPACK.VALUE),
+      Content(1, GEAR.BEDROLL.VALUE),
+      Content(1, GEAR.MESS_KIT.VALUE),
+      Content(1, GEAR.TINDERBOX.VALUE),
+      Content(10, GEAR.TORCH.VALUE),
+      Content(10, GEAR.RATIONS.VALUE),
+      Content(1, GEAR.WATERSKIN.VALUE),
+      Content(1, GEAR.HEMPEN_ROPE.VALUE)
+    ]
+  );
+
+  packs[PACK.PRIEST.VALUE] = Pack(
+    pushID(PACK.PRIEST.VALUE),
+    'Priest\'s pack',
+    19,
+    [
+      Content(1, GEAR.BACKPACK.VALUE),
+      Content(1, GEAR.BLANKET.VALUE),
+      Content(10, GEAR.CANDLE.VALUE),
+      Content(1, GEAR.TINDERBOX.VALUE),
+      Content(1, GEAR.BOX_ALMS.VALUE),
+      Content(2, GEAR.INCENSE_BLOCK.VALUE),
+      Content(1, GEAR.CENSER.VALUE),
+      Content(1, GEAR.VESTMENTS.VALUE),
+      Content(2, GEAR.RATIONS.VALUE),
+      Content(1, GEAR.WATERSKIN.VALUE)
+    ]
+  );
+
+  packs[PACK.SCHOLAR.VALUE] = Pack(
+    pushID(PACK.SCHOLAR.VALUE),
+    'Scholar\'s pack',
+    40,
+    [
+      Content(1, GEAR.BACKPACK.VALUE),
+      Content(1, GEAR.BOOK_LORE.VALUE),
+      Content(1, GEAR.INK_BOTTLE.VALUE),
+      Content(1, GEAR.INK_PEN.VALUE),
+      Content(10, GEAR.PARCHMENT.VALUE),
+      Content(1, GEAR.BAG_SAND.VALUE),
+      Content(1, GEAR.SMALL_KNIFE.VALUE)
+    ]
+  );
 
   return packs;
 }
@@ -2968,13 +3035,9 @@ function getGearTypes() {
   var containers = {};
   // containers[NAME] = 'Container';
   containers[GEAR.BACKPACK.VALUE] = PATH.GEAR;
-  containers[GEAR.BAG_EMPTY.VALUE] = PATH.GEAR;
-  containers[GEAR.BAG_SAND.VALUE] = PATH.GEAR;
   containers[GEAR.BARREL.VALUE] = PATH.GEAR;
   containers[GEAR.BASKET.VALUE] = PATH.GEAR;
   containers[GEAR.BOTTLE.VALUE] = PATH.GEAR;
-  containers[GEAR.BOX_EMPTY.VALUE] = PATH.GEAR;
-  containers[GEAR.BOX_ALMS.VALUE] = PATH.GEAR;
   containers[GEAR.BUCKET.VALUE] = PATH.GEAR;
   containers[GEAR.CHEST.VALUE] = PATH.GEAR;
   containers[GEAR.FLASK_EMPTY.VALUE] = PATH.GEAR;
@@ -2984,7 +3047,6 @@ function getGearTypes() {
   containers[GEAR.JUG.VALUE] = PATH.GEAR;
   containers[GEAR.POT_IRON.VALUE] = PATH.GEAR;
   containers[GEAR.POUCH.VALUE] = PATH.GEAR;
-  containers[GEAR.COMPONENT_POUCH.VALUE] = PATH.GEAR;
   containers[GEAR.SACK.VALUE] = PATH.GEAR;
   containers[GEAR.VIAL_EMPTY.VALUE] = PATH.GEAR;
   containers[GEAR.VIAL_ACID.VALUE] = PATH.GEAR;
@@ -2992,7 +3054,6 @@ function getGearTypes() {
   containers[GEAR.VIAL_PERFUME.VALUE] = PATH.GEAR;
   containers[GEAR.VIAL_ANTITOXIN.VALUE] = PATH.GEAR;
   containers[GEAR.WATERSKIN.VALUE] = PATH.GEAR;
-  containers[GEAR.POTION_OF_HEALING.VALUE] = PATH.GEAR;
 
   var components = {};
   // components[NAME] = 'Components';
@@ -3025,22 +3086,12 @@ function getGear() {
     ])
   );
 
-  gear[GEAR.BOX_EMPTY.VALUE] = Gear(
-    pushID(GEAR.BOX_EMPTY.VALUE),
-    'Box, empty',
-    0, // TODO
-    0, // TODO
-    Container(), // TODO
-    null,
-    GEAR.TYPE.CONTAINER
-  );
-
   gear[GEAR.BOX_ALMS.VALUE] = Gear(
     pushID(GEAR.BOX_ALMS.VALUE),
     'Alms box',
-    0, // TODO
-    0, // TODO
-    Container(), // TODO
+    0,
+    0,
+    null,
     PackList([
       PACK.PRIEST.VALUE
     ]),
@@ -3050,8 +3101,8 @@ function getGear() {
   gear[GEAR.INCENSE_BLOCK.VALUE] = Gear(
     pushID(GEAR.INCENSE_BLOCK.VALUE),
     'Block of incense',
-    0, // TODO
-    0, // TODO
+    0,
+    0,
     null,
     PackList([
       PACK.PRIEST.VALUE
@@ -3062,8 +3113,8 @@ function getGear() {
   gear[GEAR.CENSER.VALUE] = Gear(
     pushID(GEAR.CENSER.VALUE),
     'Censer',
-    0, // TODO
-    0, // TODO
+    0,
+    0,
     null,
     PackList([
       PACK.PRIEST.VALUE
@@ -3073,38 +3124,35 @@ function getGear() {
   gear[GEAR.VESTMENTS.VALUE] = Gear(
     pushID(GEAR.VESTMENTS.VALUE),
     'Vestments',
-    0, // TODO
-    0, // TODO
+    0,
+    0,
     null,
     PackList([
       PACK.PRIEST.VALUE
     ])
   );
 
-  gear[GEAR.BAG_EMPTY.VALUE] = Gear(
-    pushID(GEAR.BAG_EMPTY.VALUE),
-    'Bag, empty',
-    0, // TODO
-    0, // TODO
-    Container(), // TODO
-    null,
-    GEAR.TYPE.CONTAINER
-  );
-
   gear[GEAR.BAG_SAND.VALUE] = Gear(
     pushID(GEAR.BAG_SAND.VALUE),
-    pushID(GEAR.BAG_EMPTY.VALUE),
     'Bag of sand',
-    0, // TODO
-    0, // TODO
-    Container(), // TODO
+    0,
+    0,
+    null,
     PackList([
       PACK.PRIEST.SCHOLAR
-    ]),
-    GEAR.TYPE.CONTAINER
+    ])
   );
 
-  // TODO - Check remaining gear for inclusion in Packs
+  gear[GEAR.SMALL_KNIFE.VALUE] = Gear(
+    pushID(GEAR.SMALL_KNIFE.VALUE),
+    'Small knife',
+    0,
+    0,
+    null,
+    PackList([
+      PACK.PRIEST.SCHOLAR
+    ])
+  );
 
   gear[GEAR.ABACUS.VALUE] = Gear(
     pushID(GEAR.ABACUS.VALUE),
@@ -3239,7 +3287,9 @@ function getGear() {
     1,
     2,
     Container(5, UNIT.VOLUME.IN3, 2, UNIT.WEIGHT.LB, true, {'ball bearings': true}),
-    null,
+    PackList([
+      PACK.BURGLAR.VALUE
+    ]),
     GEAR.TYPE.CONTAINER
   );
 
@@ -3289,19 +3339,14 @@ function getGear() {
     pushID(GEAR.BLOCK_AND_TACKLE.VALUE),
     'Block and tackle',
     1,
-    5,
-    null,
-    null
+    5
   );
 
   gear[GEAR.BOOK.VALUE] = Gear(
     pushID(GEAR.BOOK.VALUE),
     'Book',
     25,
-    5,
-    null,
-    null,
-    null
+    5
   );
 
   gear[GEAR.BOOK_LORE.VALUE] = Gear(
@@ -3310,568 +3355,437 @@ function getGear() {
     25,
     5,
     null,
-    null,
-    null
+    PackList([
+      PACK.SCHOLAR.VALUE
+    ])
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
-    'Bottle, glass',
-    2,
-    2,
-    null,
-    null,
-    null
-  );
-
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.BUCKET.VALUE] = Gear(
+    pushID(GEAR.BUCKET.VALUE),
     'Bucket',
     500,
     2,
+    Container(3, UNIT.VOLUME.GALLON),
     null,
-    null,
-    null
+    GEAR.TYPE.CONTAINER
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.CALTROPS_BAG_20.VALUE] = Gear(
+    pushID(GEAR.CALTROPS_BAG_20.VALUE),
     'Caltrops (bag of 20)',
     1,
-    2,
-    null,
-    null,
-    null
+    2
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.CASE_CROSSBOW_BOLT.VALUE] = Gear(
+    pushID(GEAR.CASE_CROSSBOW_BOLT.VALUE),
     'Case, crossbow bolt',
     1,
     1,
+    Container(20, UNIT.COUNT, false, {'bolts': 0}),
     null,
-    null,
-    null
+    GEAR.TYPE.CONTAINER
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.CHAIN.VALUE] = Gear(
+    pushID(GEAR.CHAIN.VALUE),
     'Chain (10 feet)',
     5,
-    10,
-    null,
-    null,
-    null
+    10
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.CHALK.VALUE] = Gear(
+    pushID(GEAR.CHALK.VALUE),
     'Chalk (1 piece)',
     100,
-    0,
-    null,
-    null,
-    null
+    0
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.CLIMBERS_KIT.VALUE] = Gear(
+    pushID(GEAR.CLIMBERS_KIT.VALUE),
     'Climber\'s kit',
     25,
-    12,
-    null,
-    null,
-    null
+    12
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.CLOTHES_COMMON.VALUE] = Gear(
+    pushID(GEAR.CLOTHES_COMMON.VALUE),
     'Clothes, common',
     50,
-    3,
-    null,
-    null,
-    null
+    3
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.CLOTHES_TRAVELERS.VALUE] = Gear(
+    pushID(GEAR.CLOTHES_TRAVELERS.VALUE),
     'Clothes, traveler\'s',
     2,
-    4,
-    null,
-    null,
-    null
+    4
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.COMPONENT_POUCH.VALUE] = Gear(
+    pushID(GEAR.COMPONENT_POUCH.VALUE),
     'Component pouch',
     25,
-    2,
-    null,
-    null,
-    null
+    2
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.CROWBAR.VALUE] = Gear(
+    pushID(GEAR.CROWBAR.VALUE),
     'Crowbar',
     2,
     5,
     null,
-    null,
-    null
+    PackList([
+      PACK.BURGLAR.VALUE,
+      PACK.DUNGEONEER.VALUE
+    ])
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.SPRIG_OF_MISTLETOE.VALUE] = Gear(
+    pushID(GEAR.SPRIG_OF_MISTLETOE.VALUE),
     'Sprig of mistletoe',
     1,
-    0,
-    null,
-    null,
-    null
+    0
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.TOTEM.VALUE] = Gear(
+    pushID(GEAR.TOTEM.VALUE),
     'Totem',
     1,
-    0,
-    null,
-    null,
-    null
+    0
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.WOODEN_STAFF.VALUE] = Gear(
+    pushID(GEAR.WOODEN_STAFF.VALUE),
     'Wooden staff',
     5,
-    4,
-    null,
-    null,
-    null
+    4
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.YEW_WAND.VALUE] = Gear(
+    pushID(GEAR.YEW_WAND.VALUE),
     'Yew wand',
     10,
-    1,
-    null,
-    null,
-    null
+    1
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.FISHING_TACKLE.VALUE] = Gear(
+    pushID(GEAR.FISHING_TACKLE.VALUE),
     'Fishing tackle',
     1,
-    4,
-    null,
-    null,
-    null
+    4
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.GRAPPLING_HOOK.VALUE] = Gear(
+    pushID(GEAR.GRAPPLING_HOOK.VALUE),
     'Grappling hook',
     2,
-    4,
-    null,
-    null,
-    null
+    4
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.HAMMER.VALUE] = Gear(
+    pushID(GEAR.HAMMER.VALUE),
     'Hammer',
     1,
     3,
     null,
-    null,
-    null
+    PackList([
+      PACK.BURGLAR.VALUE,
+      PACK.DUNGEONEER.VALUE
+    ])
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.HAMMER_SLEDGE.VALUE] = Gear(
+    pushID(GEAR.HAMMER_SLEDGE.VALUE),
     'Hammer, sledge',
     2,
-    10,
-    null,
-    null,
-    null
+    10
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.HEALERS_KIT.VALUE] = Gear(
+    pushID(GEAR.HEALERS_KIT.VALUE),
     'Healer\'s kit',
     5,
-    3,
-    null,
-    null,
-    null
+    3
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.AMULET.VALUE] = Gear(
+    pushID(GEAR.AMULET.VALUE),
     'Amulet',
     5,
-    1,
-    null,
-    null,
-    null
+    1
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.EMBLEM.VALUE] = Gear(
+    pushID(GEAR.EMBLEM.VALUE),
     'Emblem',
     5,
-    0,
-    null,
-    null,
-    null
+    0
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.RELIQUARY.VALUE] = Gear(
+    pushID(GEAR.RELIQUARY.VALUE),
     'Reliquary',
     5,
-    2,
-    null,
-    null,
-    null
+    2
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.FLASK_HOLY_WATER.VALUE] = Gear(
+    pushID(GEAR.FLASK_HOLY_WATER.VALUE),
     'Holy water (flask)',
     25,
     1,
+    Container(1, UNIT.VOLUME.PINT, null, null, true, {'holy water': true}),
     null,
-    null,
-    null
+    GEAR.TYPE.CONTAINER
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.HOURGLASS.VALUE] = Gear(
+    pushID(GEAR.HOURGLASS.VALUE),
     'Hourglass',
     25,
-    1,
-    null,
-    null,
-    null
+    1
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.HUNTING_TRAP.VALUE] = Gear(
+    pushID(GEAR.HUNTING_TRAP.VALUE),
     'Hunting trap',
     5,
-    25,
-    null,
-    null,
-    null
+    25
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.JUG.VALUE] = Gear(
+    pushID(GEAR.JUG.VALUE),
     'Jug or pitcher',
     200,
     4,
+    Container(1, UNIT.VOLUME.GALLON),
     null,
-    null,
-    null
+    GEAR.TYPE.CONTAINER
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.LADDER.VALUE] = Gear(
+    pushID(GEAR.LADDER.VALUE),
     'Ladder (10-foot)',
     10,
-    25,
-    null,
-    null,
-    null
+    25
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.LANTERN_BULLSEYE.VALUE] = Gear(
+    pushID(GEAR.LANTERN_BULLSEYE.VALUE),
     'Lantern, bullseye',
     10,
-    2,
-    null,
-    null,
-    null
+    2
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.LANTERN_HOODED.VALUE] = Gear(
+    pushID(GEAR.LANTERN_HOODED.VALUE),
     'Lantern, hooded',
     5,
     2,
     null,
-    null,
-    null
+    PackList([
+      PACK.BURGLAR.VALUE
+    ])
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.LOCK.VALUE] = Gear(
+    pushID(GEAR.LOCK.VALUE),
     'Lock',
     10,
-    1,
-    null,
-    null,
-    null
+    1
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.MAGNIFYING_GLASS.VALUE] = Gear(
+    pushID(GEAR.MAGNIFYING_GLASS.VALUE),
     'Magnifying glass',
     100,
-    0,
-    null,
-    null,
-    null
+    0
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.MANACLES.VALUE] = Gear(
+    pushID(GEAR.MANACLES.VALUE),
     'Manacles',
     2,
-    6,
-    null,
-    null,
-    null
+    6
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.MIRROR_STEEL.VALUE] = Gear(
+    pushID(GEAR.MIRROR_STEEL.VALUE),
     'Mirror, steel',
     5,
-    0.5,
-    null,
-    null,
-    null
+    0.5
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.PARCHMENT.VALUE] = Gear(
+    pushID(GEAR.PARCHMENT.VALUE),
     'Parchment (one sheet)',
     10,
     0,
     null,
-    null,
-    null
+    PackList([
+      PACK.SCHOLAR.VALUE
+    ])
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.PICK_MINERS.VALUE] = Gear(
+    pushID(GEAR.PICK_MINERS.VALUE),
     'Pick, miner\'s',
     2,
-    10,
-    null,
-    null,
-    null
+    10
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.PITON.VALUE] = Gear(
+    pushID(GEAR.PITON.VALUE),
     'Piton',
     500,
     0.25,
     null,
-    null,
-    null
+    PackList([
+      PACK.BURGLAR.VALUE,
+      PACK.DUNGEONEER.VALUE
+    ])
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.VIAL_POISON.VALUE] = Gear(
+    pushID(GEAR.VIAL_POISON.VALUE),
     'Poison, basic (vial)',
     100,
     0,
+    Container(4, UNIT.VOLUME.OUNCE, null, null, true, {'poison': true}),
     null,
-    null,
-    null
+    GEAR.TYPE.CONTAINER
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.POLE.VALUE] = Gear(
+    pushID(GEAR.POLE.VALUE),
     'Pole (10-foot)',
     500,
-    7,
-    null,
-    null,
-    null
+    7
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.POT_IRON.VALUE] = Gear(
+    pushID(GEAR.POT_IRON.VALUE),
     'Pot, iron',
     2,
     10,
+    Container(1, UNIT.VOLUME.GALLON),
     null,
-    null,
-    null
+    GEAR.TYPE.CONTAINER
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
-    'Potion of healing',
-    50,
-    0.5,
-    null,
-    null,
-    null
-  );
-
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.POUCH.VALUE] = Gear(
+    pushID(GEAR.POUCH.VALUE),
     'Pouch',
     50,
     1,
+    Container(0.2, UNIT.VOLUME.FT3, 6, UNIT.WEIGHT.LB),
     null,
-    null,
-    null
+    GEAR.TYPE.CONTAINER
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.QUIVER.VALUE] = Gear(
+    pushID(GEAR.QUIVER.VALUE),
     'Quiver',
     1,
     1,
+    Container(20, UNIT.COUNT, false, {'arrows': 0}),
     null,
-    null,
-    null
+    GEAR.TYPE.CONTAINER
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.RAM_PORTABLE.VALUE] = Gear(
+    pushID(GEAR.RAM_PORTABLE.VALUE),
     'Ram, portable',
     4,
-    35,
-    null,
-    null,
-    null
+    35
   );
 
-  gear[GEAR.VALUE] = Gear(
+  gear[GEAR.ROBES.VALUE] = Gear(
     pushID(GEAR.VALUE),
     'Robes',
     1,
-    4,
-    null,
-    null,
-    null
+    4
   );
 
-  gear[GEAR.VALUE] = Gear(
+  gear[GEAR.ROPE_SILK.VALUE] = Gear(
     pushID(GEAR.VALUE),
     'Rope, silk (50 feet)',
     10,
-    5,
-    null,
-    null,
-    null
+    5
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.SACK.VALUE] = Gear(
+    pushID(GEAR.SACK.VALUE),
     'Sack',
     100,
     0.5,
+    Container(1, UNIT.VOLUME.FT3, 30, UNIT.WEIGHT.LB),
     null,
-    null,
-    null
+    GEAR.TYPE.CONTAINER
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.SCALE_MERCHANTS.VALUE] = Gear(
+    pushID(GEAR.SCALE_MERCHANTS.VALUE),
     'Scale, merchant\'s',
     5,
-    3,
-    null,
-    null,
-    null
+    3
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.SHOVEL.VALUE] = Gear(
+    pushID(GEAR.SHOVEL.VALUE),
     'Shovel',
     2,
-    5,
-    null,
-    null,
-    null
+    5
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.SIGNAL_WHISTLE.VALUE] = Gear(
+    pushID(GEAR.SIGNAL_WHISTLE.VALUE),
     'Signal whistle',
     500,
-    0,
-    null,
-    null,
-    null
+    0
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.SIGNET_RING.VALUE] = Gear(
+    pushID(GEAR.SIGNET_RING.VALUE),
     'Signet ring',
     5,
-    0,
-    null,
-    null,
-    null
+    0
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.SPELLBOOK.VALUE] = Gear(
+    pushID(GEAR.SPELLBOOK.VALUE),
     'Spellbook',
     50,
-    3,
-    null,
-    null,
-    null
+    3
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.SPIKES_IRON_10.VALUE] = Gear(
+    pushID(GEAR.SPIKES_IRON_10.VALUE),
     'Spikes, iron (10)',
     1,
-    5,
-    null,
-    null,
-    null
+    5
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.SPYGLASS.VALUE] = Gear(
+    pushID(GEAR.SPYGLASS.VALUE),
     'Spyglass',
     1000,
-    1,
-    null,
-    null,
-    null
+    1
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.TENT_TWO_PERSON.VALUE] = Gear(
+    pushID(GEAR.TENT_TWO_PERSON.VALUE),
     'Tent, two-person',
     2,
-    20,
-    null,
-    null,
-    null
+    20
   );
 
-  gear[GEAR.VALUE] = Gear(
-    pushID(GEAR.VALUE),
+  gear[GEAR.WHETSTONE.VALUE] = Gear(
+    pushID(GEAR.WHETSTONE.VALUE),
     'Whetstone',
     100,
-    1,
-    null,
-    null,
-    null
+    1
   );
 
   gear[GEAR.BOTTLE.VALUE] = Gear(
@@ -3888,10 +3802,7 @@ function getGear() {
     pushID(GEAR.POTION_OF_HEALING.VALUE),
     'Potion of healing',
     50,
-    2,
-    Container(4, UNIT.VOLUME.OUNCE, null, null, true, {'healing potion': true}),
-    null,
-    GEAR.TYPE.CONTAINER
+    2
   );
 
   gear[GEAR.BACKPACK.VALUE] = Gear(
@@ -3901,8 +3812,12 @@ function getGear() {
     5,
     Container(1, UNIT.VOLUME.FT3, 30, UNIT.WEIGHT.LB, {}, {}),
     PackList([
+      PACK.BURGLAR.VALUE,
+      PACK.DUNGEONEER.VALUE,
       PACK.ENTERTAINER.VALUE,
-      PACK.EXPLORER.VALUE
+      PACK.EXPLORER.VALUE,
+      PACK.PRIEST.VALUE,
+      PACK.SCHOLAR.VALUE
     ]),
     GEAR.TYPE.CONTAINER
   );
@@ -3914,8 +3829,11 @@ function getGear() {
     5,
     Container(4, UNIT.VOLUME.PINT),
     PackList([
+      PACK.BURGLAR.VALUE,
+      PACK.DUNGEONEER.VALUE,
       PACK.ENTERTAINER.VALUE,
-      PACK.EXPLORER.VALUE
+      PACK.EXPLORER.VALUE,
+      PACK.PRIEST.VALUE
     ]),
     GEAR.TYPE.CONTAINER
   );
@@ -3947,7 +3865,10 @@ function getGear() {
     0.5,
     1,
     PackList([
-      PACK.EXPLORER.VALUE
+      PACK.BURGLAR.VALUE,
+      PACK.DUNGEONEER.VALUE,
+      PACK.EXPLORER.VALUE,
+      PACK.PRIEST.VALUE
     ])
   );
 
@@ -3957,6 +3878,7 @@ function getGear() {
     0.01,
     1,
     PackList([
+      PACK.DUNGEONEER.VALUE,
       PACK.EXPLORER.VALUE
     ])
   );
@@ -3967,8 +3889,11 @@ function getGear() {
     0.5,
     2,
     PackList([
+      PACK.BURGLAR.VALUE,
+      PACK.DUNGEONEER.VALUE,
       PACK.ENTERTAINER.VALUE,
-      PACK.EXPLORER.VALUE
+      PACK.EXPLORER.VALUE,
+      PACK.PRIEST.VALUE
     ])
   );
 
@@ -3978,6 +3903,8 @@ function getGear() {
     1,
     10,
     PackList([
+      PACK.BURGLAR.VALUE,
+      PACK.DUNGEONEER.VALUE,
       PACK.EXPLORER.VALUE
     ])
   );
@@ -4033,7 +3960,8 @@ function getGear() {
     0,
     Container(1, UNIT.VOLUME.OUNCE, null, null, true, {'ink': true}),
     PackList([
-      PACK.DIPLOMAT.VALUE
+      PACK.DIPLOMAT.VALUE,
+      PACK.SCHOLAR.VALUE
     ]),
     GEAR.TYPE.CONTAINER
   );
@@ -4044,7 +3972,8 @@ function getGear() {
     0.02,
     0,
     PackList([
-      PACK.DIPLOMAT.VALUE
+      PACK.DIPLOMAT.VALUE,
+      PACK.SCHOLAR.VALUE
     ])
   );
 
@@ -4060,7 +3989,7 @@ function getGear() {
 
   gear[GEAR.FLASK_EMPTY.VALUE] = Gear(
     pushID(GEAR.FLASK_EMPTY.VALUE),
-    'Flask',
+    'Flask or tankard',
     0.02,
     1,
     Container(1.5, UNIT.VOLUME.PINT),
@@ -4069,11 +3998,12 @@ function getGear() {
 
   gear[GEAR.FLASK_OIL.VALUE] = Gear(
     pushID(GEAR.FLASK_OIL.VALUE),
-    'Flask',
+    'Flask of oil',
     0.1,
     1,
     Container(1.5, UNIT.VOLUME.PINT, null, null, true, {'oil': true}),
     PackList([
+      PACK.BURGLAR.VALUE,
       PACK.DIPLOMAT.VALUE
     ]),
     GEAR.TYPE.CONTAINER
@@ -4100,7 +4030,7 @@ function getGear() {
 
   gear[GEAR.VIAL_PERFUME.VALUE] = Gear(
     pushID(GEAR.VIAL_PERFUME.VALUE),
-    'Vial',
+    'Vial of perfume',
     5,
     0,
     Container(4, UNIT.VOLUME.OUNCE, null, null, true, {'perfume': true}),
@@ -4126,7 +4056,9 @@ function getGear() {
     0.01,
     0,
     PackList([
-      PACK.ENTERTAINER.VALUE
+      PACK.BURGLAR.VALUE,
+      PACK.ENTERTAINER.VALUE,
+      PACK.PRIEST.VALUE
     ])
   );
 

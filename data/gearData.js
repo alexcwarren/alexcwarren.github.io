@@ -209,7 +209,7 @@ function makeGears() {
   // makeGear('Clothes, fine', 15, 'gp', 6, 'lb.');
   gears += makeGear('Clothes, traveler\'s', 2, 'gp', 4, 'lb.');
   gears += makeGear('Component pouch', 25, 'gp', 2, 'lb.');
-  gears += makeGear('Crowbar', 2, 'gp', 5, 'lb.');
+  // gears += makeGear('Crowbar', 2, 'gp', 5, 'lb.');
 
   // Druidic focus
   gears += makeGear('Sprig of mistletoe', 1, 'gp');
