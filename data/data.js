@@ -124,6 +124,7 @@ const PATH = {
   'ABILITIES': 'abilities',
   'ARMOR': 'armor',
   'ARMOR_TYPES': 'armor_types',
+  'BACKGROUNDS': 'backgrounds',
   'CLASSES': 'classes',
   'GEAR': 'gear',
   'GEAR_TYPES': 'gear_types',
@@ -2332,6 +2333,18 @@ const PACK = {
 };
 
 const GEAR = {
+  'PRAYER_BOOK': {
+    'VALUE': 'prayer_book',
+    'PATH': PATH.GEAR
+  },
+  'PRAYER_WHEEL': {
+    'VALUE': 'prayer_wheel',
+    'PATH': PATH.GEAR
+  },
+  'INCENSE_STICK': {
+    'VALUE': 'incense_stick',
+    'PATH': PATH.GEAR
+  },
   'VIAL_ACID': {
     'VALUE': 'vial_acid',
     'PATH': PATH.GEAR
@@ -3115,6 +3128,27 @@ function getGearTypes() {
 // function getGear(id, name) {
 function getGear() {
   var gear = {};
+
+  gear[GEAR.PRAYER_BOOK.VALUE] = Gear(
+    pushID(GEAR.PRAYER_BOOK.VALUE),
+    'Prayer book',
+    0,
+    0
+  );
+
+  gear[GEAR.PRAYER_WHEEL.VALUE] = Gear(
+    pushID(GEAR.PRAYER_WHEEL.VALUE),
+    'Prayer wheel',
+    0,
+    0
+  );
+
+  gear[GEAR.INCENSE_STICK.VALUE] = Gear(
+    pushID(GEAR.INCENSE_STICK.VALUE),
+    'Stick of incense',
+    0,
+    0
+  );
 
   gear[GEAR.STRING_10FT.VALUE] = Gear(
     pushID(GEAR.STRING_10FT.VALUE),
@@ -6037,6 +6071,293 @@ function getClasses() {
   return classes;
 }
 
+function processProficiencies(profsList) {
+  var proficiencies = {};
+  var choiceCount = 1;
+  for (p of profsList) {
+    if (p.hasOwnProperty(CHOOSE)) {
+      proficiencies['choice' + choiceCount] = p;
+      choiceCount++;
+    }
+    else {
+      proficiencies[p.VALUE] = p.PATH;
+    }
+  }
+  return proficiencies;
+}
+
+function processEquipment(equipmentList) {
+  var equipment = {};
+  choiceCount = 1;
+  for (e of equipmentList) {
+    if (e.hasOwnProperty(CHOOSE)) {
+      equipment['choice' + choiceCount] = e;
+      choiceCount++;
+    }
+    else if (e.hasOwnProperty('gp')) {
+      equipment['gp'] = e.gp;
+    }
+    else {
+      equipment[e.item] = {
+        'quantity': e.quantity,
+        'path': e.path
+      };
+    }
+  }
+  return equipment;
+}
+
+function processLanguages(languagesList) {
+  var languages = {};
+  choiceCount = 1;
+  for (l of languagesList) {
+    if (l.hasOwnProperty(CHOOSE)) {
+      languages['choice' + choiceCount] = l;
+      choiceCount++;
+    }
+    else {
+      languages[l] = PATH.LANGUAGES;
+    }
+  }
+  return languages;
+}
+
+/*************
+* BACKGROUNDS
+*************/
+
+const BACKGROUND = {
+  'ACOLYTE': {
+    'VALUE': 'acolyte',
+    'PATH': PATH.BACKGROUNDS
+  },
+};
+
+class Background {
+  constructor(name, traits, ideals, bonds, flaws, proficiencyList, equipmentList, languageList=null) {
+    this.id = pushID(name);
+    this.name = name;
+    this.traits = traits;
+    this.ideals = ideals;
+    this.bonds = bonds;
+    this.flaws = flaws;
+
+    this.proficiencies = processProficiencies(proficiencyList);
+    this.equipment = processEquipment(equipmentList);
+
+    if (languageList !== null) {
+      this.languages = processLanguages(languageList);
+    }
+  }
+}
+
+class Characteristic {
+  constructor(optionList) {
+    this.die = optionList.length;
+    
+    this.option = {};
+    let num = 1;
+    for (let o of optionList) {
+      this.option[num] = o;
+      num++;
+    }
+  }
+}
+
+class CharacteristicOption {
+  constructor(desc, name=null) {
+    this.desc = desc.replace('\n', '').replace(/ {2,}/g, '');
+    this.name = name;
+  }
+}
+
+class PersonalityTraits extends Characteristic {
+  constructor(optionList) {
+    super(optionList);
+  }
+}
+
+class Ideals extends Characteristic {
+  constructor(optionList) {
+    super(optionList);
+  }
+}
+
+class Bonds extends Characteristic {
+  constructor(optionList) {
+    super(optionList);
+  }
+}
+
+class Flaws extends Characteristic {
+  constructor(optionList) {
+    super(optionList);
+  }
+}
+
+function Gold(numGP) {
+  return {
+    'gp': numGP
+  };
+}
+
+function getBackgrounds() {
+  var backgrounds = {};
+
+  backgrounds[BACKGROUND.ACOLYTE.VALUE] = new Background(
+    BACKGROUND.ACOLYTE.VALUE,
+    new PersonalityTraits([
+      new CharacteristicOption(
+        `I idolize a particular hero of my faith, and constantly
+        refer to that person’s deeds and example.`
+      ),
+      new CharacteristicOption(
+        `I can find common ground between the fiercest
+        enemies, empathizing with them and always working
+        toward peace.`
+      ),
+      new CharacteristicOption(
+        `I see omens in every event and action. The gods try to
+        speak to us, we just need to listen.`
+      ),
+      new CharacteristicOption(
+        `Nothing can shake my optimistic attitude.`
+      ),
+      new CharacteristicOption(
+        `I quote (or misquote) sacred texts and proverbs in
+        almost every situation.`
+      ),
+      new CharacteristicOption(
+        `I am tolerant (or intolerant) of other faiths and respect
+        (or condemn) the worship of other gods.`
+      ),
+      new CharacteristicOption(
+        `I've enjoyed fine food, drink, and high society among
+        my temple’s elite. Rough living grates on me.`
+      ),
+      new CharacteristicOption(
+        `I’ve spent so long in the temple that I have little
+        practical experience dealing with people in the outside
+        world.`
+      )
+    ]),
+    new Ideals([
+      new CharacteristicOption(
+        `The ancient traditions o f worship and
+        sacrifice must be preserved and upheld. (Lawful)`,
+        `Tradition.`
+      ),
+      new CharacteristicOption(
+        `I always try to help those in need, no matter
+        what the personal cost. (Good)`,
+        `Charity.`
+      ),
+      new CharacteristicOption(
+        `We must help bring about the changes the
+        gods are constantly working in the world. (Chaotic)`,
+        `Change.`
+      ),
+      new CharacteristicOption(
+        `I hope to one day rise to the top of my faith’s
+        religious hierarchy. (Lawful)`,
+        `Power.`
+      ),
+      new CharacteristicOption(
+        `I trust that my deity will guide my actions, I have
+        faith that if I work hard, things will go well. (Lawful)`,
+        `Faith.`
+      ),
+      new CharacteristicOption(
+        `I seek to prove myself worthy of my god’s
+        favor by matching my actions against his or her
+        teachings. (Any)`,
+        `Aspiration.`
+      )
+    ]),
+    new Bonds([
+      new CharacteristicOption(
+        `I would die to recover an ancient relic of my faith that
+        was lost long ago.`
+      ),
+      new CharacteristicOption(
+        `I will someday get revenge on the corrupt temple
+        hierarchy who branded me a heretic.`
+      ),
+      new CharacteristicOption(
+        `I owe my life to the priest who took me in when my
+        parents died.`
+      ),
+      new CharacteristicOption(
+        `Everything I do is for the common people.`
+      ),
+      new CharacteristicOption(
+        `I will do anything to protect the temple where I served.`
+      ),
+      new CharacteristicOption(
+        `I seek to preserve a sacred text that my enemies
+        consider heretical and seek to destroy.`
+      )
+    ]),
+    new Flaws([
+      new CharacteristicOption(
+        `I judge others harshly, and myself even more severely.`
+      ),
+      new CharacteristicOption(
+        `I put too much trust in those who wield power within
+        my temple’s hierarchy.`
+      ),
+      new CharacteristicOption(
+        `My piety sometimes leads me to blindly trust those
+        that profess faith in my god.`
+      ),
+      new CharacteristicOption(
+        `I am inflexible in my thinking.`
+      ),
+      new CharacteristicOption(
+        `I am suspicious of strangers and expect the worst of
+        them.`
+      ),
+      new CharacteristicOption(
+        `Once I pick a goal, I become obsessed with it to the
+        detriment of everything else in my life.`
+      )
+    ]),
+    [
+      SKILL.INSIGHT,
+      SKILL.RELIGION
+    ],
+    [
+      Choices(
+        1,
+        [
+          Condition([GEAR.TYPE.HOLY_SYMBOL])
+        ]
+      ),
+      Choices(
+        1,
+        [
+          Choice(GEAR.PRAYER_BOOK),
+          Choice(GEAR.PRAYER_WHEEL)
+        ]
+      ),
+      Equipment(GEAR.INCENSE_STICK, 5),
+      Equipment(GEAR.VESTMENTS),
+      Equipment(GEAR.CLOTHES_COMMON),
+      Gold(15)
+    ],
+    [
+      Choices(
+        2,
+        [
+          Condition([LANGUAGE.ANY])
+        ]
+      )
+    ]
+  );
+
+  return backgrounds;
+}
+
 class DbRef {
   constructor(name, path, getData=null) {
     this.name = name;
@@ -6068,6 +6389,7 @@ var dbRefs = {};
 dbRefs[PATH.ABILITIES] = new DbRef('Abilities', PATH.ABILITIES, getAbilities);
 dbRefs[PATH.ARMOR] = new DbRef('Armor', PATH.ARMOR, getArmor);
 dbRefs[PATH.ARMOR_TYPES] = new DbRef('Armor types', PATH.ARMOR_TYPES, getArmorTypes);
+dbRefs[PATH.BACKGROUNDS] = new DbRef('Backgrounds', PATH.BACKGROUNDS, getBackgrounds);
 dbRefs[PATH.CLASSES] = new DbRef('Classes', PATH.CLASSES, getClasses);
 dbRefs[PATH.GEAR] = new DbRef('Gear', PATH.GEAR, getGear);
 dbRefs[PATH.GEAR_TYPES] = new DbRef('Gear types', PATH.GEAR_TYPES, getGearTypes);
