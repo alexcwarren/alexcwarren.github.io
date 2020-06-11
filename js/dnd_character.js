@@ -29,103 +29,6 @@ function loadList(listID, dbRef, nullText='') {
   });
 }
 
-function getProficiencies2(list) {
-  if (list === undefined) {
-    return [];
-  }
-
-  var profs = [];
-
-  for (lKey in list) {
-    var p = list[lKey];
-
-    if (p.hasOwnProperty(CHOOSE)) {
-      var amount = Object.keys(p)[0];;
-      var choose = 'Choose ' + amount + ':\n';
-
-      var choices = p[amount];
-
-      for (cKey in choices) {
-        var c = choices[cKey];
-
-        if (c.hasOwnProperty(CONDITIONS)) {
-          for (cdKey in c.conditions) {
-            var path = c.conditions[cdKey];
-
-            var conditionVal = dbRefs[path].val;
-
-            var items = null;
-            var itemsVal = null;
-
-            if (cdKey === ANY) {
-              items = conditionVal;
-              itemsVal = conditionVal;
-            }
-            else {
-              items = conditionVal[cdKey];
-              var firstItemKey = Object.keys(items)[0];
-              var itemsPath = items[firstItemKey];
-              itemsVal = dbRefs[itemsPath].val;
-            }
-
-            for (itemKey in items) {
-              var item = itemsVal[itemKey];
-
-              choose += '  ' + item.name + '\n';
-            }
-          }
-        }
-        else {
-          c['id'] = cKey;
-
-          var choiceVal = dbRefs[c.path].val;
-
-          if (c.id === ANY) {
-            for (i in choiceVal) {
-              var item = choiceVal[i];
-              choose += '  ' + item.name + '\n';
-            }
-          }
-          else {
-            choose += '  ';
-
-            if (c.hasOwnProperty('quantity') && c.quantity > 1) {
-              choose += c.quantity + ' ';
-            }
-
-            choose += choiceVal[c.id].name + '\n';
-          }
-        }
-      }
-
-      profs.push(choose);
-    }
-    else {
-      var profRef = dbRefs[p];
-      var prof = profRef.val[lKey];
-
-      if (prof.hasOwnProperty(NAME)) {
-        profs.push(profRef.val[lKey].name + '\n');
-      }
-      else {
-        var pPath = null;
-        var pRef = null;
-
-        for (pKey in prof) {
-          if (pPath === null) {
-            pPath = prof[pKey];
-            pRef = dbRefs[pPath];
-          }
-
-          profs.push(pRef.val[pKey].name + '\n');
-        }
-      }
-    }
-  }
-
-  return profs;
-}
-
 function update(whatChanged) {
   console.log('Updating ' + whatChanged + '...');
 
@@ -135,16 +38,24 @@ function update(whatChanged) {
     updateSpeed();
     updateProficiencies();
     updateTraits();
+    // TODO updateLanguages();
   }
   else if (whatChanged === 'subrace') {
     updateAbilities();
     updateSpeed();
     updateProficiencies();
     updateTraits();
+    // TODO updateLanguages();
   }
   else if (whatChanged === 'class') {
     updateHitDice();
     updateProficiencies();
+    // TODO updateEquipment();
+  }
+  else if (whatChanged === 'background') {
+    updateProficiencies();
+    // TODO updateLanguages();
+    // TODO updateEquipment();
   }
   else {
     console.log('Nothing to update!');

@@ -37,6 +37,24 @@ div.row {
   padding: 10px;
 }
 
+div.ability {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+span.ability {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: large;
+}
+
+input.ability {
+  display: inline;
+  height: 50%;
+  width: 30%;
+  padding: 1px;
+  text-align: center;
+}
+
 #subraceDiv {
   display: none;
 }
@@ -51,6 +69,11 @@ div.row {
   width: 200px;
 }
 
+select.side-column {
+  padding-left: 10px;
+  padding-right: 2px;
+}
+
 input.choice {
   margin-left: 10%;
   margin-right: 5%;
@@ -61,7 +84,12 @@ label.choice {
   font-weight: normal;
 }
 
+div.side-column {
+  margin: 0;
+}
+
 div.side-column input {
+  text-align: center;
   width: 75%;
 }
 
@@ -115,6 +143,10 @@ table.nonogram {
 .cellOff {
   background-color: inherit;
   border: 2px solid black;
+}
+
+input.disabled {
+  text-align: center;
 }
 
 input.counter {
