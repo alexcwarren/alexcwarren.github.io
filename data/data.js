@@ -6205,7 +6205,7 @@ function getBackgrounds() {
   var backgrounds = {};
 
   backgrounds[BACKGROUND.ACOLYTE.VALUE] = new Background(
-    BACKGROUND.ACOLYTE.VALUE,
+    'Acolyte',
     new PersonalityTraits([
       new CharacteristicOption(
         `I idolize a particular hero of my faith, and constantly
