@@ -6155,10 +6155,10 @@ class Characteristic {
   constructor(optionList) {
     this.die = optionList.length;
     
-    this.option = {};
+    this.options = {};
     let num = 1;
     for (let o of optionList) {
-      this.option[num] = o;
+      this.options[num] = o;
       num++;
     }
   }
