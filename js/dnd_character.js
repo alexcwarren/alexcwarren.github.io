@@ -4,6 +4,9 @@ function loadData() {
 
   console.log('Loading Class dropdown...');
   loadList('class', dbRefs.classes);
+
+  console.log('Loading Background dropdown...');
+  loadList('background', dbRefs.backgrounds);
 }
 
 function loadList(listID, dbRef, nullText='') {
