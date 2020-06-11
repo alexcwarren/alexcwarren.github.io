@@ -8,7 +8,7 @@ var usedIDs = [];
 
 function pushID(name) {
   if (name === '') {
-    console.log('ERROR: Missing name');
+    console.log('pushID: ERROR: Missing name');
     return null;
   }
 
@@ -16,7 +16,7 @@ function pushID(name) {
 
   usedIDs.forEach(function(u) {
     if (id === u.id && name !== u.name) {
-      console.log('ERROR: Cannot store ' + name + ': ' + id + ' already used by ' + u.name);
+      console.log(`pushID: ERROR: Cannot store ${name}: ${id} already used by ${u.name}`);
       return null;
     }
   });
@@ -177,7 +177,7 @@ const ABILITY = {
 
 function Ability(id, name, longName, skillsList=null) {
   if (arguments.length < 3) {
-    console.log('ERROR: Missing required arguments');
+    printRequiredArgumentsError(arguments);
     return null;
   }
 
@@ -353,7 +353,7 @@ const SKILL = {
 
 function Skill(id, name, parentAbility) {
   if (arguments.length < 3) {
-    console.log('ERROR: Missing required arguments');
+    printRequiredArgumentsError(arguments);
     return null;
   }
 
@@ -529,7 +529,7 @@ const LANGUAGE = {
 
 function Language(id, name) {
   if (arguments.length < 2) {
-    console.log('ERROR: Missing required arguments');
+    printRequiredArgumentsError(arguments);
     return null;
   }
 
@@ -896,7 +896,7 @@ function getWeaponCategories() {
 
 function Weapon(id, name, classType, category, costGP, damage, weightLB, properties=null) {
   if (arguments.length < 7) {
-    console.log('ERROR: Missing required arguments');
+    printRequiredArgumentsError(arguments);
     return null;
   }
 
@@ -924,7 +924,7 @@ function Damage(num, die, type) {
     type = 'none';
   }
   else if (arguments.length < 3) {
-    console.log('ERROR: Missing arguments');
+    printRequiredArgumentsError(arguments);
     return null;
   }
 
@@ -965,7 +965,7 @@ function Properties(list) {
 
 function Range(id, normal, max) {
   if (arguments.length < 3) {
-    console.log('ERROR: Missing arguments');
+    printRequiredArgumentsError(arguments);
     return null;
   }
 
@@ -1537,6 +1537,10 @@ const ARMOR = {
     'SHIELD': {
       'VALUE': 'shield',
       'PATH': PATH.ARMOR_TYPES
+    },
+    'ALL': {
+      'VALUE': 'all',
+      'PATH': PATH.ARMOR_TYPES
     }
   }
 }
@@ -1574,13 +1578,14 @@ function getArmorTypes() {
   armorTypes[ARMOR.TYPE.MEDIUM.VALUE] = medium;
   armorTypes[ARMOR.TYPE.HEAVY.VALUE] = heavy;
   armorTypes[ARMOR.TYPE.SHIELD.VALUE] = shield;
+  armorTypes[ARMOR.TYPE.ALL.VALUE] = true;
 
   return armorTypes;
 }
 
 function Armor(id, name, type, costGP, baseAC, stealthDisAdv, weightLB, isModified=false, hasMaxAC=false, minSTR=0) {
   if (arguments.length < 7) {
-    console.log('ERROR: Missing required arguments');
+    printRequiredArgumentsError(arguments);
     return null;
   }
 
@@ -1601,147 +1606,169 @@ function Armor(id, name, type, costGP, baseAC, stealthDisAdv, weightLB, isModifi
 }
 
 function getArmor() {
-  const armor = {
-    'padded': Armor(
-      pushID('padded'),
-      'Padded armor',
-      ARMOR.TYPE.LIGHT.VALUE,
-      5,
-      11,
-      true,
-      8,
-      true
-    ),
-    'leather': Armor(
-      pushID('leather'),
-      'Leather armor',
-      ARMOR.TYPE.LIGHT.VALUE,
-      10,
-      11,
-      false,
-      10,
-      true
-    ),
-    'studded_leather': Armor(
-      pushID('studded_leather'),
-      'Studded leather armor',
-      ARMOR.TYPE.LIGHT.VALUE,
-      45,
-      12,
-      false,
-      13,
-      true
-    ),
-    'hide': Armor(
-      pushID('hide'),
-      'Hide armor',
-      ARMOR.TYPE.MEDIUM.VALUE,
-      10,
-      12,
-      false,
-      12,
-      true,
-      true
-    ),
-    'chain_shirt': Armor(
-      pushID('chain_shirt'),
-      'Chain shirt armor',
-      ARMOR.TYPE.MEDIUM.VALUE,
-      50,
-      13,
-      false,
-      20,
-      true,
-      true
-    ),
-    'scale_mail': Armor(
-      pushID('scale_mail'),
-      'Scale mail armor',
-      ARMOR.TYPE.MEDIUM.VALUE,
-      50,
-      14,
-      true,
-      45,
-      true,
-      true
-    ),
-    'breastplate': Armor(
-      pushID('breastplate'),
-      'Breastplate armor',
-      ARMOR.TYPE.MEDIUM.VALUE,
-      400,
-      14,
-      false,
-      20,
-      true,
-      true
-    ),
-    'half_plate': Armor(
-      pushID('half_plate'),
-      'Half plate armor',
-      ARMOR.TYPE.MEDIUM.VALUE,
-      750,
-      15,
-      true,
-      40,
-      true,
-      true
-    ),
-    'ring_mail': Armor(
-      pushID('ring_mail'),
-      'Ring mail armor',
-      ARMOR.TYPE.HEAVY.VALUE,
-      30,
-      14,
-      true,
-      40
-    ),
-    'chain_mail': Armor(
-      pushID('chain_mail'),
-      'Chain mail armor',
-      ARMOR.TYPE.HEAVY.VALUE,
-      75,
-      16,
-      true,
-      55,
-      false,
-      false,
-      13
-    ),
-    'splint': Armor(
-      pushID('splint'),
-      'Splint armor',
-      ARMOR.TYPE.HEAVY.VALUE,
-      200,
-      17,
-      true,
-      60,
-      false,
-      false,
-      15
-    ),
-    'plate': Armor(
-      pushID('plate'),
-      'Plate armor',
-      ARMOR.TYPE.HEAVY.VALUE,
-      1500,
-      18,
-      true,
-      65,
-      false,
-      false,
-      15
-    ),
-    'shield': Armor(
-      pushID('shield'),
-      'Shield',
-      ARMOR.TYPE.SHIELD.VALUE,
-      10,
-      2,
-      false,
-      6
-    )
-  };
+  var armor = {};
+
+  armor[ARMOR.PADDED.VALUE] = Armor(
+    pushID(ARMOR.PADDED),
+    'Padded armor',
+    ARMOR.TYPE.LIGHT.VALUE,
+    5,
+    11,
+    true,
+    8,
+    true
+  );
+
+  armor[ARMOR.LEATHER.VALUE] = Armor(
+    pushID(ARMOR.LEATHER),
+    'Leather armor',
+    ARMOR.TYPE.LIGHT.VALUE,
+    10,
+    11,
+    false,
+    10,
+    true
+  );
+
+  armor[ARMOR.STUDDED_LEATHER.VALUE] = Armor(
+    pushID(ARMOR.STUDDED_LEATHER),
+    'Studded leather armor',
+    ARMOR.TYPE.LIGHT.VALUE,
+    45,
+    12,
+    false,
+    13,
+    true
+  );
+
+  armor[ARMOR.HIDE.VALUE] = Armor(
+    pushID(ARMOR.HIDE),
+    'Hide armor',
+    ARMOR.TYPE.MEDIUM.VALUE,
+    10,
+    12,
+    false,
+    12,
+    true,
+    true
+  );
+
+  armor[ARMOR.CHAIN_SHIRT.VALUE] = Armor(
+    pushID(ARMOR.CHAIN_SHIRT),
+    'Chain shirt armor',
+    ARMOR.TYPE.MEDIUM.VALUE,
+    50,
+    13,
+    false,
+    20,
+    true,
+    true
+  );
+
+  armor[ARMOR.SCALE_MAIL.VALUE] = Armor(
+    pushID(ARMOR.SCALE_MAIL),
+    'Scale mail armor',
+    ARMOR.TYPE.MEDIUM.VALUE,
+    50,
+    14,
+    true,
+    45,
+    true,
+    true
+  );
+
+  armor[ARMOR.BREASTPLATE.VALUE] = Armor(
+    pushID(ARMOR.BREASTPLATE),
+    'Breastplate armor',
+    ARMOR.TYPE.MEDIUM.VALUE,
+    400,
+    14,
+    false,
+    20,
+    true,
+    true
+  );
+
+  armor[ARMOR.HALF_PLATE.VALUE] = Armor(
+    pushID(ARMOR.HALF_PLATE),
+    'Half plate armor',
+    ARMOR.TYPE.MEDIUM.VALUE,
+    750,
+    15,
+    true,
+    40,
+    true,
+    true
+  );
+  
+  armor[ARMOR.RING_MAIL.VALUE] = Armor(
+    pushID(ARMOR.RING_MAIL),
+    'Ring mail armor',
+    ARMOR.TYPE.HEAVY.VALUE,
+    30,
+    14,
+    true,
+    40
+  );
+
+  armor[ARMOR.CHAIN_MAIL.VALUE] = Armor(
+    pushID(ARMOR.CHAIN_MAIL),
+    'Chain mail armor',
+    ARMOR.TYPE.HEAVY.VALUE,
+    75,
+    16,
+    true,
+    55,
+    false,
+    false,
+    13
+  );
+
+  armor[ARMOR.SPLINT.VALUE] = Armor(
+    pushID(ARMOR.SPLINT),
+    'Splint armor',
+    ARMOR.TYPE.HEAVY.VALUE,
+    200,
+    17,
+    true,
+    60,
+    false,
+    false,
+    15
+  );
+
+  armor[ARMOR.PLATE.VALUE] = Armor(
+    pushID(ARMOR.PLATE),
+    'Plate armor',
+    ARMOR.TYPE.HEAVY.VALUE,
+    1500,
+    18,
+    true,
+    65,
+    false,
+    false,
+    15
+  );
+
+  armor[ARMOR.SHIELD.VALUE] = Armor(
+    pushID(ARMOR.SHIELD),
+    'Shield',
+    ARMOR.TYPE.SHIELD.VALUE,
+    10,
+    2,
+    false,
+    6
+  );
+
+  armor[ARMOR.ALL.VALUE] = Armor(
+    pushID(ARMOR.ALL),
+    'All armor',
+    ARMOR.TYPE.ALL.VALUE,
+    0,
+    0,
+    false,
+    0
+  );
 
   return armor;
 }
@@ -1971,9 +1998,23 @@ function getToolCategories() {
   return toolCategories;
 }
 
+function printRequiredArgumentsError(arguments) {
+  let caller = printRequiredArgumentsError.caller;
+  printRequiredArgumentsError(arguments);
+  console.log(errorMessage);
+
+  for (i in arguments) {
+    let arg = arguments[i];
+    console.log(arg);
+    // errorMessage += ` arg${i}=${arg},`;
+  }
+
+  // console.log(errorMessage.slice(0, errorMessage.length - 1));
+}
+
 function Tool(id, name, costGP, weightLB, category=null) {
   if (arguments.length < 4) {
-    console.log('ERROR: Missing required arguments');
+    printRequiredArgumentsError(arguments);
     return null;
   }
 
@@ -2749,7 +2790,7 @@ const GEAR = {
 
 function Pack(id, name, costGP, contentsList) {
   if (arguments.length < 4) {
-    console.log('ERROR: Missing required arguments');
+    printRequiredArgumentsError(arguments);
     return null;
   }
 
@@ -2769,14 +2810,14 @@ function Pack(id, name, costGP, contentsList) {
   return pack;
 }
 
-function Content(quanity, item) {
+function Content(quantity, item) {
   if (arguments.length < 2) {
-    console.log('ERROR: Missing required arguments');
+    printRequiredArgumentsError(arguments);
     return null;
   }
 
   return {
-    'quantity': quanity,
+    'quantity': quantity,
     'item': item
   };
 }
@@ -2911,7 +2952,7 @@ function getPacks() {
 
 function Gear(id, name, costGP, weightLB, container=null, packs=null, type=null) {
   if (arguments.length < 4) {
-    console.log('ERROR: Missing required arguments');
+    printRequiredArgumentsError(arguments);
     return null;
   }
 
@@ -2941,7 +2982,7 @@ function Gear(id, name, costGP, weightLB, container=null, packs=null, type=null)
 
 function PackList(list) {
   if (arguments.length < 1) {
-    console.log('ERROR: Missing required arguments');
+    printRequiredArgumentsError(arguments);
     return null;
   }
 
@@ -2973,7 +3014,7 @@ const UNIT = {
 
 function Container(volume, volumeUnit, weightLimit=null, weightUnit=null, isFull=false, contents={}, strapped=null) {
   if (arguments.length < 2) {
-    console.log('ERROR: Missing required arguments');
+    printRequiredArgumentsError(arguments);
     return null;
   }
 
@@ -2992,7 +3033,7 @@ function Container(volume, volumeUnit, weightLimit=null, weightUnit=null, isFull
   }
   else if (weightLimit === null && weightUnit !== null
         || weightLimit !== null && weightUnit === null) {
-    console.log('ERROR: Both weightLimit(' + weightLimit + ') and weightUnit(' + weightUnit + ') cannot be null');
+          printRequiredArgumentsError(arguments);
     return null;
   }
 
@@ -4151,12 +4192,88 @@ const TRAIT = {
   'DROW_WEAPON_TRAINING': {
     'VALUE': 'drow_weapon_training',
     'PATH': PATH.TRAIT
+  },
+  'LUCKY': {
+    'VALUE': 'lucky',
+    'PATH': PATH.TRAIT
+  },
+  'BRAVE': {
+    'VALUE': 'brave',
+    'PATH': PATH.TRAIT
+  },
+  'HALFLING_NIMBLENESS': {
+    'VALUE': 'halfling_nimbleness',
+    'PATH': PATH.TRAIT
+  },
+  'DRACONIC_ANCESTRY': {
+    'VALUE': 'draconic_ancestry',
+    'PATH': PATH.TRAIT
+  },
+  'BREATH_WEAPON': {
+    'VALUE': 'breath_weapon',
+    'PATH': PATH.TRAIT
+  },
+  'DAMAGE_RESISTANCE': {
+    'VALUE': 'damage_resistance',
+    'PATH': PATH.TRAIT
+  },
+  'GNOME_CUNNING': {
+    'VALUE': 'gnome_cunning',
+    'PATH': PATH.TRAIT
+  },
+  'SKILL_VERSATILITY': {
+    'VALUE': 'skill_versatility',
+    'PATH': PATH.TRAIT
+  },
+  'MENACING': {
+    'VALUE': 'menacing',
+    'PATH': PATH.TRAIT
+  },
+  'RELENTLESS_ENDURANCE': {
+    'VALUE': 'relentless_endurance',
+    'PATH': PATH.TRAIT
+  },
+  'SAVAGE_ATTACKS': {
+    'VALUE': 'savage_attacks',
+    'PATH': PATH.TRAIT
+  },
+  'HELLISH_RESISTANCE': {
+    'VALUE': 'hellish_resistance',
+    'PATH': PATH.TRAIT
+  },
+  'INFERNAL_LEGACY': {
+    'VALUE': 'infernal_legacy',
+    'PATH': PATH.TRAIT
+  },
+  'NATURALLY_STEALTHY': {
+    'VALUE': 'naturally_stealthy',
+    'PATH': PATH.TRAIT
+  },
+  'STOUT_RESILIENCE': {
+    'VALUE': 'stout_resilience',
+    'PATH': PATH.TRAIT
+  },
+  'NATURAL_ILLUSIONIST': {
+    'VALUE': 'natural_illusionist',
+    'PATH': PATH.TRAIT
+  },
+  'SPEAK_WITH_SMALL_BEASTS': {
+    'VALUE': 'speak_with_small_beasts',
+    'PATH': PATH.TRAIT
+  },
+  'ARTIFICERS_LORE': {
+    'VALUE': 'artificers_lore',
+    'PATH': PATH.TRAIT
+  },
+  'TINKER': {
+    'VALUE': 'tinker',
+    'PATH': PATH.TRAIT
   }
 };
 
 function Trait(id, name, desc) {
   if (arguments.length < 3) {
-    console.log('ERROR: Missing required arguments');
+    printRequiredArgumentsError(arguments);
     return null;
   }
 
@@ -4280,6 +4397,196 @@ function getTraits() {
     'You have proficiency with rapiers, shortswords, and hand crossbows.'
   );
 
+  traits[TRAIT.LUCKY.VALUE] = Trait(
+    pushID(TRAIT.LUCKY.VALUE),
+    'Lucky',
+    `When you roll a 1 on an attack roll, ability
+    check, or saving throw, you can reroll the die and must
+    use the new roll.`
+  );
+
+  traits[TRAIT.BRAVE.VALUE] = Trait(
+    pushID(TRAIT.BRAVE.VALUE),
+    'Brave',
+    `You have advantage on saving throws against
+    being frightened.`
+  );
+  
+  traits[TRAIT.HALFLING_NIMBLENESS.VALUE] = Trait(
+    pushID(TRAIT.HALFLING_NIMBLENESS.VALUE),
+    'Halfling Nimbleness',
+    `You can move through the
+    space of any creature that is of a size larger than yours.`
+  );
+  
+  traits[TRAIT.DRACONIC_ANCESTRY.VALUE] = Trait(
+    pushID(TRAIT.DRACONIC_ANCESTRY.VALUE),
+    'Draconic Ancestry',
+    `You have draconic ancestry.
+    Choose one type of dragon from the Draconic Ancestry
+    table. Your breath weapon and damage resistance are
+    determined by the dragon type, as shown in the table.`
+  );
+  
+  traits[TRAIT.BREATH_WEAPON.VALUE] = Trait(
+    pushID(TRAIT.BREATH_WEAPON.VALUE),
+    'Breath Weapon',
+    `You can use your action to exhale
+    destructive energy. Your draconic ancestry determines
+    the size, shape, and damage type of the exhalation.
+    When you use your breath w eapon, each creature in
+    the area of the exhalation must make a saving throw,
+    the type of which is determined by your draconic
+    ancestry. The DC for this saving throw equals 8 +
+    your Constitution modifier + your proficiency bonus. A
+    creature takes 2d6 damage on a failed save, and half
+    as much damage on a successful one. The damage
+    increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6
+    at 16th level.
+    After you use your breath weapon, you can’t use it
+    again until you complete a short or long rest.`
+  );
+  
+  traits[TRAIT.DAMAGE_RESISTANCE.VALUE] = Trait(
+    pushID(TRAIT.DAMAGE_RESISTANCE.VALUE),
+    'Damage Resistance',
+    `You have resistance to the
+    damage type associated with your draconic ancestry.`
+  );
+  
+  traits[TRAIT.GNOME_CUNNING.VALUE] = Trait(
+    pushID(TRAIT.GNOME_CUNNING.VALUE),
+    'Gnome Cunning',
+    `You have advantage on all
+    Intelligence, Wisdom, and Charisma saving throws
+    against magic.`
+  );
+  
+  traits[TRAIT.SKILL_VERSATILITY.VALUE] = Trait(
+    pushID(TRAIT.SKILL_VERSATILITY.VALUE),
+    'Skill Versatility',
+    `You gain proficiency in two skills
+    of your choice.`
+  );
+  
+  traits[TRAIT.MENACING.VALUE] = Trait(
+    pushID(TRAIT.MENACING.VALUE),
+    'Menacing',
+    `You gain proficiency in the
+    Intimidation skill.`
+  );
+  
+  traits[TRAIT.RELENTLESS_ENDURANCE.VALUE] = Trait(
+    pushID(TRAIT.RELENTLESS_ENDURANCE.VALUE),
+    'Relentless Endurance',
+    `When you are reduced to
+    0 hit points but not killed outright, you can drop to 1 hit
+    point instead. You can’t use this feature again until you
+    finish a long rest.`
+  );
+  
+  traits[TRAIT.SAVAGE_ATTACKS.VALUE] = Trait(
+    pushID(TRAIT.SAVAGE_ATTACKS.VALUE),
+    'Savage Attacks',
+    `When you score a critical hit with
+    a melee weapon attack, you can roll one of the weapon’s
+    damage dice one additional time and add it to the extra
+    damage of the critical hit.`
+  );
+  
+  traits[TRAIT.HELLISH_RESISTANCE.VALUE] = Trait(
+    pushID(TRAIT.HELLISH_RESISTANCE.VALUE),
+    'Hellish Resistance',
+    `You have resistance
+    to fire damage.`
+  );
+  
+  traits[TRAIT.INFERNAL_LEGACY.VALUE] = Trait(
+    pushID(TRAIT.INFERNAL_LEGACY.VALUE),
+    'Infernal Legacy',
+    `You know the thaumaturgy cantrip.
+    Once you reach 3rd level, you can cast the hellish
+    rebuke spell once per day as a 2nd-level spell. Once you
+    reach 5th level, you can also cast the darkness spell
+    once per day. Charisma is your spellcasting ability for
+    these spells.`
+  );
+  
+  traits[TRAIT.NATURALLY_STEALTHY.VALUE] = Trait(
+    pushID(TRAIT.NATURALLY_STEALTHY.VALUE),
+    'Naturally Stealthy',
+    `You can attempt to hide even
+    when you are obscured only by a creature that is at least
+    one size larger than you.`
+  );
+  
+  traits[TRAIT.STOUT_RESILIENCE.VALUE] = Trait(
+    pushID(TRAIT.STOUT_RESILIENCE.VALUE),
+    'Stout Resilience',
+    `You have advantage on saving
+    throws against poison, and you have resistance
+    against poison damage.`
+  );
+  
+  traits[TRAIT.NATURAL_ILLUSIONIST.VALUE] = Trait(
+    pushID(TRAIT.NATURAL_ILLUSIONIST.VALUE),
+    'Natural Illusionist',
+    `You know the minor illusion
+    cantrip. Intelligence is your spellcasting ability for it.`
+  );
+  
+  traits[TRAIT.SPEAK_WITH_SMALL_BEASTS.VALUE] = Trait(
+    pushID(TRAIT.SPEAK_WITH_SMALL_BEASTS.VALUE),
+    'Speak with Small Beasts',
+    `Through sounds and
+    gestures, you can communicate simple ideas with Small
+    or smaller beasts. Forest gnomes love animals and often
+    keep squirrels, badgers, rabbits, moles, woodpeckers,
+    and other creatures as beloved pets.`
+  );
+  
+  traits[TRAIT.ARTIFICERS_LORE.VALUE] = Trait(
+    pushID(TRAIT.ARTIFICERS_LORE.VALUE),
+    'Artificer\'s Lore',
+    `Whenever you make an Intelligence
+    (History) check related to magic items, alchemical
+    objects, or technological devices, you can add twice your
+    proficiency bonus, instead of any proficiency bonus you
+    normally apply.`
+  );
+  
+  traits[TRAIT.TINKER.VALUE] = Trait(
+    pushID(TRAIT.TINKER.VALUE),
+    'Tinker',
+    `You have proficiency with artisan’s tools
+    (tinker’s tools). Using those tools, you can spend 1
+    hour and 10 gp worth of materials to construct a Tiny
+    clockwork device (AC 5, 1 hp). The device ceases
+    to function after 24 hours (unless you spend 1 hour
+    repairing it to keep the device functioning), or when
+    you use your action to dismantle it; at that time, you can
+    reclaim the materials used to create it. You can have up
+    to three such devices active at a time.
+    When you create a device, choose one of the
+    following options:
+    Clockwork Toy. This toy is a clockwork animal, monster,
+    or person, such as a frog, mouse, bird, dragon, or
+    soldier. When placed on the ground, the toy m oves
+    5 feet across the ground on each of your turns in a
+    random direction. It makes noises as appropriate
+    to the creature it represents.
+    Fire Starter. The device produces a miniature
+    flame, which you can use to light a candle,
+    torch, or campfire. Using the device
+    requires your action.
+    Music Box. When opened, this music box
+    plays a single song at a moderate volume.
+    The box stops playing when it
+    reaches the song’s end or
+    when it is closed.`
+  );
+  
+
   return traits;
 }
 
@@ -4307,12 +4614,28 @@ const SUBRACE = {
   'DARK_ELF': {
     'VALUE': 'dark_elf',
     'PATH': PATH.SUBRACE
+  },
+  'LIGHTFOOT': {
+    'VALUE': 'lightfoot',
+    'PATH': PATH.SUBRACE
+  },
+  'STOUT': {
+    'VALUE': 'stout',
+    'PATH': PATH.SUBRACE
+  },
+  'FOREST_GNOME': {
+    'VALUE': 'forest_gnome',
+    'PATH': PATH.SUBRACE
+  },
+  'ROCK_GNOME': {
+    'VALUE': 'rock_gnome',
+    'PATH': PATH.SUBRACE
   }
 };
 
 function Subrace(id, name, increasesList, traitsList, maxHP_bonus=0, profsList=null, languagesList=null, speed=null) {
   if (arguments.length < 4) {
-    console.log('ERROR: Missing required arguments');
+    printRequiredArgumentsError(arguments);
     return null;
   }
 
@@ -4362,7 +4685,7 @@ function Subrace(id, name, increasesList, traitsList, maxHP_bonus=0, profsList=n
 
 function Increase(ability, mod) {
   if (arguments.length < 2) {
-    console.log('ERROR: Missing required arguments');
+    printRequiredArgumentsError(arguments);
     return null;
   }
 
@@ -4450,9 +4773,61 @@ function getSubraces() {
     ]
   );
 
+  var halfling = {};
+  halfling[SUBRACE.LIGHTFOOT.VALUE] = Subrace(
+    pushID(SUBRACE.LIGHTFOOT.VALUE),
+    'Lightfoot',
+    [
+      Increase(ABILITY.CHA.VALUE, 1)
+    ],
+    [
+      TRAIT.NATURALLY_STEALTHY.VALUE
+    ]
+  );
+  halfling[SUBRACE.STOUT.VALUE] = Subrace(
+    pushID(SUBRACE.STOUT.VALUE),
+    'Stout',
+    [
+      Increase(ABILITY.CON.VALUE, 1)
+    ],
+    [
+      TRAIT.STOUT_RESILIENCE.VALUE
+    ]
+  );
+
+  var gnome = {};
+  gnome[SUBRACE.FOREST_GNOME.VALUE] = Subrace(
+    pushID(SUBRACE.FOREST_GNOME.VALUE),
+    'Forest Gnome',
+    [
+      Increase(ABILITY.DEX.VALUE, 1)
+    ],
+    [
+      TRAIT.NATURAL_ILLUSIONIST.VALUE,
+      TRAIT.SPEAK_WITH_SMALL_BEASTS.VALUE
+    ]
+  );
+  gnome[SUBRACE.ROCK_GNOME.VALUE] = Subrace(
+    pushID(SUBRACE.ROCK_GNOME.VALUE),
+    'Rock Gnome',
+    [
+      Increase(ABILITY.CON.VALUE, 1)
+    ],
+    [
+      TRAIT.ARTIFICERS_LORE.VALUE,
+      TRAIT.TINKER.VALUE
+    ],
+    0,
+    [
+      TOOL.CATEGORY.ARTISAN
+    ]
+  );
+
   var subraces = {};
   subraces[RACE.DWARF.VALUE] = dwarf;
   subraces[RACE.ELF.VALUE] = elf;
+  subraces[RACE.HALFLING.VALUE] = halfling;
+  subraces[RACE.GNOME.VALUE] = gnome;
 
   return subraces;
 }
@@ -4474,7 +4849,7 @@ const RACE = {
     'VALUE': 'human',
     'PATH': PATH.RACE
   },
-  'DRAGONBRON': {
+  'DRAGONBORN': {
     'VALUE': 'dragonborn',
     'PATH': PATH.RACE
   },
@@ -4493,18 +4868,24 @@ const RACE = {
   'TIEFLING': {
     'VALUE': 'tiefling',
     'PATH': PATH.RACE
+  },
+
+  'SIZE': {
+    'SMALL': 'small',
+    'MEDIUM': 'medium'
   }
 };
 
-function Race(id, name, increasesList, speed, traitsList, profsList, languagesList, subracesList, maxHP_bonus=0) {
-  if (arguments.length < 8) {
-    console.log('ERROR: Missing required arguments');
+function Race(id, name, increasesList, speed, size, traitsList, profsList=null, languagesList, subracesList=null, maxHP_bonus=0) {
+  if (arguments.length < 6) {
+    printRequiredArgumentsError(arguments);
     return null;
   }
 
   var race = {
     'id': id,
-    'speed': speed
+    'speed': speed,
+    'size': size
   };
   race[NAME] = name;
 
@@ -4515,7 +4896,8 @@ function Race(id, name, increasesList, speed, traitsList, profsList, languagesLi
   race['increases'] = increases;
 
   var traits = {};
-  for (t of traitsList) {
+  for (i in traitsList) {
+    let t = traitsList[i];
     traits[t] = PATH.TRAITS;
   }
   race['traits'] = traits;
@@ -4524,24 +4906,34 @@ function Race(id, name, increasesList, speed, traitsList, profsList, languagesLi
     subrace['maxHP_bonus'] = maxHP_bonus;
   }
 
-  var proficiencies = {};
-  var choiceCount = 1;
-  for (p of profsList) {
-    if (p.hasOwnProperty(CHOOSE)) {
-      proficiencies['choice' + choiceCount] = p;
-      choiceCount++;
+  if (profsList !== null) {
+    var proficiencies = {};
+    var choiceCount = 1;
+    for (p of profsList) {
+      if (p.hasOwnProperty(CHOOSE)) {
+        proficiencies['choice' + choiceCount] = p;
+        choiceCount++;
+      }
+      else {
+        proficiencies[p.VALUE] = p.PATH;
+      }
     }
-    else {
-      proficiencies[p.VALUE] = p.PATH;
-    }
+    race['proficiencies'] = proficiencies;
   }
-  race['proficiencies'] = proficiencies;
 
   var languages = {};
   for (l of languagesList) {
     languages[l] = PATH.LANGUAGES;
   }
   race['languages'] = languages;
+
+  if (subracesList !== null) {
+    var subraces = {};
+    for (s of subracesList) {
+      subraces[s] = PATH.SUBRACES;
+    }
+    race['subraces'] = subraces;
+  }
 
   return race;
 }
@@ -4550,7 +4942,7 @@ const CHOOSE = 'choose';
 
 function Choices(amount, choicesList) {
   if (arguments.length < 2) {
-    console.log('ERROR: Missing required arguments');
+    printRequiredArgumentsError(arguments);
     return null;
   }
 
@@ -4559,7 +4951,8 @@ function Choices(amount, choicesList) {
 
   var choice = {};
   var conditionCount = 1;
-  for (c of choicesList) {
+  for (i in choicesList) {
+    let c = choicesList[i];
     if (c.hasOwnProperty(CONDITIONS)) {
       choice['condition' + conditionCount] = c;
       conditionCount++;
@@ -4576,33 +4969,57 @@ function Choices(amount, choicesList) {
   return choices;
 }
 
-function Choice(item, quantity=1) {
+function Choice(item, quantity=1, item2=null, quantity2=null, item3=null, quantity3=null) {
   if (arguments.length < 1) {
-    console.log('ERROR: Missing required arguments');
+    printRequiredArgumentsError(arguments);
     return null;
   }
 
-  return {
+  var choice = {
     'value': item.VALUE,
     'quantity': quantity,
     'path': item.PATH
   };
+
+  if (item2 !== null && quantity2 !== null) {
+    choice['value2'] = item2.VALUE;
+    choice['quantity2'] = quantity2;
+    choice['path2'] = item2.PATH;
+  }
+  else if (!(item2 === null && quantity2 === null)) {
+    console.log('Choice: ERROR: item2 AND quantity2 must both not be null');
+    console.log('item =', item, ', quantity =', quantity);
+    return null;
+  }
+
+  if (item3 !== null && quantity3 !== null) {
+    choice['value3'] = item3.VALUE;
+    choice['quantity3'] = quantity3;
+    choice['path3'] = item3.PATH;
+  }
+  else if (!(item3 === null && quantity3 === null)) {
+    console.log('Choice: ERROR: item3 AND quantity3 must both not be null');
+    console.log('item =', item, ', quantity =', quantity);
+    return null;
+  }
+
+  return choice;
 }
 
 const CONDITIONS = 'conditions';
 
-function Condition(list, quantity=1) {
+function Condition(list, quantity=1, list2=null, quantity2=null) {
   if (arguments.length < 1) {
-    console.log('ERROR: Missing required arguments');
+    printRequiredArgumentsError(arguments);
     return null;
   }
   if (list.length === 0) {
-    console.log('ERROR: list is empty');
+    console.log('Condition: ERROR: list is empty');
     return null;
   }
 
   var conditions = {
-    'quantity': quantity // is quality really necessary?
+    'quantity': quantity
   };
 
   var condition = {};
@@ -4610,6 +5027,20 @@ function Condition(list, quantity=1) {
     condition[l.VALUE] = l.PATH;
   }
   conditions[CONDITIONS] = condition;
+
+  if (list2 !== null && quantity2 !== null) {
+    condition = {};
+    for (l of list2) {
+      condition[l.VALUE] = l.PATH;
+    }
+    conditions[CONDITIONS + '2'] = condition;
+    conditions['quantity2'] = quantity2;
+  }
+  else if (!(list2 === null && quantity2 === null)) {
+    console.log('Condition: ERROR: list2 AND quantity2 must both not be null');
+    console.log('list =', list, ', quantity =', quantity);
+    return null;
+  }
 
   return conditions;
 }
@@ -4624,6 +5055,7 @@ function getRaces() {
       Increase(ABILITY.CON.VALUE, 2)
     ],
     25,
+    RACE.SIZE.MEDIUM,
     [
       TRAIT.DARKVISION.VALUE,
       TRAIT.DWARVEN_RESILIENCE.VALUE,
@@ -4651,8 +5083,7 @@ function getRaces() {
     [
       SUBRACE.HILL_DWARF.VALUE,
       SUBRACE.MOUNTAIN_DWARF.VALUE
-    ],
-    0
+    ]
   );
 
   races[RACE.ELF.VALUE] = Race(
@@ -4662,6 +5093,7 @@ function getRaces() {
       Increase(ABILITY.DEX.VALUE, 2)
     ],
     30,
+    RACE.SIZE.MEDIUM,
     [
       TRAIT.DARKVISION.VALUE,
       TRAIT.KEEN_SENSES.VALUE,
@@ -4669,13 +5101,7 @@ function getRaces() {
       TRAIT.TRANCE.VALUE,
       TRAIT.ELF_WEAPON_TRAINING.VALUE
     ],
-    [
-      SKILL.PERCEPTION,
-      WEAPON.LONGSWORD,
-      WEAPON.SHORTSWORD,
-      WEAPON.SHORTBOW,
-      WEAPON.LONGBOW
-    ],
+    null,
     [
       LANGUAGE.COMMON.VALUE,
       LANGUAGE.ELVISH.VALUE
@@ -4684,8 +5110,171 @@ function getRaces() {
       SUBRACE.HIGH_ELF.VALUE,
       SUBRACE.WOOD_ELF.VALUE,
       SUBRACE.DARK_ELF.VALUE
+    ]
+  );
+
+  races[RACE.HALFLING.VALUE] = Race(
+    pushID(RACE.HALFLING.VALUE),
+    'Halfling',
+    [
+      Increase(ABILITY.DEX.VALUE, 2)
     ],
-    0
+    25,
+    RACE.SIZE.SMALL,
+    [
+      TRAIT.LUCKY.VALUE,
+      TRAIT.BRAVE.VALUE,
+      TRAIT.HALFLING_NIMBLENESS.VALUE
+    ],
+    null,
+    [
+      LANGUAGE.COMMON.VALUE,
+      LANGUAGE.HALFLING.VALUE
+    ],
+    [
+      SUBRACE.LIGHTFOOT.VALUE,
+      SUBRACE.STOUT.VALUE
+    ]
+  );
+
+  races[RACE.HUMAN.VALUE] = Race(
+    pushID(RACE.HUMAN.VALUE),
+    'Human',
+    [
+      Increase(ABILITY.STR.VALUE, 1),
+      Increase(ABILITY.DEX.VALUE, 1),
+      Increase(ABILITY.CON.VALUE, 1),
+      Increase(ABILITY.INT.VALUE, 1),
+      Increase(ABILITY.WIS.VALUE, 1),
+      Increase(ABILITY.CHA.VALUE, 1)
+    ],
+    30,
+    RACE.SIZE.MEDIUM,
+    null,
+    null,
+    [
+      LANGUAGE.COMMON.VALUE,
+      LANGUAGE.ANY.VALUE
+    ]
+  );
+
+  races[RACE.DRAGONBORN.VALUE] = Race(
+    pushID(RACE.DRAGONBORN.VALUE),
+    'Dragonborn',
+    [
+      Increase(ABILITY.STR.VALUE, 2),
+      Increase(ABILITY.CHA.VALUE, 1)
+    ],
+    30,
+    RACE.SIZE.MEDIUM,
+    [
+      TRAIT.DRACONIC_ANCESTRY.VALUE,
+      TRAIT.BREATH_WEAPON.VALUE,
+      TRAIT.DAMAGE_RESISTANCE.VALUE
+    ],
+    null,
+    [
+      LANGUAGE.COMMON.VALUE,
+      LANGUAGE.DRACONIC.VALUE
+    ]
+  );
+
+  races[RACE.GNOME.VALUE] = Race(
+    pushID(RACE.GNOME.VALUE),
+    'Gnome',
+    [
+      Increase(ABILITY.INT.VALUE, 2)
+    ],
+    25,
+    RACE.SIZE.SMALL,
+    [
+      TRAIT.DARKVISION.VALUE,
+      TRAIT.GNOME_CUNNING.VALUE
+    ],
+    null,
+    [
+      LANGUAGE.COMMON.VALUE,
+      LANGUAGE.GNOMISH.VALUE
+    ],
+    [
+      SUBRACE.FOREST_GNOME.VALUE,
+      SUBRACE.ROCK_GNOME.VALUE
+    ]
+  );
+
+  races[RACE.HALF_ELF.VALUE] = Race(
+    pushID(RACE.HALF_ELF.VALUE),
+    'Half-Elf',
+    [
+      Increase(ABILITY.CHA.VALUE, 2),
+      Increase(ABILITY.ANY.VALUE, 1),
+      Increase(ABILITY.ANY.VALUE, 1)
+    ],
+    30,
+    RACE.SIZE.MEDIUM,
+    [
+      TRAIT.DARKVISION.VALUE,
+      TRAIT.FEY_ANCESTRY.VALUE,
+      TRAIT.SKILL_VERSATILITY.VALUE
+    ],
+    [
+      Choices(
+        2,
+        [
+          Condition([SKILL.ANY])
+        ]
+      )
+    ],
+    [
+      LANGUAGE.COMMON.VALUE,
+      LANGUAGE.ELVISH.VALUE,
+      LANGUAGE.ANY.VALUE
+    ]
+  );
+
+  races[RACE.HALF_ORC.VALUE] = Race(
+    pushID(RACE.HALF_ORC.VALUE),
+    'Half-Orc',
+    [
+      Increase(ABILITY.STR.VALUE, 2),
+      Increase(ABILITY.CON.VALUE, 1)
+    ],
+    30,
+    RACE.SIZE.MEDIUM,
+    [
+      TRAIT.DARKVISION.VALUE,
+      TRAIT.MENACING.VALUE,
+      TRAIT.RELENTLESS_ENDURANCE.VALUE,
+      TRAIT.SAVAGE_ATTACKS.VALUE
+    ],
+    [
+      SKILL.INTIMIDATION
+    ],
+    [
+      LANGUAGE.COMMON.VALUE,
+      LANGUAGE.ORC.VALUE
+    ]
+  );
+
+  races[RACE.TIEFLING.VALUE] = Race(
+    pushID(RACE.TIEFLING.VALUE),
+    'Tiefling',
+    [
+      Increase(ABILITY.INT.VALUE, 1),
+      Increase(ABILITY.CHA.VALUE, 2)
+    ],
+    30,
+    RACE.SIZE.MEDIUM,
+    [
+      TRAIT.DARKVISION.VALUE,
+      TRAIT.HELLISH_RESISTANCE.VALUE,
+      TRAIT.INFERNAL_LEGACY.VALUE
+    ],
+    null,
+    [
+      LANGUAGE.COMMON.VALUE,
+      LANGUAGE.INFERNAL.VALUE
+    ]
   );
 
   return races;
@@ -4703,12 +5292,52 @@ const CLASS = {
   'BARD': {
     'VALUE': 'bard',
     'PATH': PATH.CLASS
+  },
+  'CLERIC': {
+    'VALUE': 'cleric',
+    'PATH': PATH.CLASS
+  },
+  'DRUID': {
+    'VALUE': 'druid',
+    'PATH': PATH.CLASS
+  },
+  'FIGHTER': {
+    'VALUE': 'fighter',
+    'PATH': PATH.CLASS
+  },
+  'MONK': {
+    'VALUE': 'monk',
+    'PATH': PATH.CLASS
+  },
+  'PALADIN': {
+    'VALUE': 'paladin',
+    'PATH': PATH.CLASS
+  },
+  'RANGER': {
+    'VALUE': 'ranger',
+    'PATH': PATH.CLASS
+  },
+  'ROGUE': {
+    'VALUE': 'rogue',
+    'PATH': PATH.CLASS
+  },
+  'SORCERER': {
+    'VALUE': 'sorcerer',
+    'PATH': PATH.CLASS
+  },
+  'WARLOCK': {
+    'VALUE': 'warlock',
+    'PATH': PATH.CLASS
+  },
+  'WIZARD': {
+    'VALUE': 'wizard',
+    'PATH': PATH.CLASS
   }
 };
 
 function Class(id, name, hitDice, profsList, equipmentList) {
   if (arguments.length < 5) {
-    console.log('ERROR: Missing required arguments');
+    printRequiredArgumentsError(arguments);
     return null;
   }
 
@@ -4752,7 +5381,7 @@ function Class(id, name, hitDice, profsList, equipmentList) {
 
 function HitDice(num, die) {
   if (arguments.length < 2) {
-    console.log('ERROR: Missing required arguments');
+    printRequiredArgumentsError(arguments);
     return null;
   }
 
@@ -4765,7 +5394,7 @@ function HitDice(num, die) {
 
 function Equipment(item, quantity=1) {
   if (arguments.length < 1) {
-    console.log('ERROR: Missing required arguments');
+    printRequiredArgumentsError(arguments);
     return null;
   }
 
@@ -4873,6 +5502,535 @@ function getClasses() {
       ),
       Equipment(ARMOR.LEATHER),
       Equipment(WEAPON.DAGGER)
+    ]
+  );
+
+  classes[CLASS.CLERIC.VALUE] = Class(
+    pushID(CLASS.CLERIC.VALUE),
+    'Cleric',
+    HitDice(1, 8),
+    [
+      ARMOR.TYPE.LIGHT,
+      ARMOR.TYPE.MEDIUM,
+      ARMOR.TYPE.SHIELD,
+      WEAPON.CATEGORY.SIMPLE,
+      ABILITY.WIS,
+      ABILITY.CHA,
+      Choices(
+        2,
+        [
+          Choice(SKILL.HISTORY),
+          Choice(SKILL.INSIGHT),
+          Choice(SKILL.MEDICINE),
+          Choice(SKILL.PERSUASION),
+          Choice(SKILL.RELIGION)
+        ]
+      )
+    ],
+    [
+      Choices(
+        1,
+        [
+          Choice(WEAPON.MACE),
+          Choice(WEAPON.WARHAMMER)
+        ]
+      ),
+      Choices(
+        1,
+        [
+          Choice(ARMOR.SCALE_MAIL),
+          Choice(ARMOR.LEATHER),
+          Choice(ARMOR.CHAIN_MAIL),
+        ]
+      ),
+      Choices(
+        1,
+        [
+          Choice(WEAPON.LIGHT_CROSSBOW, 1, GEAR.CROSSBOW_BOLTS_20, 1),
+          Condition([WEAPON.CATEGORY.SIMPLE])
+        ]
+      ),
+      Choices(
+        1,
+        [
+          Choice(PACK.PRIEST),
+          Choice(PACK.EXPLORER)
+        ]
+      ),
+      Equipment(ARMOR.SHIELD),
+      Equipment(GEAR.TYPE.HOLY_SYMBOL)
+    ]
+  );
+
+  classes[CLASS.DRUID.VALUE] = Class(
+    pushID(CLASS.DRUID.VALUE),
+    'Druid',
+    HitDice(1, 8),
+    [
+      ARMOR.TYPE.LIGHT,
+      ARMOR.TYPE.MEDIUM,
+      ARMOR.TYPE.SHIELD,
+      WEAPON.CLUB,
+      WEAPON.DAGGER,
+      WEAPON.DART,
+      WEAPON.JAVELIN,
+      WEAPON.MACE,
+      WEAPON.QUARTERSTAFF,
+      WEAPON.SCIMITAR,
+      WEAPON.SICKLE,
+      WEAPON.SLING,
+      WEAPON.SPEAR,
+      TOOL.HERBALISM_KIT,
+      ABILITY.INT,
+      ABILITY.WIS,
+      Choices(
+        2,
+        [
+          Choice(SKILL.ARCANA),
+          Choice(SKILL.ANIMAL_HANDLING),
+          Choice(SKILL.INSIGHT),
+          Choice(SKILL.MEDICINE),
+          Choice(SKILL.NATURE),
+          Choice(SKILL.PERCEPTION),
+          Choice(SKILL.RELIGION),
+          Choice(SKILL.SURVIVAL)
+        ]
+      )
+    ],
+    [
+      Choices(
+        1,
+        [
+          Choice(ARMOR.SHIELD),
+          Condition([WEAPON.CATEGORY.SIMPLE])
+        ]
+      ),
+      Choices(
+        1,
+        [
+          Choice(WEAPON.SCIMITAR),
+          Condition([WEAPON.CATEGORY.SIMPLE, WEAPON.CLASS.MELEE])
+        ]
+      ),
+      Equipment(ARMOR.LEATHER),
+      Equipment(PACK.EXPLORER),
+      Equipment(GEAR.TYPE.DRUIDIC_FOCUS)
+    ]
+  );
+
+  classes[CLASS.FIGHTER.VALUE] = Class(
+    pushID(CLASS.FIGHTER.VALUE),
+    'Fighter',
+    HitDice(1, 10),
+    [
+      ARMOR.ALL,
+      WEAPON.CATEGORY.SIMPLE,
+      WEAPON.CATEGORY.MARTIAL,
+      ABILITY.STR,
+      ABILITY.CON,
+      Choices(
+        2,
+        [
+          Choice(SKILL.ACROBATICS),
+          Choice(SKILL.ANIMAL_HANDLING),
+          Choice(SKILL.ATHLETICS),
+          Choice(SKILL.HISTORY),
+          Choice(SKILL.INSIGHT),
+          Choice(SKILL.INTIMIDATION),
+          Choice(SKILL.PERCEPTION),
+          Choice(SKILL.SURVIVAL)
+        ]
+      )
+    ],
+    [
+      Choices(
+        1,
+        [
+          Choice(ARMOR.CHAIN_MAIL),
+          Choice(ARMOR.LEATHER, 1, WEAPON.LONGBOW, 1, GEAR.ARROWS_20, 1)
+        ]
+      ),
+      Choices(
+        1,
+        [
+          Condition([WEAPON.CATEGORY.MARTIAL], 1, [ARMOR.TYPE.SHIELD], 1),
+          Condition([WEAPON.CATEGORY.MARTIAL], 2)
+        ]
+      ),
+      Choices(
+        1,
+        [
+          Choice(WEAPON.LIGHT_CROSSBOW, 1, GEAR.CROSSBOW_BOLTS_20, 1),
+          Choice(WEAPON.HANDAXE, 2)
+        ]
+      ),Choices(
+        1,
+        [
+          Choice(PACK.DUNGEONEER),
+          Choice(PACK.EXPLORER)
+        ]
+      )
+    ]
+  );
+
+  classes[CLASS.MONK.VALUE] = Class(
+    pushID(CLASS.MONK.VALUE),
+    'Monk',
+    HitDice(1, 8),
+    [
+      WEAPON.CATEGORY.SIMPLE,
+      WEAPON.SHORTSWORD,
+      Choices(
+        1,
+        [
+          Condition([TOOL.CATEGORY.ARTISAN]),
+          Condition([TOOL.CATEGORY.MUSICAL_INSTRUMENT])
+        ]
+      ),
+      ABILITY.STR,
+      ABILITY.DEX,
+      Choices(
+        2,
+        [
+          Choice(SKILL.ACROBATICS),
+          Choice(SKILL.ATHLETICS),
+          Choice(SKILL.HISTORY),
+          Choice(SKILL.INSIGHT),
+          Choice(SKILL.RELIGION),
+          Choice(SKILL.STEALTH)
+        ]
+      )
+    ],
+    [
+      Choices(
+        1,
+        [
+          Choice(WEAPON.SHORTSWORD),
+          Condition([WEAPON.CATEGORY.SIMPLE])
+        ]
+      ),
+      Choices(
+        1,
+        [
+          Choice(PACK.DUNGEONEER),
+          Choice(PACK.EXPLORER)
+        ]
+      ),
+      Equipment(WEAPON.DART, 10)
+    ]
+  );
+
+  classes[CLASS.PALADIN.VALUE] = Class(
+    pushID(CLASS.PALADIN.VALUE),
+    'Paladin',
+    HitDice(1, 10),
+    [
+      ARMOR.ALL,
+      ARMOR.TYPE.SHIELD,
+      WEAPON.CATEGORY.SIMPLE,
+      WEAPON.CATEGORY.MARTIAL,
+      ABILITY.WIS,
+      ABILITY.CHA,
+      Choices(
+        2,
+        [
+          Choice(SKILL.ATHLETICS),
+          Choice(SKILL.INSIGHT),
+          Choice(SKILL.INTIMIDATION),
+          Choice(SKILL.MEDICINE),
+          Choice(SKILL.PERSUASION),
+          Choice(SKILL.RELIGION)
+        ]
+      )
+    ],
+    [
+      Choices(
+        1,
+        [
+          Condition([WEAPON.CATEGORY.MARTIAL], 1, [ARMOR.TYPE.SHIELD], 1),
+          Condition([WEAPON.CATEGORY.MARTIAL], 2)
+        ]
+      ),
+      Choices(
+        1,
+        [
+          Choice(WEAPON.JAVELIN, 5),
+          Condition([WEAPON.CATEGORY.SIMPLE, WEAPON.CLASS.MELEE])
+        ]
+      ),
+      Choices(
+        1,
+        [
+          Choice(PACK.PRIEST),
+          Choice(PACK.EXPLORER)
+        ]
+      ),
+      Equipment(ARMOR.CHAIN_MAIL),
+      Equipment(GEAR.TYPE.HOLY_SYMBOL)
+    ]
+  );
+
+  classes[CLASS.RANGER.VALUE] = Class(
+    pushID(CLASS.RANGER.VALUE),
+    'Ranger',
+    HitDice(1, 10),
+    [
+      ARMOR.TYPE.LIGHT,
+      ARMOR.TYPE.MEDIUM,
+      ARMOR.TYPE.SHIELD,
+      WEAPON.CATEGORY.SIMPLE,
+      WEAPON.CATEGORY.MARTIAL,
+      ABILITY.STR,
+      ABILITY.DEX,
+      Choices(
+        3,
+        [
+          Choice(SKILL.ANIMAL_HANDLING),
+          Choice(SKILL.ATHLETICS),
+          Choice(SKILL.INSIGHT),
+          Choice(SKILL.INVESTIGATION),
+          Choice(SKILL.NATURE),
+          Choice(SKILL.PERCEPTION),
+          Choice(SKILL.STEALTH),
+          Choice(SKILL.SURVIVAL)
+        ]
+      )
+    ],
+    [
+      Choices(
+        1,
+        [
+          Choice(ARMOR.SCALE_MAIL),
+          Choice(ARMOR.LEATHER)
+        ]
+      ),
+      Choices(
+        1,
+        [
+          Choice(WEAPON.SHORTSWORD, 2),
+          Condition([WEAPON.CATEGORY.SIMPLE, WEAPON.CLASS.MELEE], 2)
+        ]
+      ),
+      Choices(
+        1,
+        [
+          Choice(PACK.DUNGEONEER),
+          Choice(PACK.EXPLORER)
+        ]
+      ),
+      Equipment(WEAPON.LONGBOW),
+      Equipment(GEAR.QUIVER),
+      Equipment(GEAR.ARROWS_20)
+    ]
+  );
+
+  classes[CLASS.ROGUE.VALUE] = Class(
+    pushID(CLASS.ROGUE.VALUE),
+    'Rogue',
+    HitDice(1, 8),
+    [
+      ARMOR.TYPE.LIGHT,
+      WEAPON.CATEGORY.SIMPLE,
+      WEAPON.HAND_CROSSBOW,
+      WEAPON.LONGSWORD,
+      WEAPON.RAPIER,
+      WEAPON.SHORTSWORD,
+      TOOL.THIEVES_TOOLS,
+      ABILITY.DEX,
+      ABILITY.INT,
+      Choices(
+        4,
+        [
+          Choice(SKILL.ACROBATICS),
+          Choice(SKILL.ATHLETICS),
+          Choice(SKILL.DECEPTION),
+          Choice(SKILL.INSIGHT),
+          Choice(SKILL.INTIMIDATION),
+          Choice(SKILL.INVESTIGATION),
+          Choice(SKILL.PERCEPTION),
+          Choice(SKILL.PERFORMANCE),
+          Choice(SKILL.PERSUASION),
+          Choice(SKILL.SLEIGHT_OF_HAND),
+          Choice(SKILL.STEALTH)
+        ]
+      )
+    ],
+    [
+      Choices(
+        1,
+        [
+          Choice(WEAPON.RAPIER),
+          Choice(WEAPON.SHORTSWORD)
+        ]
+      ),
+      Choices(
+        1,
+        [
+          Choice(WEAPON.SHORTBOW, 1, GEAR.QUIVER, 1, GEAR.ARROWS_20, 1),
+          Choice(WEAPON.SHORTSWORD)
+        ]
+      ),
+      Choices(
+        1,
+        [
+          Choice(PACK.BURGLAR),
+          Choice(PACK.DUNGEONEER),
+          Choice(PACK.EXPLORER)
+        ]
+      ),
+      Equipment(ARMOR.LEATHER),
+      Equipment(WEAPON.DAGGER, 2),
+      Equipment(TOOL.THIEVES_TOOLS)
+    ]
+  );
+
+  classes[CLASS.SORCERER.VALUE] = Class(
+    pushID(CLASS.SORCERER.VALUE),
+    'Sorcerer',
+    HitDice(1, 6),
+    [
+      WEAPON.DAGGER,
+      WEAPON.DART,
+      WEAPON.SLING,
+      WEAPON.QUARTERSTAFF,
+      WEAPON.LIGHT_CROSSBOW,
+      ABILITY.CON,
+      ABILITY.CHA,
+      Choices(
+        2,
+        [
+          Choice(SKILL.ARCANA),
+          Choice(SKILL.DECEPTION),
+          Choice(SKILL.INSIGHT),
+          Choice(SKILL.INTIMIDATION),
+          Choice(SKILL.PERSUASION),
+          Choice(SKILL.RELIGION)
+        ]
+      )
+    ],
+    [
+      Choices(
+        1,
+        [
+          Choice(WEAPON.LIGHT_CROSSBOW, 1, GEAR.CROSSBOW_BOLTS_20, 1),
+          Condition([WEAPON.CATEGORY.SIMPLE])
+        ]
+      ),
+      Choices(
+        1,
+        [
+          Choice(GEAR.COMPONENT_POUCH),
+          Condition([GEAR.TYPE.ARCANE_FOCUS])
+        ]
+      ),
+      Choices(
+        1,
+        [
+          Choice(PACK.DUNGEONEER),
+          Choice(PACK.EXPLORER)
+        ]
+      ),
+      Equipment(WEAPON.DAGGER, 2)
+    ]
+  );
+
+  classes[CLASS.WARLOCK.VALUE] = Class(
+    pushID(CLASS.WARLOCK.VALUE),
+    'Warlock',
+    HitDice(1, 8),
+    [
+      ARMOR.TYPE.LIGHT,
+      WEAPON.CATEGORY.SIMPLE,
+      ABILITY.WIS,
+      ABILITY.CHA,
+      Choices(
+        2,
+        [
+          Choice(SKILL.ARCANA),
+          Choice(SKILL.DECEPTION),
+          Choice(SKILL.HISTORY),
+          Choice(SKILL.INTIMIDATION),
+          Choice(SKILL.INVESTIGATION),
+          Choice(SKILL.NATURE),
+          Choice(SKILL.RELIGION)
+        ]
+      )
+    ],
+    [
+      Choices(
+        1,
+        [
+          Choice(WEAPON.LIGHT_CROSSBOW, 1, GEAR.CROSSBOW_BOLTS_20, 1),
+          Condition([WEAPON.CATEGORY.SIMPLE])
+        ]
+      ),
+      Choices(
+        1,
+        [
+          Choice(GEAR.COMPONENT_POUCH),
+          Condition([GEAR.TYPE.ARCANE_FOCUS])
+        ]
+      ),
+      Choices(
+        1,
+        [
+          Choice(PACK.SCHOLAR),
+          Choice(PACK.DUNGEONEER)
+        ]
+      ),
+      Equipment(ARMOR.LEATHER),
+      Equipment(WEAPON.CATEGORY.SIMPLE),
+      Equipment(WEAPON.DAGGER, 2)
+    ]
+  );
+
+  classes[CLASS.WIZARD.VALUE] = Class(
+    pushID(CLASS.WIZARD.VALUE),
+    'Wizard',
+    HitDice(1, 6),
+    [
+      WEAPON.DAGGER,
+      WEAPON.DART,
+      WEAPON.SLING,
+      WEAPON.QUARTERSTAFF,
+      WEAPON.LIGHT_CROSSBOW,
+      ABILITY.INT,
+      ABILITY.WIS,
+      Choices(
+        2,
+        [
+          Choice(SKILL.ARCANA),
+          Choice(SKILL.HISTORY),
+          Choice(SKILL.INSIGHT),
+          Choice(SKILL.INVESTIGATION),
+          Choice(SKILL.MEDICINE),
+          Choice(SKILL.RELIGION)
+        ]
+      )
+    ],
+    [
+      Choices(
+        1,
+        [
+          Choice(WEAPON.QUARTERSTAFF),
+          Choice(WEAPON.DAGGER)
+        ]
+      ),
+      Choices(
+        1,
+        [
+          Choice(GEAR.COMPONENT_POUCH),
+          Condition([GEAR.TYPE.ARCANE_FOCUS])
+        ]
+      ),
+      Choices(
+        1,
+        [
+          Choice(PACK.SCHOLAR),
+          Choice(PACK.EXPLORER)
+        ]
+      ),
+      Equipment(GEAR.SPELLBOOK)
     ]
   );
 
