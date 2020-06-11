@@ -166,8 +166,14 @@ function updateSubrace() {
     return;
   }
 
+  var subraces = new DbRef(raceValue + ' subraces', PATH.SUBRACES + '/' + raceValue);
+
+  if (subraces.val === null) {
+    return;
+  }
+
   console.log('Loading Subrace dropdown...');
-  loadList('subrace', new DbRef(raceValue + ' subraces', PATH.SUBRACES + '/' + raceValue));
+  loadList('subrace', subraces);
   document.getElementById('subraceDiv').style.display = 'block';
 }
 
@@ -198,6 +204,10 @@ function updateAbilities() {
 function addAbilityModifiers(modList) {
   for (key in modList) {
     var ability = key;
+    if (ability === ANY) {
+      // TODO - Handle prompting user for ability choice
+      continue;
+    }
     var abilityMod = modList[key];
 
     var modID = ability.toLowerCase() + 'Mod';
@@ -402,11 +412,9 @@ function updateProficiencies() {
     }
 
     // Check for proficiencies in abilities
-    else if (prof.hasOwnProperty('STR') || prof.hasOwnProperty('DEX') || prof.hasOwnProperty('CON')
-     || prof.hasOwnProperty('INT') || prof.hasOwnProperty('WIS') || prof.hasOwnProperty('CHA')) {
+    else if (Object.keys(ABILITY).includes(prof)) {
 
-       var profKey = Object.keys(prof)[0];
-       var rowID = profKey.match(/[A-Z]{3}/g)[0].toLowerCase() + '-row';
+       var rowID = prof.toLowerCase() + '-row';
        var row = document.getElementById(rowID);
        row.style.fontWeight = '900';
     }
