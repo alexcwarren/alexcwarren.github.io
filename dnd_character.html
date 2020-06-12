@@ -71,7 +71,16 @@
         <div class="row">
           <div class="col-md-1">
             <div class="big-box">
-              <!-- TODO Embed Ability Score functionality -->
+              <div class="row dropdown">
+                Get Ability Scores:
+                <button class="btn btn-primary btn-small dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span>^</span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#">Roll...</a>
+                  <a class="dropdown-item" href="#">Fixed</a>
+                </div>
+              </div>
               <div class="row ability" id="str-row">
                 <span class="ability">STR</span>
                 <span>
@@ -114,23 +123,26 @@
                 </span>
                 <span id="chaMod" class="abilityMod"></span>
               </div>
-
-              <div class="row">
-                <div class="form-group side-column">
-                  <label for="speed">Get Ability Scores</label>
-                  <select class="form-control side-column" id="getAbilityScores" name="getAbilityScores" onchange="" value=""></select>
-                </div>
-              </div>
               <div class="row">
                 <div class="form-group side-column">
                   <label for="speed">Level</label>
                   <input type="text" class="form-control disabled" id="level" name="level" value="1" disabled>
                 </div>
               </div>
+              <div class="row dropdown">
+                Get Hit Points:
+                <button class="btn btn-primary btn-small dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span>^</span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#">Roll...</a>
+                  <a class="dropdown-item" href="#">Fixed</a>
+                </div>
+              </div>
               <div class="row">
                 <div class="form-group side-column">
                   <label for="speed">Hit Points</label>
-                  <select class="form-control side-column" id="hitPoints" name="hitPoints" onchange="" value=""></select>
+                  <input type="text" class="form-control disabled" id="hitPoints" name="hitPoints" value="" disabled>
                 </div>
               </div>
               <div class="row">

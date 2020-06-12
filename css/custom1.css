@@ -55,6 +55,13 @@ input.ability {
   text-align: center;
 }
 
+.btn-small {
+  padding: 0 0 5px 0;
+  width: 20px;
+  height: 17px;
+  transform: rotate(180deg);
+}
+
 #subraceDiv {
   display: none;
 }
