@@ -1,3 +1,6 @@
+const BAD_APOSTROPHE = '’';
+const EXTENDED_HYPHEN = '—';
+
 const dataRef = database.ref('dnd_data');
 
 const ANY = 'any';
@@ -130,12 +133,15 @@ const PATH = {
   'GEAR_TYPES': 'gear_types',
   'LANGUAGES': 'languages',
   'PACKS': 'packs',
+  'PETS': 'pets',
   'RACES': 'races',
   'SKILLS': 'skills',
   'SUBRACES': 'subraces',
   'TOOL_CATEGORIES': 'tool_categories',
   'TOOLS': 'tools',
   'TRAITS': 'traits',
+  'TRINKETS': 'trinkets',
+  'VEHICLE_TYPES': 'vehicle_types',
   'WEAPON_CATEGORIES': 'weapon_categories',
   'WEAPON_CLASSES': 'weapon_classes',
   'WEAPONS': 'weapons'
@@ -2333,6 +2339,82 @@ const PACK = {
 };
 
 const GEAR = {
+  'MAP': {
+    'VALUE': 'map',
+    'PATH': PATH.GEAR
+  },
+  'RANK_INSIGNIA': {
+    'VALUE': 'rank_insignia',
+    'PATH': PATH.GEAR
+  },
+  'ENEMY_TROPHY': {
+    'VALUE': 'enemy_trophy',
+    'PATH': PATH.GEAR
+  },
+  'BONE_DICE': {
+    'VALUE': 'bone_dice',
+    'PATH': PATH.GEAR
+  },
+  'DECK_OF_CARDS': {
+    'VALUE': 'deck_of_cards',
+    'PATH': PATH.GEAR
+  },
+  'LUCKY_CHARM': {
+    'VALUE': 'lucky_charm',
+    'PATH': PATH.GEAR
+  },
+  'COLLEAGUES_LETTER': {
+    'VALUE': 'colleagues_letter',
+    'PATH': PATH.GEAR
+  },
+  'ANIMAL_TROPHY': {
+    'VALUE': 'animal_trophy',
+    'PATH': PATH.GEAR
+  },
+  'SCROLL_OF_PEDIGREE': {
+    'VALUE': 'scroll_of_pedigree',
+    'PATH': PATH.GEAR
+  },
+  'CASE_SCROLL_FILLED': {
+    'VALUE': 'case_scroll_filled',
+    'PATH': PATH.GEAR
+  },
+  'GUILD_LETTER': {
+    'VALUE': 'guild_letter',
+    'PATH': PATH.GEAR
+  },
+  'LOVE_LETTER': {
+    'VALUE': 'love_letter',
+    'PATH': PATH.GEAR
+  },
+  'LOCK_OF_HAIR': {
+    'VALUE': 'lock_of_hair',
+    'PATH': PATH.GEAR
+  },
+  'TRINKET': {
+    'VALUE': 'trinket',
+    'PATH': PATH.GEAR
+  },
+  'CLOTHES_COMMON_DARK': {
+    'VALUE': 'clothes_common_dark',
+    'PATH': PATH.GEAR
+  },
+  'STOPPERED_BOTTLES_10': {
+    'VALUE': 'stoppered_bottles',
+    'PATH': PATH.GEAR
+  },
+  'WEIGHTED_DICE': {
+    'VALUE': 'weighted_dice',
+    'PATH': PATH.GEAR
+  },
+  'DECK_OF_MARKED_CARDS': {
+    'VALUE': 'deck_of_marked_cards',
+    'PATH': PATH.GEAR
+  },
+  'SIGNET_RING_DUKE': {
+    'VALUE': 'signet_ring_duke',
+    'PATH': PATH.GEAR
+  },
   'PRAYER_BOOK': {
     'VALUE': 'prayer_book',
     'PATH': PATH.GEAR
@@ -2797,6 +2879,14 @@ const GEAR = {
     'COMPONENT': {
       'VALUE': 'component',
       'PATH': PATH.GEAR_TYPES
+    },
+    'CON': {
+      'VALUE': 'con',
+      'PATH': PATH.GEAR_TYPES
+    },
+    'FAVOR': {
+      'VALUE': 'favor',
+      'PATH': PATH.GEAR_TYPES
     }
   }
 };
@@ -3020,9 +3110,7 @@ const UNIT = {
   'WEIGHT': {
     'LB': 'pounds'
   },
-  'COUNT': {
-    'MAP_SCROLL': 'map or scroll'
-  }
+  'COUNT': true
 };
 
 function Container(volume, volumeUnit, weightLimit=null, weightUnit=null, isFull=false, contents={}, strapped=null) {
@@ -3109,6 +3197,19 @@ function getGearTypes() {
   containers[GEAR.VIAL_ANTITOXIN.VALUE] = PATH.GEAR;
   containers[GEAR.WATERSKIN.VALUE] = PATH.GEAR;
 
+  var cons = {};
+  // cons[NAME] = 'Con';
+  cons[GEAR.STOPPERED_BOTTLES_10.VALUE] = PATH.GEAR;
+  cons[GEAR.WEIGHTED_DICE.VALUE] = PATH.GEAR;
+  cons[GEAR.DECK_OF_MARKED_CARDS.VALUE] = PATH.GEAR;
+  cons[GEAR.SIGNET_RING_DUKE.VALUE] = PATH.GEAR;
+
+  var favors = {};
+  // favors[NAME] = 'Favor';
+  favors[GEAR.LOVE_LETTER.VALUE] = PATH.GEAR;
+  favors[GEAR.LOCK_OF_HAIR.VALUE] = PATH.GEAR;
+  favors[GEAR.TRINKET.VALUE] = PATH.GEAR;
+
   var components = {};
   // components[NAME] = 'Components';
   components[GEAR.INCENSE_BLOCK.VALUE] = PATH.GEAR;
@@ -3120,14 +3221,151 @@ function getGearTypes() {
   gearTypes[GEAR.TYPE.DRUIDIC_FOCUS.VALUE] = druidicFocus;
   gearTypes[GEAR.TYPE.HOLY_SYMBOL.VALUE] = holySymbols;
   gearTypes[GEAR.TYPE.CONTAINER.VALUE] = containers;
+  gearTypes[GEAR.TYPE.CON.VALUE] = cons;
+  gearTypes[GEAR.TYPE.FAVOR.VALUE] = favors;
   gearTypes[GEAR.TYPE.COMPONENT.VALUE] = components;
 
   return gearTypes;
 }
 
-// function getGear(id, name) {
 function getGear() {
   var gear = {};
+
+  gear[GEAR.MAP.VALUE] = Gear(
+    pushID(GEAR.MAP.VALUE),
+    'Map',
+    0,
+    0
+  );
+
+  gear[GEAR.RANK_INSIGNIA.VALUE] = Gear(
+    pushID(GEAR.RANK_INSIGNIA.VALUE),
+    'Insignia of rank',
+    0,
+    0
+  );
+
+  gear[GEAR.ENEMY_TROPHY.VALUE] = Gear(
+    pushID(GEAR.ENEMY_TROPHY.VALUE),
+    'Trophy taken from fallen enemy',
+    0,
+    0
+  );
+
+  gear[GEAR.BONE_DICE.VALUE] = Gear(
+    pushID(GEAR.BONE_DICE.VALUE),
+    'A set of bone dice',
+    0,
+    0
+  );
+
+  gear[GEAR.DECK_OF_CARDS.VALUE] = Gear(
+    pushID(GEAR.DECK_OF_CARDS.VALUE),
+    'Deck of cards',
+    0,
+    0
+  );
+
+  gear[GEAR.LUCKY_CHARM.VALUE] = Gear(
+    pushID(GEAR.LUCKY_CHARM.VALUE),
+    'Lucky charm',
+    0,
+    0
+  );
+
+  gear[GEAR.COLLEAGUES_LETTER.VALUE] = Gear(
+    pushID(GEAR.COLLEAGUES_LETTER.VALUE),
+    'A letter from a dead colleague',
+    0,
+    0
+  );
+
+  gear[GEAR.ANIMAL_TROPHY.VALUE] = Gear(
+    pushID(GEAR.ANIMAL_TROPHY.VALUE),
+    'Animal trophy',
+    0,
+    0
+  );
+
+  gear[GEAR.SCROLL_OF_PEDIGREE.VALUE] = Gear(
+    pushID(GEAR.SCROLL_OF_PEDIGREE.VALUE),
+    'Scroll of pedigree',
+    0,
+    0
+  );
+
+  gear[GEAR.CASE_SCROLL_FILLED.VALUE] = Gear(
+    pushID(GEAR.CASE_SCROLL_FILLED.VALUE),
+    'Case, scroll: filled with notes',
+    0,
+    0,
+    Container(1, UNIT.COUNT, null, null, true, {'notes': true}),
+    null,
+    GEAR.TYPE.CONTAINER
+  );
+
+  gear[GEAR.GUILD_LETTER.VALUE] = Gear(
+    pushID(GEAR.GUILD_LETTER.VALUE),
+    'Letter of introduction from your guild',
+    0,
+    0
+  );
+
+  gear[GEAR.LOVE_LETTER.VALUE] = Gear(
+    pushID(GEAR.LOVE_LETTER.VALUE),
+    'Love letter',
+    0,
+    0
+  );
+
+  gear[GEAR.LOCK_OF_HAIR.VALUE] = Gear(
+    pushID(GEAR.LOCK_OF_HAIR.VALUE),
+    'Lock of hair',
+    0,
+    0
+  );
+
+  gear[GEAR.TRINKET.VALUE] = Gear(
+    pushID(GEAR.TRINKET.VALUE),
+    'Trinket',
+    0,
+    0
+  );
+
+  gear[GEAR.CLOTHES_COMMON_DARK.VALUE] = Gear(
+    pushID(GEAR.CLOTHES_COMMON_DARK.VALUE),
+    'Clothes, common: dark including a hood',
+    0,
+    0
+  );
+
+  gear[GEAR.STOPPERED_BOTTLES_10.VALUE] = Gear(
+    pushID(GEAR.STOPPERED_BOTTLES_10.VALUE),
+    '10 stoppered bottles filled with colored liquid',
+    0,
+    0
+  );
+
+  gear[GEAR.WEIGHTED_DICE.VALUE] = Gear(
+    pushID(GEAR.WEIGHTED_DICE.VALUE),
+    'Weighted dice',
+    0,
+    0
+  );
+
+  gear[GEAR.DECK_OF_MARKED_CARDS.VALUE] = Gear(
+    pushID(GEAR.DECK_OF_MARKED_CARDS.VALUE),
+    'Deck of marked cards',
+    0,
+    0
+  );
+
+  gear[GEAR.SIGNET_RING_DUKE.VALUE] = Gear(
+    pushID(GEAR.SIGNET_RING_DUKE.VALUE),
+    'Signet ring of imaginary duke',
+    0,
+    0
+  );
 
   gear[GEAR.PRAYER_BOOK.VALUE] = Gear(
     pushID(GEAR.PRAYER_BOOK.VALUE),
@@ -4001,7 +4239,7 @@ function getGear() {
     'Case, map or scroll',
     1,
     1,
-    Container(1, UNIT.COUNT.MAP_SCROLL),
+    Container(1, UNIT.COUNT),
     PackList([
       PACK.DIPLOMAT.VALUE
     ]),
@@ -4148,6 +4386,93 @@ function getGear() {
   );
 
   return gear;
+}
+
+/**********
+* VEHICLES
+**********/
+
+const VEHICLE = {
+  'TYPE': {
+    'LAND': {
+      'VALUE': 'land',
+      'PATH': PATH.VEHICLE_TYPES
+    },
+    'WATER': {
+      'VALUE': 'water',
+      'PATH': PATH.VEHICLE_TYPES
+    }
+  }
+};
+
+function getVehicleTypes() {
+  var land = {};
+  land[NAME] = 'Land vehicles';
+
+  var water = {};
+  water[NAME] = 'Water vehicles';
+
+  var vehicle_types = {};
+  vehicle_types[VEHICLE.TYPE.LAND.VALUE] = land;
+  vehicle_types[VEHICLE.TYPE.WATER.VALUE] = water;
+
+  return vehicle_types;
+}
+
+/******
+* PETS
+******/
+
+const PET = {
+  'MOUSE': {
+    'VALUE': 'mouse',
+    'PATH': PATH.PETS
+  }
+}
+
+class Pet {
+  constructor(name) {
+    this.id = pushID(name);
+    this.name = name;
+  }
+}
+
+function getPets() {
+  var pets = {};
+
+  pets[PET.MOUSE.VALUE] = new Pet(
+    'Mouse'
+  );
+
+  return pets;
+}
+
+/**********
+* TRINKETS
+**********/
+
+const TRINKET = {
+  'ANY': {
+    'VALUE': ANY,
+    'PATH': PATH.TRINKETS
+  }
+}
+
+class Trinket {
+  constructor(name) {
+    this.id = pushID(name);
+    this.name = name;
+  }
+}
+
+function getTrinkets() {
+  var trinkets = {};
+
+  trinkets[TRINKET.ANY.VALUE] = new Trinket(
+    'Any trinket'
+  );
+
+  return trinkets;
 }
 
 /********
@@ -4325,115 +4650,115 @@ function getTraits() {
 
   traits[TRAIT.DARKVISION.VALUE] = Trait(
     pushID(TRAIT.DARKVISION.VALUE),
-    'Darkvision',
-    'You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it w ere dim light. You can’t discern color in darkness, only shades of gray.'
+    `Darkvision`,
+    `You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it w ere dim light. You can't discern color in darkness, only shades of gray.`
   );
 
   traits[TRAIT.DWARVEN_RESILIENCE.VALUE] = Trait(
     pushID(TRAIT.DWARVEN_RESILIENCE.VALUE),
-    'Dwarven Resilience',
-    'You have advantage on saving throws against poison, and you have resistance against poison damage.'
+    `Dwarven Resilience`,
+    `You have advantage on saving throws against poison, and you have resistance against poison damage.`
   );
 
   traits[TRAIT.DWARVEN_COMBAT_TRAINING.VALUE] = Trait(
     pushID(TRAIT.DWARVEN_COMBAT_TRAINING.VALUE),
-    'Dwarven Combat Training',
-    'You have proficiency with the battleaxe, handaxe, throwing hammer, and warhammer.'
+    `Dwarven Combat Training`,
+    `You have proficiency with the battleaxe, handaxe, throwing hammer, and warhammer.`
   );
 
   traits[TRAIT.STONECUNNING.VALUE] = Trait(
     pushID(TRAIT.STONECUNNING.VALUE),
-    'Stonecunning',
-    'Whenever you make an Intelligence (History) check related to the origin of stonework, you are considered proficient in the History skill and add double your proficiency bonus to the check, instead of your normal proficiency bonus.'
+    `Stonecunning`,
+    `Whenever you make an Intelligence (History) check related to the origin of stonework, you are considered proficient in the History skill and add double your proficiency bonus to the check, instead of your normal proficiency bonus.`
   );
 
   traits[TRAIT.DWARVEN_TOUGHNESS.VALUE] = Trait(
     pushID(TRAIT.DWARVEN_TOUGHNESS.VALUE),
-    'Dwarven Toughness',
-    'Your hit point maximum increases by 1, and it increases by 1 every time you gain a level.'
+    `Dwarven Toughness`,
+    `Your hit point maximum increases by 1, and it increases by 1 every time you gain a level.`
   );
 
   traits[TRAIT.DWARVEN_ARMOR_TRAINING.VALUE] = Trait(
     pushID(TRAIT.DWARVEN_ARMOR_TRAINING.VALUE),
-    'Dwarven Armor Training',
-    'You have proficiency with light and medium armor.'
+    `Dwarven Armor Training`,
+    `You have proficiency with light and medium armor.`
   );
 
   traits[TRAIT.KEEN_SENSES.VALUE] = Trait(
     pushID(TRAIT.KEEN_SENSES.VALUE),
-    'Keen Senses',
-    'You have proficiency in the Perception skill.'
+    `Keen Senses`,
+    `You have proficiency in the Perception skill.`
   );
 
   traits[TRAIT.FEY_ANCESTRY.VALUE] = Trait(
     pushID(TRAIT.FEY_ANCESTRY.VALUE),
-    'Fey Ancestry',
-    'You have advantage on saving throws against being charmed, and magic can’t put you to sleep.'
+    `Fey Ancestry`,
+    `You have advantage on saving throws against being charmed, and magic can't put you to sleep.`
   );
 
   traits[TRAIT.TRANCE.VALUE] = Trait(
     pushID(TRAIT.TRANCE.VALUE),
-    'Trance',
-    'Elves don’t need to sleep. Instead, they meditate deeply, remaining semiconscious, for 4 hours a day. (The Common word for such meditation is “trance.”) While meditating, you can dream after a fashion; such dreams are actually mental exercises that have become reflexive through years of practice. After resting in this way, you gain the same benefit that a human does from 8 hours of sleep.'
+    `Trance`,
+    `Elves don't need to sleep. Instead, they meditate deeply, remaining semiconscious, for 4 hours a day. (The Common word for such meditation is “trance.”) While meditating, you can dream after a fashion; such dreams are actually mental exercises that have become reflexive through years of practice. After resting in this way, you gain the same benefit that a human does from 8 hours of sleep.`
   );
 
   traits[TRAIT.ELF_WEAPON_TRAINING.VALUE] = Trait(
     pushID(TRAIT.ELF_WEAPON_TRAINING.VALUE),
-    'Elf Weapon Training',
-    'You have proficiency with the longsword, shortsword, shortbow, and longbow.'
+    `Elf Weapon Training`,
+    `You have proficiency with the longsword, shortsword, shortbow, and longbow.`
   );
 
   traits[TRAIT.CANTRIP.VALUE] = Trait(
     pushID(TRAIT.CANTRIP.VALUE),
-    'Cantrip',
-    'You know one cantrip of your choice from the wizard spell list. Intelligence is your spellcasting ability for it.'
+    `Cantrip`,
+    `You know one cantrip of your choice from the wizard spell list. Intelligence is your spellcasting ability for it.`
   );
 
   traits[TRAIT.EXTRA_LANGUAGE.VALUE] = Trait(
     pushID(TRAIT.EXTRA_LANGUAGE.VALUE),
-    'Extra Language',
-    'You can speak, read, and write one extra language of your choice.'
+    `Extra Language`,
+    `You can speak, read, and write one extra language of your choice.`
   );
 
   traits[TRAIT.FLEET_OF_FOOT.VALUE] = Trait(
     pushID(TRAIT.FLEET_OF_FOOT.VALUE),
-    'Fleet of Foot',
-    'Your base walking speed increases to 35 feet.'
+    `Fleet of Foot`,
+    `Your base walking speed increases to 35 feet.`
   );
 
   traits[TRAIT.MASK_OF_THE_WILD.VALUE] = Trait(
     pushID(TRAIT.MASK_OF_THE_WILD.VALUE),
-    'Mask of the Wild',
-    'You can attempt to hide even when you are only lightly obscured by foliage, heavy rain, falling snow, mist, and other natural phenomena.'
+    `Mask of the Wild`,
+    `You can attempt to hide even when you are only lightly obscured by foliage, heavy rain, falling snow, mist, and other natural phenomena.`
   );
 
   traits[TRAIT.SUPERIOR_DARKVISION.VALUE] = Trait(
     pushID(TRAIT.SUPERIOR_DARKVISION.VALUE),
-    'Superior Darkvision',
-    'Your darkvision has a radius of 120 feet.'
+    `Superior Darkvision`,
+    `Your darkvision has a radius of 120 feet.`
   );
 
   traits[TRAIT.SUNLIGHT_SENSITIVITY.VALUE] = Trait(
     pushID(TRAIT.SUNLIGHT_SENSITIVITY.VALUE),
-    'Sunlight Sensitivity',
-    'You have disadvantage on attack rolls and on Wisdom (Perception) checks that rely on sight when you, the target of your attack, or whatever you are trying to perceive is in direct sunlight.'
+    `Sunlight Sensitivity`,
+    `You have disadvantage on attack rolls and on Wisdom (Perception) checks that rely on sight when you, the target of your attack, or whatever you are trying to perceive is in direct sunlight.`
   );
 
   traits[TRAIT.DROW_MAGIC.VALUE] = Trait(
     pushID(TRAIT.DROW_MAGIC.VALUE),
-    'Drow Magic',
-    'You know the dancing lights cantrip. When you reach 3rd level, you can cast the faerie fire spell once per day. When you reach 5th level, you can also cast the darkness spell once per day. Charisma is your spellcasting ability for these spells.'
+    `Drow Magic`,
+    `You know the dancing lights cantrip. When you reach 3rd level, you can cast the faerie fire spell once per day. When you reach 5th level, you can also cast the darkness spell once per day. Charisma is your spellcasting ability for these spells.`
   );
 
   traits[TRAIT.DROW_WEAPON_TRAINING.VALUE] = Trait(
     pushID(TRAIT.DROW_WEAPON_TRAINING.VALUE),
-    'Drow Weapon Training',
-    'You have proficiency with rapiers, shortswords, and hand crossbows.'
+    `Drow Weapon Training`,
+    `You have proficiency with rapiers, shortswords, and hand crossbows.`
   );
 
   traits[TRAIT.LUCKY.VALUE] = Trait(
     pushID(TRAIT.LUCKY.VALUE),
-    'Lucky',
+    `Lucky`,
     `When you roll a 1 on an attack roll, ability
     check, or saving throw, you can reroll the die and must
     use the new roll.`
@@ -4441,21 +4766,21 @@ function getTraits() {
 
   traits[TRAIT.BRAVE.VALUE] = Trait(
     pushID(TRAIT.BRAVE.VALUE),
-    'Brave',
+    `Brave`,
     `You have advantage on saving throws against
     being frightened.`
   );
   
   traits[TRAIT.HALFLING_NIMBLENESS.VALUE] = Trait(
     pushID(TRAIT.HALFLING_NIMBLENESS.VALUE),
-    'Halfling Nimbleness',
+    `Halfling Nimbleness`,
     `You can move through the
     space of any creature that is of a size larger than yours.`
   );
   
   traits[TRAIT.DRACONIC_ANCESTRY.VALUE] = Trait(
     pushID(TRAIT.DRACONIC_ANCESTRY.VALUE),
-    'Draconic Ancestry',
+    `Draconic Ancestry`,
     `You have draconic ancestry.
     Choose one type of dragon from the Draconic Ancestry
     table. Your breath weapon and damage resistance are
@@ -4464,7 +4789,7 @@ function getTraits() {
   
   traits[TRAIT.BREATH_WEAPON.VALUE] = Trait(
     pushID(TRAIT.BREATH_WEAPON.VALUE),
-    'Breath Weapon',
+    `Breath Weapon`,
     `You can use your action to exhale
     destructive energy. Your draconic ancestry determines
     the size, shape, and damage type of the exhalation.
@@ -4477,20 +4802,20 @@ function getTraits() {
     as much damage on a successful one. The damage
     increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6
     at 16th level.
-    After you use your breath weapon, you can’t use it
+    After you use your breath weapon, you can't use it
     again until you complete a short or long rest.`
   );
   
   traits[TRAIT.DAMAGE_RESISTANCE.VALUE] = Trait(
     pushID(TRAIT.DAMAGE_RESISTANCE.VALUE),
-    'Damage Resistance',
+    `Damage Resistance`,
     `You have resistance to the
     damage type associated with your draconic ancestry.`
   );
   
   traits[TRAIT.GNOME_CUNNING.VALUE] = Trait(
     pushID(TRAIT.GNOME_CUNNING.VALUE),
-    'Gnome Cunning',
+    `Gnome Cunning`,
     `You have advantage on all
     Intelligence, Wisdom, and Charisma saving throws
     against magic.`
@@ -4498,46 +4823,46 @@ function getTraits() {
   
   traits[TRAIT.SKILL_VERSATILITY.VALUE] = Trait(
     pushID(TRAIT.SKILL_VERSATILITY.VALUE),
-    'Skill Versatility',
+    `Skill Versatility`,
     `You gain proficiency in two skills
     of your choice.`
   );
   
   traits[TRAIT.MENACING.VALUE] = Trait(
     pushID(TRAIT.MENACING.VALUE),
-    'Menacing',
+    `Menacing`,
     `You gain proficiency in the
     Intimidation skill.`
   );
   
   traits[TRAIT.RELENTLESS_ENDURANCE.VALUE] = Trait(
     pushID(TRAIT.RELENTLESS_ENDURANCE.VALUE),
-    'Relentless Endurance',
+    `Relentless Endurance`,
     `When you are reduced to
     0 hit points but not killed outright, you can drop to 1 hit
-    point instead. You can’t use this feature again until you
+    point instead. You can't use this feature again until you
     finish a long rest.`
   );
   
   traits[TRAIT.SAVAGE_ATTACKS.VALUE] = Trait(
     pushID(TRAIT.SAVAGE_ATTACKS.VALUE),
-    'Savage Attacks',
+    `Savage Attacks`,
     `When you score a critical hit with
-    a melee weapon attack, you can roll one of the weapon’s
+    a melee weapon attack, you can roll one of the weapon's
     damage dice one additional time and add it to the extra
     damage of the critical hit.`
   );
   
   traits[TRAIT.HELLISH_RESISTANCE.VALUE] = Trait(
     pushID(TRAIT.HELLISH_RESISTANCE.VALUE),
-    'Hellish Resistance',
+    `Hellish Resistance`,
     `You have resistance
     to fire damage.`
   );
   
   traits[TRAIT.INFERNAL_LEGACY.VALUE] = Trait(
     pushID(TRAIT.INFERNAL_LEGACY.VALUE),
-    'Infernal Legacy',
+    `Infernal Legacy`,
     `You know the thaumaturgy cantrip.
     Once you reach 3rd level, you can cast the hellish
     rebuke spell once per day as a 2nd-level spell. Once you
@@ -4548,7 +4873,7 @@ function getTraits() {
   
   traits[TRAIT.NATURALLY_STEALTHY.VALUE] = Trait(
     pushID(TRAIT.NATURALLY_STEALTHY.VALUE),
-    'Naturally Stealthy',
+    `Naturally Stealthy`,
     `You can attempt to hide even
     when you are obscured only by a creature that is at least
     one size larger than you.`
@@ -4556,7 +4881,7 @@ function getTraits() {
   
   traits[TRAIT.STOUT_RESILIENCE.VALUE] = Trait(
     pushID(TRAIT.STOUT_RESILIENCE.VALUE),
-    'Stout Resilience',
+    `Stout Resilience`,
     `You have advantage on saving
     throws against poison, and you have resistance
     against poison damage.`
@@ -4564,14 +4889,14 @@ function getTraits() {
   
   traits[TRAIT.NATURAL_ILLUSIONIST.VALUE] = Trait(
     pushID(TRAIT.NATURAL_ILLUSIONIST.VALUE),
-    'Natural Illusionist',
+    `Natural Illusionist`,
     `You know the minor illusion
     cantrip. Intelligence is your spellcasting ability for it.`
   );
   
   traits[TRAIT.SPEAK_WITH_SMALL_BEASTS.VALUE] = Trait(
     pushID(TRAIT.SPEAK_WITH_SMALL_BEASTS.VALUE),
-    'Speak with Small Beasts',
+    `Speak with Small Beasts`,
     `Through sounds and
     gestures, you can communicate simple ideas with Small
     or smaller beasts. Forest gnomes love animals and often
@@ -4581,7 +4906,7 @@ function getTraits() {
   
   traits[TRAIT.ARTIFICERS_LORE.VALUE] = Trait(
     pushID(TRAIT.ARTIFICERS_LORE.VALUE),
-    'Artificer\'s Lore',
+    `Artificer\'s Lore`,
     `Whenever you make an Intelligence
     (History) check related to magic items, alchemical
     objects, or technological devices, you can add twice your
@@ -4591,9 +4916,9 @@ function getTraits() {
   
   traits[TRAIT.TINKER.VALUE] = Trait(
     pushID(TRAIT.TINKER.VALUE),
-    'Tinker',
-    `You have proficiency with artisan’s tools
-    (tinker’s tools). Using those tools, you can spend 1
+    `Tinker`,
+    `You have proficiency with artisan's tools
+    (tinker's tools). Using those tools, you can spend 1
     hour and 10 gp worth of materials to construct a Tiny
     clockwork device (AC 5, 1 hp). The device ceases
     to function after 24 hours (unless you spend 1 hour
@@ -4616,7 +4941,7 @@ function getTraits() {
     Music Box. When opened, this music box
     plays a single song at a moderate volume.
     The box stops playing when it
-    reaches the song’s end or
+    reaches the song's end or
     when it is closed.`
   );
   
@@ -6125,22 +6450,72 @@ function processLanguages(languagesList) {
 /*************
 * BACKGROUNDS
 *************/
-
+// TODO Finish adding backgrounds
 const BACKGROUND = {
   'ACOLYTE': {
     'VALUE': 'acolyte',
     'PATH': PATH.BACKGROUNDS
   },
+  'CHARLATAN': {
+    'VALUE': 'charlatan',
+    'PATH': PATH.BACKGROUNDS
+  },
+  'CRIMINAL': {
+    'VALUE': 'criminal',
+    'PATH': PATH.BACKGROUNDS
+  },
+  'ENTERTAINER': {
+    'VALUE': 'entertainer',
+    'PATH': PATH.BACKGROUNDS
+  },
+  'FOLK_HERO': {
+    'VALUE': 'folk_hero',
+    'PATH': PATH.BACKGROUNDS
+  },
+  'GUILD_ARTISAN': {
+    'VALUE': 'guild_artisan',
+    'PATH': PATH.BACKGROUNDS
+  },
+  'HERMIT': {
+    'VALUE': 'hermit',
+    'PATH': PATH.BACKGROUNDS
+  },
+  'NOBLE': {
+    'VALUE': 'noble',
+    'PATH': PATH.BACKGROUNDS
+  },
+  'OUTLANDER': {
+    'VALUE': 'outlander',
+    'PATH': PATH.BACKGROUNDS
+  },
+  'SAGE': {
+    'VALUE': 'sage',
+    'PATH': PATH.BACKGROUNDS
+  },
+  'SAILOR': {
+    'VALUE': 'sailor',
+    'PATH': PATH.BACKGROUNDS
+  },
+  'SOLDIER': {
+    'VALUE': 'soldier',
+    'PATH': PATH.BACKGROUNDS
+  },
+  'URCHIN': {
+    'VALUE': 'urchin',
+    'PATH': PATH.BACKGROUNDS
+  }
 };
 
 class Background {
-  constructor(name, traits, ideals, bonds, flaws, proficiencyList, equipmentList, languageList=null) {
+  constructor(name, traits, ideals, bonds, flaws, feature, proficiencyList,
+              equipmentList, languageList=null, extra=null, variant=null, variantFeature=null) {
     this.id = pushID(name);
     this.name = name;
     this.traits = traits;
     this.ideals = ideals;
     this.bonds = bonds;
     this.flaws = flaws;
+    this.feature = feature;
 
     this.proficiencies = processProficiencies(proficiencyList);
     this.equipment = processEquipment(equipmentList);
@@ -6148,11 +6523,23 @@ class Background {
     if (languageList !== null) {
       this.languages = processLanguages(languageList);
     }
+
+    if (extra !== null) {
+      this.extra = extra;
+    }
+
+    if (variant !== null) {
+      this.variant = variant;
+    }
+
+    if (variantFeature !== null) {
+      this.variantFeature = variantFeature;
+    }
   }
 }
 
 class Characteristic {
-  constructor(optionList) {
+  constructor(optionList, name=null) {
     this.die = optionList.length;
     
     this.options = {};
@@ -6160,6 +6547,10 @@ class Characteristic {
     for (let o of optionList) {
       this.options[num] = o;
       num++;
+    }
+
+    if (name !== null) {
+      this.name = name;
     }
   }
 }
@@ -6173,25 +6564,43 @@ class CharacteristicOption {
 
 class PersonalityTraits extends Characteristic {
   constructor(optionList) {
-    super(optionList);
+    super(optionList, 'Personality Trait');
   }
 }
 
 class Ideals extends Characteristic {
   constructor(optionList) {
-    super(optionList);
+    super(optionList, 'Ideal');
   }
 }
 
 class Bonds extends Characteristic {
   constructor(optionList) {
-    super(optionList);
+    super(optionList, 'Bond');
   }
 }
 
 class Flaws extends Characteristic {
   constructor(optionList) {
-    super(optionList);
+    super(optionList, 'Flaw');
+  }
+}
+
+class Feature extends CharacteristicOption {
+  constructor(desc, name) {
+    super(desc, name)
+  }
+}
+
+class Variant extends Feature {
+  constructor(desc, name) {
+    super(desc, name)
+  }
+}
+
+class VariantFeature extends Feature {
+  constructor(desc, name) {
+    super(desc, name)
   }
 }
 
@@ -6209,7 +6618,7 @@ function getBackgrounds() {
     new PersonalityTraits([
       new CharacteristicOption(
         `I idolize a particular hero of my faith, and constantly
-        refer to that person’s deeds and example.`
+        refer to that person's deeds and example.`
       ),
       new CharacteristicOption(
         `I can find common ground between the fiercest
@@ -6233,10 +6642,10 @@ function getBackgrounds() {
       ),
       new CharacteristicOption(
         `I've enjoyed fine food, drink, and high society among
-        my temple’s elite. Rough living grates on me.`
+        my temple's elite. Rough living grates on me.`
       ),
       new CharacteristicOption(
-        `I’ve spent so long in the temple that I have little
+        `I've spent so long in the temple that I have little
         practical experience dealing with people in the outside
         world.`
       )
@@ -6258,7 +6667,7 @@ function getBackgrounds() {
         `Change.`
       ),
       new CharacteristicOption(
-        `I hope to one day rise to the top of my faith’s
+        `I hope to one day rise to the top of my faith's
         religious hierarchy. (Lawful)`,
         `Power.`
       ),
@@ -6268,7 +6677,7 @@ function getBackgrounds() {
         `Faith.`
       ),
       new CharacteristicOption(
-        `I seek to prove myself worthy of my god’s
+        `I seek to prove myself worthy of my god's
         favor by matching my actions against his or her
         teachings. (Any)`,
         `Aspiration.`
@@ -6304,7 +6713,7 @@ function getBackgrounds() {
       ),
       new CharacteristicOption(
         `I put too much trust in those who wield power within
-        my temple’s hierarchy.`
+        my temple's hierarchy.`
       ),
       new CharacteristicOption(
         `My piety sometimes leads me to blindly trust those
@@ -6322,6 +6731,26 @@ function getBackgrounds() {
         detriment of everything else in my life.`
       )
     ]),
+    new Feature(
+      `As an acolyte, you command the respect of those who
+      share your faith, and you can perform the religious
+      ceremonies of your deity. You and your adventuring
+      companions can expect to receive free healing and
+      care at a temple, shrine, or other established presence
+      of your faith, though you must provide any material
+      components needed for spells. Those who share
+      your religion will support you (but only you) at a
+      modest lifestyle.
+      You might also have ties to a specific temple dedicated
+      to your chosen deity or pantheon, and you have a
+      residence there. This could be the temple where you
+      used to serve, if you remain on good terms with it, or a
+      temple where you have found a new home. While near
+      your temple, you can call upon the priests for assistance,
+      provided the assistance you ask for is not hazardous and
+      you remain in good standing with your temple.`,
+      `Shelter of the Faithful`
+    ),
     [
       SKILL.INSIGHT,
       SKILL.RELIGION
@@ -6352,6 +6781,2111 @@ function getBackgrounds() {
           Condition([LANGUAGE.ANY])
         ]
       )
+    ]
+  );
+
+  backgrounds[BACKGROUND.CHARLATAN.VALUE] = new Background(
+    'Charlatan',
+    new PersonalityTraits([
+      new CharacteristicOption(
+        `I fall in and out of love easily, and am always pursuing
+        someone.`
+      ),
+      new CharacteristicOption(
+        `I have a joke for every occasion, especially occasions
+        where humor is inappropriate.`
+      ),
+      new CharacteristicOption(
+        `Flattery is my preferred trick for getting what I want.`
+      ),
+      new CharacteristicOption(
+        `I'm a born gambler who can't resist taking a risk for a
+        potential payoff.`
+      ),
+      new CharacteristicOption(
+        `I lie about almost everything, even when there's no
+        good reason to.`
+      ),
+      new CharacteristicOption(
+        `Sarcasm and insults are my weapons of choice.`
+      ),
+      new CharacteristicOption(
+        `I keep multiple holy symbols on me and invoke
+        whatever deity might come in useful at any given
+        moment.`
+      ),
+      new CharacteristicOption(
+        `I pocket anything I see that might have some value.`
+      )
+    ]),
+    new Ideals([
+      new CharacteristicOption(
+        `I am a free spirit— no one tells me what
+        to do. (Chaotic)`,
+        `Independence.`
+      ),
+      new CharacteristicOption(
+        `I never target people who can't afford to lose
+        a few coins. (Lawful)`,
+        `Fairness.`
+      ),
+      new CharacteristicOption(
+        `I distribute the money I acquire to the people
+        who really need it. (Good)`,
+        `Charity.`
+      ),
+      new CharacteristicOption(
+        `I never run the same con twice. (Chaotic)`,
+        `Creativity.`
+      ),
+      new CharacteristicOption(
+        `Material goods come and go. Bonds of
+        friendship last forever. (Good)`,
+        `Friendship.`
+      ),
+      new CharacteristicOption(
+        `I'm determined to make something
+        of myself. (Any)`,
+        `Aspiration.`
+      )
+    ]),
+    new Bonds([
+      new CharacteristicOption(
+        `I fleeced the wrong person and must work to ensure
+        that this individual never crosses paths with me or
+        those I care about.`
+      ),
+      new CharacteristicOption(
+        `I owe everything to my mentor—a horrible person
+        who's probably rotting in jail somewhere.`
+      ),
+      new CharacteristicOption(
+        `Somewhere out there, I have a child who doesn't
+        know me. I'm making the world better for him or her.`
+      ),
+      new CharacteristicOption(
+        `I come from a noble family, and one day I'll reclaim my
+        lands and title from those who stole them from me.`
+      ),
+      new CharacteristicOption(
+        `A powerful person killed someone I love. Some day
+        soon, I'll have my revenge.`
+      ),
+      new CharacteristicOption(
+        `I swindled and ruined a person who didn't deserve it. I
+        seek to atone for my misdeeds but might never be able
+        to forgive myself.`
+      )
+    ]),
+    new Flaws([
+      new CharacteristicOption(
+        `I can't resist a pretty face.`
+      ),
+      new CharacteristicOption(
+        `I'm always in debt. I spend my ill-gotten gains on
+        decadent luxuries faster than I bring them in.`
+      ),
+      new CharacteristicOption(
+        `I'm convinced that no one could ever fool me the way
+        I fool others.`
+      ),
+      new CharacteristicOption(
+        `I'm too greedy for my own good. I can't resist taking a
+        risk if there's money involved.`
+      ),
+      new CharacteristicOption(
+        `I can't resist swindling people who are more powerful
+        than me.`
+      ),
+      new CharacteristicOption(
+        `I hate to admit it and will hate myself for it, but I'll run
+        and preserve my own hide if the going gets tough.`
+      )
+    ]),
+    new Feature(
+      `You have created a second identity that includes
+      documentation, established acquaintances, and
+      disguises that allow you to assume that persona.
+      Additionally, you can forge documents including official
+      papers and personal letters, as long as you have seen an
+      example of the kind o f document or the handwriting you
+      are trying to copy.`,
+      `False Identity`
+    ),
+    [
+      SKILL.DECEPTION,
+      SKILL.SLEIGHT_OF_HAND,
+      TOOL.DISGUISE_KIT,
+      TOOL.FORGERY_KIT
+    ],
+    [
+      Equipment(GEAR.CLOTHES_FINE),
+      Equipment(TOOL.DISGUISE_KIT),
+      Choices(
+        1,
+        [
+          Condition([GEAR.TYPE.CON])
+        ]
+      ),
+      Gold(15)
+    ],
+    null,
+    new Characteristic(
+      [
+        new CharacteristicOption(
+          `I cheat at games of chance.`
+        ),
+        new CharacteristicOption(
+          `I shave coins or forge documents.`
+        ),
+        new CharacteristicOption(
+          `I insinuate myself into people's lives to prey on their
+          weakness and secure their fortunes.`
+        ),
+        new CharacteristicOption(
+          `I put on new identities like clothes.`
+        ),
+        new CharacteristicOption(
+          `I run sleight-of-hand cons on street corners.`
+        ),
+        new CharacteristicOption(
+          `I convince people that worthless junk is worth their
+          hard-earned money.`
+        )
+      ],
+      'Favorite Scam'
+    )
+  );
+
+  backgrounds[BACKGROUND.CRIMINAL.VALUE] = new Background(
+    'Criminal',
+    new PersonalityTraits([
+      new CharacteristicOption(
+        `I always have a plan for what to do when things go wrong.`
+      ),
+      new CharacteristicOption(
+        `I am always calm, no matter what the situation. I never
+        raise my voice or let me emotions control me.`
+      ),
+      new CharacteristicOption(
+        `The first thing I do in a new places is note the locations
+        of everything valuable—or where such things could be
+        hidden.`
+      ),
+      new CharacteristicOption(
+        `I would rather make a new friend than a new enemy.`
+      ),
+      new CharacteristicOption(
+        `I am incredibly slow to trust. Those who seem the
+        fairest often have the most to hide.`
+      ),
+      new CharacteristicOption(
+        `I don't pay attention to the risks in a situation. Never
+        tell me the odds.`
+      ),
+      new CharacteristicOption(
+        `The best way to get me to do something is to tell me I
+        can't do it.`
+      ),
+      new CharacteristicOption(
+        `I blow up at the slightest insult.`
+      )
+    ]),
+    new Ideals([
+      new CharacteristicOption(
+        `I don't steal from others in the trade. (Lawful)`,
+        `Honor.`
+      ),
+      new CharacteristicOption(
+        `Chains are meant to be broken, as are those
+        who would forge them. (Chaotic)`,
+        `Freedom.`
+      ),
+      new CharacteristicOption(
+        `I steal from the wealthy so that I can help
+        people in need. (Good)`,
+        `Charity.`
+      ),
+      new CharacteristicOption(
+        `I will do whatever it takes to become
+        wealthy. (Evil)`,
+        `Greed.`
+      ),
+      new CharacteristicOption(
+        `I'm loyal to my friends, not to any ideals, and
+        everyone else can take a trip down the Styx for all I
+        care. (Neutral)`,
+        `People.`
+      ),
+      new CharacteristicOption(
+        `There's a spark of good in everyone. (Good)`,
+        `Redemption.`
+      )
+    ]),
+    new Bonds([
+      new CharacteristicOption(
+        `I'm trying to pay off an old debt I owe to a generous
+        benefactor.`
+      ),
+      new CharacteristicOption(
+        `My ill-gotten gains go to support my family.
+        Something important was taken from me, and I aim to
+        steal it back.`
+      ),
+      new CharacteristicOption(
+        `I will become the greatest thief that ever lived.`
+      ),
+      new CharacteristicOption(
+        `I'm guilty of a terrible crime. I hope I can redeem
+        myself for it.`
+      ),
+      new CharacteristicOption(
+        `Someone I loved died because of a mistake I made.`
+      ),
+      new CharacteristicOption(
+        `That will never happen again.`
+      )
+    ]),
+    new Flaws([
+      new CharacteristicOption(
+        `When I see something valuable, I can't think about
+        anything but how to steal it.`
+      ),
+      new CharacteristicOption(
+        `When faced with a choice between money and my
+        friends, I usually choose the money.`
+      ),
+      new CharacteristicOption(
+        `If there's a plan, I'll forget it. If I don't forget it, I'll
+        ignore it.`
+      ),
+      new CharacteristicOption(
+        `I have a “tell” that reveals when I'm lying.`
+      ),
+      new CharacteristicOption(
+        `I turn tail and run when things look bad.`
+      ),
+      new CharacteristicOption(
+        `An innocent person is in prison for a crime that I
+        committed. I'm okay with that.`
+      )
+    ]),
+    new Feature(
+      `You have a reliable and trustworthy contact w ho acts as
+      your liaison to a network o f other criminals. You know
+      how to get messages to and from your contact, even
+      over great distances; specifically, you know the local
+      messengers, corrupt caravan masters, and seedy sailors
+      who can deliver m essages for you.`,
+      `Criminal Contact`
+    ),
+    [
+      SKILL.DECEPTION,
+      SKILL.STEALTH,
+      Choices(
+        1,
+        [
+          Condition([TOOL.CATEGORY.GAMING_SET])
+        ]
+      ),
+      TOOL.THIEVES_TOOLS
+    ],
+    [
+      Equipment(GEAR.CROWBAR),
+      Equipment(GEAR.CLOTHES_COMMON_DARK),
+      Gold(15)
+    ],
+    null,
+    new Characteristic(
+      [
+        new CharacteristicOption(`Blackmailer`),
+        new CharacteristicOption(`Burglar`),
+        new CharacteristicOption(`Enforcer`),
+        new CharacteristicOption(`Fence`),
+        new CharacteristicOption(`Highway robber`),
+        new CharacteristicOption(`Hired killer`),
+        new CharacteristicOption(`Pickpocket`),
+        new CharacteristicOption(`Smuggler`)
+      ],
+      'Criminal Specialty'
+    ),
+    new Variant(
+      `Although your capabilities are not much different
+      from those of a burglar or smuggler, you learned
+      and practiced them in a very different context: as an
+      espionage agent. You might have been an officially
+      sanctioned agent of the crown, or perhaps you sold the
+      secrets you uncovered to the highest bidder.`,
+      `Spy`
+    )
+  );
+
+  backgrounds[BACKGROUND.ENTERTAINER.VALUE] = new Background(
+    'Entertainer',
+    new PersonalityTraits([
+      new CharacteristicOption(
+        `I know a story relevant to almost every situation.`
+      ),
+      new CharacteristicOption(
+        `Whenever I come to a new place, I collect local rumors
+        and spread gossip.`
+      ),
+      new CharacteristicOption(
+        `I'm a hopeless romantic, always searching for that
+        “special someone.”`
+      ),
+      new CharacteristicOption(
+        `Nobody stays angry at me or around me for long, since
+         I can defuse any amount of tension.`
+      ),
+      new CharacteristicOption(
+        `I love a good insult, even one directed at me.`
+      ),
+      new CharacteristicOption(
+        `I get bitter if I'm not the center of attention.`
+      ),
+      new CharacteristicOption(
+        `I'll settle for nothing less than perfection.`
+      ),
+      new CharacteristicOption(
+        `I change my mood or my mind as quickly as I change
+        key in a song.`
+      )
+    ]),
+    new Ideals([
+      new CharacteristicOption(
+        `When I perform, I make the world better than
+        it was. (Good)`,
+        `Beauty.`
+      ),
+      new CharacteristicOption(
+        `The stories, legends, and songs o f the past
+        must never be forgotten, for they teach us who we
+        are. (Lawful)`,
+        `Tradition.`
+      ),
+      new CharacteristicOption(
+        `The world is in need of new ideas and bold
+       action. (Chaotic)`,
+       `Creativity.`
+      ),
+      new CharacteristicOption(
+        `I'm only in it for the money and fame. (Evil)`,
+        `Greed.`
+      ),
+      new CharacteristicOption(
+        `I like seeing the smiles on people's faces when
+        I perform. That's all that matters. (Neutral)`,
+        `People.`
+      ),
+      new CharacteristicOption(
+        `Art should reflect the soul; it should come
+        from within and reveal who we really are. (Any)`,
+        `Honesty.`
+      )
+    ]),
+    new Bonds([
+      new CharacteristicOption(
+        `My instrument is my most treasured possession, and it
+        reminds me of someone I love.`
+      ),
+      new CharacteristicOption(
+        `Someone stole my precious instrument, and someday
+         I'll get it back.`
+      ),
+      new CharacteristicOption(
+        `I want to be famous, whatever it takes.`
+      ),
+      new CharacteristicOption(
+        `I idolize a hero of the old tales and measure my deeds
+         against that person's.`
+      ),
+      new CharacteristicOption(
+        `I will do anything to prove myself superior to my hated
+        rival.`
+      ),
+      new CharacteristicOption(
+        `I would do anything for the other members of my
+        old troupe.`
+      )
+    ]),
+    new Flaws([
+      new CharacteristicOption(
+        `I'll do anything to win fame and renown.`
+      ),
+      new CharacteristicOption(
+        `I'm a sucker for a pretty face.`
+      ),
+      new CharacteristicOption(
+        `A scandal prevents me from ever going home again.
+        That kind of trouble seems to follow me around.`
+      ),
+      new CharacteristicOption(
+        `I once satirized a noble who still wants my head. It was
+        a mistake that I will likely repeat.`
+      ),
+      new CharacteristicOption(
+        `I have trouble keeping my true feelings hidden. My
+        sharp tongue lands me in trouble.`
+      ),
+      new CharacteristicOption(
+        `Despite my best efforts, I am unreliable to my friends.`
+      )
+    ]),
+    new Feature(
+      `You can always find a place to perform, usually in an
+      inn or tavern but possibly with a circus, at a theater, or
+      even in a noble's court. At such a place, you receive free
+      lodging and food of a modest or comfortable standard
+      (depending on the quality of the establishment), as
+      long as you perform each night. In addition, your
+      performance makes you something of a local figure.
+      When strangers recognize you in a town where you have
+      performed, they typically take a liking to you.`,
+      `By Popular Demand`
+    ),
+    [
+      SKILL.ACROBATICS,
+      SKILL.PERFORMANCE,
+      TOOL.DISGUISE_KIT,
+      Choices(
+        1,
+        [
+          Condition([TOOL.CATEGORY.MUSICAL_INSTRUMENT])
+        ]
+      )
+    ],
+    [
+      Choices(
+        1,
+        [
+          Condition([TOOL.CATEGORY.MUSICAL_INSTRUMENT])
+        ]
+      ),
+      Choices(
+        1,
+        [
+          Condition([GEAR.TYPE.FAVOR])
+        ]
+      ),
+      Equipment(GEAR.CLOTHES_COSTUME),
+      Gold(15)
+    ],
+    null,
+    new Characteristic(
+      [
+        new CharacteristicOption(`Actor`),
+        new CharacteristicOption(`Dancer`),
+        new CharacteristicOption(`Fire-eater`),
+        new CharacteristicOption(`Jester`),
+        new CharacteristicOption(`Juggler`),
+        new CharacteristicOption(`Instrumentalist`),
+        new CharacteristicOption(`Poet`),
+        new CharacteristicOption(`Singer`),
+        new CharacteristicOption(`Storyteller`),
+        new CharacteristicOption(`Tumbler`),
+      ],
+      'Entertainer Routines'
+    ),
+    new Variant(
+      `A gladiator is as much an entertainer as any minstrel
+      or circus performer, trained to make the arts of combat
+      into a spectacle the crowd can enjoy. This kind of
+      flashy combat is your entertainer routine, though you
+      might also have some skills as a tumbler or actor.
+      Using your By Popular D emand feature, you can find a
+      place to perform in any place that features combat for
+      entertainment—perhaps a gladiatorial arena or secret
+      pit fighting club. You can replace the musical instrument
+      in your equipment package with an inexpensive but
+      unusual weapon, such as a trident or net.`,
+      'Gladiator'
+    )
+  );
+
+  backgrounds[BACKGROUND.FOLK_HERO.VALUE] = new Background(
+    'Folk Hero',
+    new PersonalityTraits([
+      new CharacteristicOption(
+        `I judge people by their actions, not their words.`
+      ),
+      new CharacteristicOption(
+        `If someone is in trouble, I'm always ready to lend help.`
+      ),
+      new CharacteristicOption(
+        `When I set my mind to something, I follow through no
+        matter what gets in my way.`
+      ),
+      new CharacteristicOption(
+        `I have a strong sense of fair play and always try to find
+        the most equitable solution to arguments.`
+      ),
+      new CharacteristicOption(
+        `I'm confident in my own abilities and do what I can to
+        instill confidence in others.`
+      ),
+      new CharacteristicOption(
+        `Thinking is for other people. I prefer action.`
+      ),
+      new CharacteristicOption(
+        `I misuse long words in an attempt to sound smarter.`
+      ),
+      new CharacteristicOption(
+        `I get bored easily. When am I going to get on with my
+        destiny?`
+      )
+    ]),
+    new Ideals([
+      new CharacteristicOption(
+        `People deserve to be treated with dignity and
+        respect. (Good)`,
+        `Respect.`
+      ),
+      new CharacteristicOption(
+        `No one should get preferential treatment
+        before the law, and no one is above the law. (Lawful)`,
+        `Fairness.`
+      ),
+      new CharacteristicOption(
+        `Tyrants must not be allowed to oppress the
+        people. (Chaotic)`,
+        `Freedom.`
+      ),
+      new CharacteristicOption(
+        `If I become strong, I can take what I want—
+        what I deserve. (Evil)`,
+        `Might.`
+      ),
+      new CharacteristicOption(
+        `There's no good in pretending to be
+        something I'm not. (Neutral)`,
+        `Sincerity.`
+      ),
+      new CharacteristicOption(
+        `Nothing and no one can steer me away from
+        my higher calling. (Any)`,
+        `Destiny.`
+      )
+    ]),
+    new Bonds([
+      new CharacteristicOption(
+        `I have a family, but I have no idea where they are. One
+        day, I hope to see them again.`
+      ),
+      new CharacteristicOption(
+        `I worked the land, I love the land, and I will protect the
+        land.`
+      ),
+      new CharacteristicOption(
+        `A proud noble once gave me a horrible beating, and I
+        will take my revenge on any bully I encounter.`
+      ),
+      new CharacteristicOption(
+        `My tools are symbols of my past life, and I carry them
+        so that I will never forget my roots.`
+      ),
+      new CharacteristicOption(
+        `I protect those who cannot protect themselves.`
+      ),
+      new CharacteristicOption(
+        `I wish my childhood sweetheart had come with me to
+        pursue my destiny.`
+      )
+    ]),
+    new Flaws([
+      new CharacteristicOption(
+        `The tyrant who rules my land will stop at nothing to
+        see me killed.`
+      ),
+      new CharacteristicOption(
+        `I'm convinced of the significance of my destiny, and
+        blind to my shortcomings and the risk of failure.`
+      ),
+      new CharacteristicOption(
+        `The people who knew me when I was young know my
+        shameful secret, so I can never go home again.`
+      ),
+      new CharacteristicOption(
+        `I have a weakness for the vices of the city, especially
+        hard drink.`
+      ),
+      new CharacteristicOption(
+        `Secretly, I believe that things would be better if I were a
+        tyrant lording over the land.`
+      ),
+      new CharacteristicOption(
+        `I have trouble trusting in my allies.`
+      )
+    ]),
+    new Feature(
+      `Since you come from the ranks of the common folk,
+      you fit in among them with ease. You can find a place
+      to hide, rest, or recuperate among other commoners,
+      unless you have shown yourself to be a danger to
+      them. They will shield you from the law or anyone
+      else searching for you, though they w ill not risk
+      their lives for you.`,
+      `Rustic Hospitality`
+    ),
+    [
+      SKILL.ANIMAL_HANDLING,
+      SKILL.SURVIVAL,
+      Choices(
+        1,
+        [
+          Condition([TOOL.CATEGORY.ARTISAN])
+        ]
+      ),
+      VEHICLE.TYPE.LAND
+    ],
+    [
+      Choices(
+        1,
+        [
+          Condition([TOOL.CATEGORY.ARTISAN])
+        ]
+      ),
+      Equipment(GEAR.SHOVEL),
+      Equipment(GEAR.POT_IRON),
+      Equipment(GEAR.CLOTHES_COMMON),
+      Gold(10)
+    ],
+    null,
+    new Characteristic(
+      [
+        new CharacteristicOption(
+          `I stood up to a tyrant's agents.`
+        ),
+        new CharacteristicOption(
+          `I saved people during a natural disaster.`
+        ),
+        new CharacteristicOption(
+          `I stood alone against a terrible monster.`
+        ),
+        new CharacteristicOption(
+          `I stole from a corrupt merchant to help the poor.`
+        ),
+        new CharacteristicOption(
+          `I led a militia to fight off an invading army.`
+        ),
+        new CharacteristicOption(
+          `I broke into a tyrant's castle and stole weapons to arm
+          the people.`
+        ),
+        new CharacteristicOption(
+          `I trained the peasantry to use farm implements as
+          weapons against a tyrant's soldiers.`
+        ),
+        new CharacteristicOption(
+          `A lord rescinded an unpopular decree after I led a
+          symbolic act of protect against it.`
+        ),
+        new CharacteristicOption(
+          `A celestial, fey, or similar creature gave me a blessing
+          or revealed my secret origin.`
+        ),
+        new CharacteristicOption(
+          `Recruited into a lord's army, I rose to leadership and
+          was commended for my heroism.`
+        )
+      ],
+      'Defining Event'
+    )
+  );
+
+  backgrounds[BACKGROUND.GUILD_ARTISAN.VALUE] = new Background(
+    'Guild Artisan',
+    new PersonalityTraits([
+      new CharacteristicOption(
+        `I believe that anything worth doing is worth doing
+        right. I can't help it— I'm a perfectionist.`
+      ),
+      new CharacteristicOption(
+        `I'm a snob who looks down on those who can't
+        appreciate fine art.`
+      ),
+      new CharacteristicOption(
+        `I always want to know how things work and what
+        makes people tick.`
+      ),
+      new CharacteristicOption(
+        `I'm full of witty aphorisms and have a proverb for
+        every occasion.`
+      ),
+      new CharacteristicOption(
+        `I'm rude to people who lack my commitment to hard
+        work and fair play.`
+      ),
+      new CharacteristicOption(
+        `I like to talk at length about my profession.`
+      ),
+      new CharacteristicOption(
+        `I don't part with my money easily and will haggle
+        tirelessly to get the best deal possible.`
+      ),
+      new CharacteristicOption(
+        `I'm well known for my work, and I want to make sure
+        everyone appreciates it. I'm always taken aback when
+        people haven't heard of me.`
+      )
+    ]),
+    new Ideals([
+      new CharacteristicOption(
+        `It is the duty of all civilized people to
+        strengthen the bonds of community and the security
+        of civilization. (Lawful)`,
+        `Community.`
+      ),
+      new CharacteristicOption(
+        `My talents were given to me so that I could
+        use them to benefit the world. (Good)`,
+        `Generosity.`
+      ),
+      new CharacteristicOption(
+        `Everyone should be free to pursue his or her
+        own livelihood. (Chaotic)`,
+        `Freedom.`
+      ),
+      new CharacteristicOption(
+        `I'm only in it for the money. (Evil)`,
+        `Greed.`
+      ),
+      new CharacteristicOption(
+        `I'm committed to the people I care about, not
+        to ideals. (Neutral)`,
+        `People.`
+      ),
+      new CharacteristicOption(
+        `I work hard to be the best there is at
+        my craft.`,
+        `Aspiration.`
+      )
+    ]),
+    new Bonds([
+      new CharacteristicOption(
+        `The workshop where I learned my trade is the most
+        important place in the world to me.`
+      ),
+      new CharacteristicOption(
+        `I created a great work for someone, and then found
+        them unworthy to receive it. I'm still looking for
+        someone worthy.`
+      ),
+      new CharacteristicOption(
+        `I owe my guild a great debt for forging me into the
+        person I am today.`
+      ),
+      new CharacteristicOption(
+        `I pursue wealth to secure someone's love.`
+      ),
+      new CharacteristicOption(
+        `One day I will return to my guild and prove that I am
+        the greatest artisan of them all.`
+      ),
+      new CharacteristicOption(
+        `I will get revenge on the evil forces that destroyed my
+        place of business and ruined my livelihood.`
+      )
+    ]),
+    new Flaws([
+      new CharacteristicOption(
+        `I'll do anything to get my hands on something rare or
+        priceless.`
+      ),
+      new CharacteristicOption(
+        `I'm quick to assume that someone is trying to cheat
+        me.`
+      ),
+      new CharacteristicOption(
+        `No one must ever learn that I once stole money from
+        guild coffers.`
+      ),
+      new CharacteristicOption(
+        `I'm never satisfied with what I have— I always want
+        more.`
+      ),
+      new CharacteristicOption(
+        `I would kill to acquire a noble title.`
+      ),
+      new CharacteristicOption(
+        `I'm horribly jealous of anyone who can outshine my
+        handiwork. Everywhere I go, I'm surrounded by rivals.`
+      )
+    ]),
+    new Feature(
+      `As an established and respected member of a guild, you
+      can rely on certain benefits that membership provides.
+      Your fellow guild members will provide you with
+      lodging and food if necessary, and pay for your funeral
+      if needed. In some cities and towns, a guildhall offers a
+      central place to meet other members of your profession,
+      which can be a good place to meet potential patrons,
+      allies, or hirelings.
+      Guilds often wield tremendous political power. If
+      you are accused of a crime, your guild will support you
+      if a good case can be made for your innocence or the
+      crime is justifiable. You can also gain access to powerful
+      political figures through the guild, if you are a member
+      in good standing. Such connections might require the
+      donation of money or magic items to the guild's coffers.
+      You must pay dues of 5 gp per month to the guild. If
+      you miss payments, you must make up back dues to
+      remain in the guild's good graces.`,
+      `Guild Membership`
+    ),
+    [
+      SKILL.INSIGHT,
+      SKILL.PERSUASION,
+      Choices(
+        1,
+        [
+          Condition([TOOL.CATEGORY.ARTISAN])
+        ]
+      )
+    ],
+    [
+      Choices(
+        1,
+        [
+          Condition([TOOL.CATEGORY.ARTISAN])
+        ]
+      ),
+      Equipment(GEAR.GUILD_LETTER),
+      Equipment(GEAR.CLOTHES_TRAVELERS),
+      Gold(15)
+    ],
+    [
+      Choices(
+        1,
+        [
+          Condition([LANGUAGE.ANY])
+        ]
+      )
+    ],
+    new Characteristic(
+      [
+        new CharacteristicOption(`Alchemists and apothecaries`),
+        new CharacteristicOption(`Armorers, locksmiths, and finesmiths`),
+        new CharacteristicOption(`Brewers, distillers, and vintners`),
+        new CharacteristicOption(`Calligraphers, scribes, and scriveners`),
+        new CharacteristicOption(`Carpenters, roofers, and plasterers`),
+        new CharacteristicOption(`Cartographers, surveyors, and chart-makers`),
+        new CharacteristicOption(`Cobblers and shoemakers`),
+        new CharacteristicOption(`Cooks and bakers`),
+        new CharacteristicOption(`Glassblowers and glaziers`),
+        new CharacteristicOption(`Jewelers and gemcutters`),
+        new CharacteristicOption(`Leatherworkers, skinners, and tanners`),
+        new CharacteristicOption(`Masons and stonecutters`),
+        new CharacteristicOption(`Painters, limners, and sign-makers`),
+        new CharacteristicOption(`Potters and tile-makers`),
+        new CharacteristicOption(`Shipwrights and sailmakers`),
+        new CharacteristicOption(`Smiths and metal-forgers`),
+        new CharacteristicOption(`Tinkers, pewterers, and casters`),
+        new CharacteristicOption(`Wagon-makers and wheelwrights`),
+        new CharacteristicOption(`Weavers and dyers`),
+        new CharacteristicOption(`Woodcarvers, coopers, and bowyers`),
+      ],
+      `Guild Business`
+    ),
+    new Variant(
+      `Instead of an artisans' guild, you might belong to a
+      guild of traders, caravan masters, or shopkeepers. You
+      don't craft items yourself but earn a living by buying
+      and selling the works o f others (or the raw materials
+      artisans need to practice their craft). Your guild might
+      be a large merchant consortium (or family) with
+      interests across the region. Perhaps you transported
+      goods from one place to another, by ship, wagon, or
+      caravan, or bought them from traveling traders and sold
+      them in your own little shop. In some ways, the traveling
+      merchant's life lends itself to adventure far more than
+      the life of an artisan.
+      Rather than proficiency with artisan's tools, you might
+      be proficient with navigator's tools or an additional
+      language. And instead of artisan's tools, you can start
+      with a mule and a cart.`,
+      `Guild Merchant`
+    )
+  );
+
+  backgrounds[BACKGROUND.HERMIT.VALUE] = new Background(
+    'Hermit',
+    new PersonalityTraits([
+      new CharacteristicOption(
+        `I've been isolated for so long that I rarely speak,
+        preferring gestures and the occasional grunt.`
+      ),
+      new CharacteristicOption(
+        `I am utterly serene, even in the face of disaster.`
+      ),
+      new CharacteristicOption(
+        `The leader of my community had something wise
+        to say on every topic, and I am eager to share
+        that wisdom.`
+      ),
+      new CharacteristicOption(
+        `I feel tremendous empathy for all who suffer.`
+      ),
+      new CharacteristicOption(
+        `I'm oblivious to etiquette and social expectations.`
+      ),
+      new CharacteristicOption(
+        `I connect everything that happens to me to a grand,
+        cosmic plan.`
+      ),
+      new CharacteristicOption(
+        `I often get lost in my own thoughts and contemplation,
+        becoming oblivious to my surroundings.`
+      ),
+      new CharacteristicOption(
+        `I am working on a grand philosophical theory and love
+        sharing my ideas.`
+      )
+    ]),
+    new Ideals([
+      new CharacteristicOption(
+        `My gifts are meant to be shared with all,
+        not used for my own benefit. (Good)`,
+        `Greater Good.`
+      ),
+      new CharacteristicOption(
+        `Emotions must not cloud our sense of what is
+        right and true, or our logical thinking. (Lawful)`,
+        `Logic.`
+      ),
+      new CharacteristicOption(
+        `Inquiry and curiosity are the pillars of
+        progress. (Chaotic)`,
+        `Free Thinking.`
+      ),
+      new CharacteristicOption(
+        `Solitude and contemplation are paths toward
+        mystical or magical power. (Evil)`,
+        `Power.`
+      ),
+      new CharacteristicOption(
+        `Meddling in the affairs of others only
+        causes trouble. (Neutral)`,
+        `Live and Let Live.`
+      ),
+      new CharacteristicOption(
+        `If you know yourself, there's nothing
+        left to know. (Any)`,
+        `Self-Knowledge.`
+      )
+    ]),
+    new Bonds([
+      new CharacteristicOption(
+        `Nothing is more important than the other members of
+        my hermitage, order, or association.`
+      ),
+      new CharacteristicOption(
+        `I entered seclusion to hide from the ones who might
+        still be hunting me. I must someday confront them.`
+      ),
+      new CharacteristicOption(
+        `I'm still seeking the enlightenment I pursued in my
+        seclusion, and it still eludes me.`
+      ),
+      new CharacteristicOption(
+        `I entered seclusion because I loved someone I could
+        not have.`
+      ),
+      new CharacteristicOption(
+        `Should my discovery come to light, it could bring ruin to
+        the world.`
+      ),
+      new CharacteristicOption(
+        `My isolation gave me great insight into a great evil that
+        only I can destroy.`
+      )
+    ]),
+    new Flaws([
+      new CharacteristicOption(
+        `Now that I've returned to the world, I enjoy its delights
+        a little too much.`
+      ),
+      new CharacteristicOption(
+        `I harbor dark, bloodthirsty thoughts that my isolation
+        and meditation failed to quell.`
+      ),
+      new CharacteristicOption(
+        `I am dogmatic in my thoughts and philosophy.`
+      ),
+      new CharacteristicOption(
+        `I let my need to win arguments overshadow
+        friendships and harmony.`
+      ),
+      new CharacteristicOption(
+        `I'd risk too much to uncover a lost bit of knowledge.`
+      ),
+      new CharacteristicOption(
+        `I like keeping secrets and won't share them with
+        anyone.`
+      )
+    ]),
+    new Feature(
+      `The quiet seclusion of your extended hermitage gave you
+      access to a unique and powerful discovery. The exact
+      nature of this revelation depends on the nature of your
+      seclusion. It might be a great truth about the cosmos,
+      the deities, the powerful beings of the outer planes, or
+      the forces of nature. It could be a site that no one else
+      has ever seen. You might have uncovered a fact that has
+      long been forgotten, or unearthed some relic of the past
+      that could rewrite history. It might be information that
+      would be damaging to the people who or consigned you
+      to exile, and hence the reason for your return to society.
+      Work with your DM to determine the details of your
+      discovery and its impact on the campaign.`,
+      `Discovery`
+    ),
+    [
+      SKILL.MEDICINE,
+      SKILL.RELIGION,
+      TOOL.HERBALISM_KIT
+    ],
+    [
+      Equipment(GEAR.CASE_SCROLL_FILLED),
+      Equipment(GEAR.BLANKET),
+      Equipment(GEAR.CLOTHES_COMMON),
+      Equipment(TOOL.HERBALISM_KIT),
+      Gold(5)
+    ],
+    [
+      Choices(
+        1,
+        [
+          Condition([LANGUAGE.ANY])
+        ]
+      )
+    ],
+    new Characteristic(
+      [
+        new CharacteristicOption(
+          `I was searching for spiritual enlightenment.`
+        ),
+        new CharacteristicOption(
+          `I was partaking of communal living in accordance with
+          the dictates of a religious order.`
+        ),
+        new CharacteristicOption(
+            `I was exiled for a crime I didn't commit.`
+        ),
+        new CharacteristicOption(
+          `I retreated from society after a life-altering event.`
+        ),
+        new CharacteristicOption(
+          `I needed a quiet place to work on my art, literature,
+          music, or manifesto.`
+        ),
+        new CharacteristicOption(
+          `I needed to commune with nature, far from civilization.`
+        ),
+        new CharacteristicOption(
+          `I was the caretaker of an ancient ruin or relic.`
+        ),
+        new CharacteristicOption(
+          `I was a pilgrim in search of a person, place, or relic of
+          spiritual significance.`
+        )
+      ],
+      `Life of Seclusion`
+    )
+  );
+
+  backgrounds[BACKGROUND.NOBLE.VALUE] = new Background(
+    'Noble',
+    new PersonalityTraits([
+      new CharacteristicOption(
+        `My eloquent flattery makes everyone I talk to feel
+        like the most wonderful and important person in the
+        world.`
+      ),
+      new CharacteristicOption(
+        `The common folk love me for my kindness and
+        generosity.`
+      ),
+      new CharacteristicOption(
+        `No one could doubt by looking at my regal bearing that
+        I am a cut above the unwashed masses.`
+      ),
+      new CharacteristicOption(
+        `I take great pains to always look my best and follow the
+        latest fashions.`
+      ),
+      new CharacteristicOption(
+        `I don't like to get my hands dirty, and I won't be caught
+        dead in unsuitable accommodations.`
+      ),
+      new CharacteristicOption(
+        `Despite my noble birth, I do not place myself above
+        other folk. We all have the same blood.`
+      ),
+      new CharacteristicOption(
+        `My favor, once lost, is lost forever.`
+      ),
+      new CharacteristicOption(
+        `If you do me an injury, I will crush you, ruin your name,
+        and salt your fields.`
+      )
+    ]),
+    new Ideals([
+      new CharacteristicOption(
+        `Respect is due to me because of my position,
+        but all people regardless of station deserve to be
+        treated with dignity. (Good)`,
+        `Respect.`
+      ),
+      new CharacteristicOption(
+        `It is my duty to respect the authority of
+        those above me, just as those below me must respect
+        mine. (Lawful)`,
+        `Responsibility.`
+      ),
+      new CharacteristicOption(
+        `I must prove that I can handle myself
+        without the coddling of my family. (Chaotic)`,
+        `Independence.`
+      ),
+      new CharacteristicOption(
+        `If I can attain more power, no one will tell me
+        what to do. (Evil)`,
+        `Power.`
+      ),
+      new CharacteristicOption(
+        `Blood runs thicker than water. (Any)`,
+        `Family.`
+      ),
+      new CharacteristicOption(
+        `It is my duty to protect and care for
+        the people beneath me. (Good)`,
+        `Noble Obligation.`
+      )
+    ]),
+    new Bonds([
+      new CharacteristicOption(
+        `I will face any challenge to win the approval of my
+        family.`
+      ),
+      new CharacteristicOption(
+        `My house's alliance with another noble family
+        must be sustained at all costs.`
+      ),
+      new CharacteristicOption(
+        `Nothing is more important than the other members
+        of my family.`
+      ),
+      new CharacteristicOption(
+        `I am in love with the heir of a family that my family
+        despises.`
+      ),
+      new CharacteristicOption(
+        `My loyalty to my sovereign is unwavering.`
+      ),
+      new CharacteristicOption(
+        `The common folk must see me as a hero of the people.`
+      )
+    ]),
+    new Flaws([
+      new CharacteristicOption(
+        `I secretly believe that everyone is beneath me.`
+      ),
+      new CharacteristicOption(
+        `I hide a truly scandalous secret that could ruin my
+        family forever.`
+      ),
+      new CharacteristicOption(
+        `I too often hear veiled insults and threats in every word
+        addressed to me, and I'm quick to anger.`
+      ),
+      new CharacteristicOption(
+        `I have an insatiable desire for carnal pleasures.`
+      ),
+      new CharacteristicOption(
+        `In fact, the world does revolve around me.`
+      ),
+      new CharacteristicOption(
+        `By my words and actions, I often bring shame to
+        my family.`
+      )
+    ]),
+    new Feature(
+      `Thanks to your noble birth, people are inclined to
+      think the best of you. You are w elcome in high society,
+      and people assume you have the right to be wherever
+      you are. The common folk make every effort to
+      accommodate you and avoid your displeasure, and other
+      people of high birth treat you as a member of the same
+      social sphere. You can secure an audience with a local
+      noble if you need to.`,
+      `Position of Privelege`
+    ),
+    [
+      SKILL.HISTORY,
+      SKILL.PERSUASION,
+      Choices(
+        1,
+        [
+          Condition([TOOL.CATEGORY.GAMING_SET])
+        ]
+      )
+    ],
+    [
+      Equipment(GEAR.CLOTHES_FINE),
+      Equipment(GEAR.SIGNET_RING),
+      Equipment(GEAR.SCROLL_OF_PEDIGREE),
+      Gold(25)
+    ],
+    [
+      Choices(
+        1,
+        [
+          Condition([LANGUAGE.ANY])
+        ]
+      )
+    ],
+    null,
+    new Variant(
+      `A knighthood is among the lowest noble titles in most
+      societies, but it can be a path to higher status. If you
+      wish to be a knight, choose the Retainers feature (see
+      the sidebar) instead of the Position o f Privilege feature.
+      One of your commoner retainers is replaced by a noble
+      who serves as your squire, aiding you in exchange for
+      training on his or her own path to knighthood. Your two
+      remaining retainers might include a groom to care for
+      your horse and a servant who polishes your armor (and
+      even helps you put it on).
+      As an emblem of chivalry and the ideals of courtly
+      love, you might include among your equipment a banner
+      or other token from a noble lord or lady to whom you
+      have given your heart—in a chaste sort of devotion.
+      (This person could be your bond.)`,
+      `Knight`
+    ),
+    new VariantFeature(
+      `If your character has a noble background, you may select this
+      background feature instead of Position of Privilege.
+      You have the service of three retainers loyal to your family.
+      These retainers can be attendants or messengers, and one
+      might be a majordomo. Your retainers are commoners who
+      can perform mundane tasks for you, but they do not fight
+      for you, will not follow you into obviously dangerous areas
+      (such as dungeons), and will leave if they are frequently
+      endangered or abused.`,
+      `Retainers`
+    )
+  );
+
+  backgrounds[BACKGROUND.OUTLANDER.VALUE] = new Background(
+    'Outlander',
+    new PersonalityTraits([
+      new CharacteristicOption(
+        `I'm driven by a wanderlust that led me away
+        from home.`
+      ),
+      new CharacteristicOption(
+        `I watch over my friends as if they were a litter of
+        newborn pups.`
+      ),
+      new CharacteristicOption(
+        `I once ran twenty-five miles without stopping to warn
+        to my clan of an approaching orc horde. I'd do it again
+        if I had to.`
+      ),
+      new CharacteristicOption(
+        `I have a lesson for every situation, drawn from
+        observing nature.`
+      ),
+      new CharacteristicOption(
+        `I place no stock in wealthy or well-mannered folk.
+        Money and manners won't save you from a hungry
+        owlbear.`
+      ),
+      new CharacteristicOption(
+        `I'm always picking things up, absently fiddling with
+        them, and sometimes accidentally breaking them.`
+      ),
+      new CharacteristicOption(
+        `I feel far more comfortable around animals than
+        people.`
+      ),
+      new CharacteristicOption(
+        `I was, in fact, raised by wolves.`
+      )
+    ]),
+    new Ideals([
+      new CharacteristicOption(
+        `Life is like the seasons, in constant change,
+        and we must change with it. (Chaotic)`,
+        `Change.`
+      ),
+      new CharacteristicOption(
+        `It is each person's responsibility to
+        make the most happiness for the whole tribe. (Good)`,
+        `Greater Good.`
+      ),
+      new CharacteristicOption(
+        `If I dishonor myself, I dishonor my whole
+        clan. (Lawful)`,
+        `Honor.`
+      ),
+      new CharacteristicOption(
+        `The strongest are meant to rule. (Evil)`,
+        `Might.`
+      ),
+      new CharacteristicOption(
+        `The natural world is more important than all
+        the constructs of civilization. (Neutral)`,
+        `Nature.`
+      ),
+      new CharacteristicOption(
+        `I must earn glory in battle, for myself and
+        my clan. (Any)`,
+        `Glory.`
+      )
+    ]),
+    new Bonds([
+      new CharacteristicOption(
+        `My family, clan, or tribe is the most important thing in
+        my life, even when they are far from me.`
+      ),
+      new CharacteristicOption(
+        `An injury to the unspoiled wilderness of my home is an
+        injury to me.`
+      ),
+      new CharacteristicOption(
+        `I will bring terrible wrath down on the evildoers who
+        destroyed my homeland.`
+      ),
+      new CharacteristicOption(
+        `I am the last of my tribe, and it is up to me to ensure
+        their names enter legend.`
+      ),
+      new CharacteristicOption(
+        `I suffer awful visions of a coming disaster and will do
+        anything to prevent it.`
+      ),
+      new CharacteristicOption(
+        `It is my duty to provide children to sustain my tribe.`
+      )
+    ]),
+    new Flaws([
+      new CharacteristicOption(
+        `I am too enamored of ale, wine, and other intoxicants.`
+      ),
+      new CharacteristicOption(
+        `There's no room for caution in a life lived to the fullest.`
+      ),
+      new CharacteristicOption(
+        `I remember every insult I've received and nurse a silent
+        resentment toward anyone who's ever wronged me.`
+      ),
+      new CharacteristicOption(
+        `I am slow to trust members of other races, tribes, and
+        societies.`
+      ),
+      new CharacteristicOption(
+        `Violence is my answer to almost any challenge.`
+      ),
+      new CharacteristicOption(
+        `Don't expect me to save those who can't save
+        themselves. It is nature's way that the strong thrive
+        and the weak perish.`
+      )
+    ]),
+    new Feature(
+      `You have an excellent memory for maps and geography,
+      and you can always recall the general layout of terrain,
+      settlements, and other features around you. In addition,
+      you can find food and fresh water for yourself and up to
+      five other people each day, provided that the land offers
+      berries, small game, water, and so forth.`,
+      `Wanderer`
+    ),
+    [
+      SKILL.ATHLETICS,
+      SKILL.SURVIVAL,
+      Choices(
+        1,
+        [
+          Condition([TOOL.CATEGORY.MUSICAL_INSTRUMENT])
+        ]
+      )
+    ],
+    [
+      Equipment(GEAR.STAFF),
+      Equipment(GEAR.HUNTING_TRAP),
+      Equipment(GEAR.ANIMAL_TROPHY),
+      Equipment(GEAR.CLOTHES_TRAVELERS),
+      Gold(10)
+    ],
+    [
+      Choices(
+        1,
+        [
+          Condition([LANGUAGE.ANY])
+        ]
+      )
+    ],
+    new Characteristic(
+      [
+        new CharacteristicOption(`Forester`),
+        new CharacteristicOption(`Trapper`),
+        new CharacteristicOption(`Homesteader`),
+        new CharacteristicOption(`Guide`),
+        new CharacteristicOption(`Exile or outcast`),
+        new CharacteristicOption(`Bounty hunter`),
+        new CharacteristicOption(`Pilgrim`),
+        new CharacteristicOption(`Tribal nomad`),
+        new CharacteristicOption(`Hunter-gatherer`),
+        new CharacteristicOption(`Tribal marauder`),
+      ],
+      `Origin`
+    )
+  );
+
+  backgrounds[BACKGROUND.SAGE.VALUE] = new Background(
+    'Sage',
+    new PersonalityTraits([
+      new CharacteristicOption(
+        `I use polysyllabic words that convey the impression of
+        great erudition.`
+      ),
+      new CharacteristicOption(
+        `I've read every book in the world's greatest libraries—
+        or I like to boast that I have.`
+      ),
+      new CharacteristicOption(
+        `I'm used to helping out those who aren't as smart as I
+        am, and I patiently explain anything and everything to
+        others.`
+      ),
+      new CharacteristicOption(
+        `There's nothing I like more than a good mystery.`
+      ),
+      new CharacteristicOption(
+        `I'm willing to listen to every side of an argument before
+        I make my own judgment.`
+      ),
+      new CharacteristicOption(
+        `I . . . speak . . . slowly . . . when talking . . . to idiots, . . .
+        which . . . almost . . . everyone . . . is . . . compared . . .
+        to me.`
+      ),
+      new CharacteristicOption(
+        `I am horribly, horribly awkward in social situations.`
+      ),
+      new CharacteristicOption(
+        `I'm convinced that people are always trying to steal my
+        secrets.`
+      )
+    ]),
+    new Ideals([
+      new CharacteristicOption(
+        `The path to power and self-improvement
+        is through knowledge. (Neutral)`,
+        `Knowledge.`
+      ),
+      new CharacteristicOption(
+        `What is beautiful points us beyond itself
+        toward what is true. (Good)`,
+        `Beauty.`
+      ),
+      new CharacteristicOption(
+        `Emotions must not cloud our logical thinking.
+        (Lawful)`,
+        `Logic.`
+      ),
+      new CharacteristicOption(
+        `Nothing should fetter the infinite possibility
+        inherent in all existence. (Chaotic)`,
+        `No Limits.`
+      ),
+      new CharacteristicOption(
+        `Knowledge is the path to power and
+        domination. (Evil)`,
+        `Power.`
+      ),
+      new CharacteristicOption(
+        `The goal of a life of study is the
+        betterment of oneself. (Any)`,
+        `Self-Improvement.`
+      )
+    ]),
+    new Bonds([
+      new CharacteristicOption(
+        `It is my duty to protect my students.`
+      ),
+      new CharacteristicOption(
+        `I have an ancient text that holds terrible secrets that
+        must not fall into the wrong hands.`
+      ),
+      new CharacteristicOption(
+        `I work to preserve a library, university, scriptorium,
+        or monastery.`
+      ),
+      new CharacteristicOption(
+        `My life's work is a series o f tomes related to a specific
+        field of lore.`
+      ),
+      new CharacteristicOption(
+        `I've been searching my whole life for the answer to a
+        certain question.`
+      ),
+      new CharacteristicOption(
+        `I sold my soul for knowledge. I hope to do great deeds
+        and win it back.`
+      )
+    ]),
+    new Flaws([
+      new CharacteristicOption(
+        `I am easily distracted by the promise of information.`
+      ),
+      new CharacteristicOption(
+        `Most people scream and run when they see a demon. I
+        stop and take notes on its anatomy.`
+      ),
+      new CharacteristicOption(
+        `Unlocking an ancient mystery is worth the price of a
+        civilization.`
+      ),
+      new CharacteristicOption(
+        `I overlook obvious solutions in favor of complicated
+        ones.`
+      ),
+      new CharacteristicOption(
+        `I speak without really thinking through my words,
+        invariably insulting others.`
+      ),
+      new CharacteristicOption(
+        `I can't keep a secret to save my life, or anyone else's.`)
+    ]),
+    new Feature(
+      `When you attempt to learn or recall a piece of lore, if you
+      do not know that information, you often know where and
+      from whom you can obtain it. Usually, this information
+      comes from a library, scriptorium, university, or a sage
+      or other learned person or creature. Your DM might
+      rule that the knowledge you seek is secreted away in an
+      almost inaccessible place, or that it simply cannot be
+      found. Unearthing the deepest secrets o f the multiverse
+      can require an adventure or even a whole campaign.`,
+      `Researcher`
+    ),
+    [
+      SKILL.ARCANA,
+      SKILL.HISTORY
+    ],
+    [
+      Equipment(GEAR.INK_BOTTLE),
+      Equipment(GEAR.INK_PEN),
+      Equipment(GEAR.SMALL_KNIFE),
+      Equipment(GEAR.COLLEAGUES_LETTER),
+      Equipment(GEAR.CLOTHES_COMMON),
+      Gold(10)
+    ],
+    [
+      Choices(
+        2,
+        [
+          Condition([LANGUAGE.ANY])
+        ]
+      )
+    ],
+    new Characteristic(
+      [
+        new CharacteristicOption(`Alchemist`),
+        new CharacteristicOption(`Astronomer`),
+        new CharacteristicOption(`Discredited academic`),
+        new CharacteristicOption(`Librarian`),
+        new CharacteristicOption(`Professor`),
+        new CharacteristicOption(`Researcher`),
+        new CharacteristicOption(`Wizard's apprentice`),
+        new CharacteristicOption(`Scribe`),
+      ],
+      `Specialty`
+    )
+  );
+
+  backgrounds[BACKGROUND.SAILOR.VALUE] = new Background(
+    'Sailor',
+    new PersonalityTraits([
+      new CharacteristicOption(
+        `My friends know they can rely on me, no matter what.`
+      ),
+      new CharacteristicOption(
+        `I work hard so that I can play hard when the work
+        is done.`
+      ),
+      new CharacteristicOption(
+        `I enjoy sailing into new ports and making new friends
+        over a flagon of ale.`
+      ),
+      new CharacteristicOption(
+        `I stretch the truth for the sake of a good story.`
+      ),
+      new CharacteristicOption(
+        `To me, a tavern brawl is a nice way to get to know a
+        new city.`
+      ),
+      new CharacteristicOption(
+        `I never pass up a friendly wager.`
+      ),
+      new CharacteristicOption(
+        `My language is as foul as an otyugh nest.`
+      ),
+      new CharacteristicOption(
+        `I like a job well done, especially if I can convince
+        someone else to do it.`
+      )
+    ]),
+    new Ideals([
+      new CharacteristicOption(
+        `The thing that keeps a ship together is mutual
+        respect between captain and crew. (Good)`,
+        `Respect.`
+      ),
+      new CharacteristicOption(
+        `We all do the work, so we all share in the
+        rewards. (Lawful)`,
+        `Fairness.`
+      ),
+      new CharacteristicOption(
+        `The sea is freedom—the freedom to go
+        anywhere and do anything. (Chaotic)`,
+        `Freedom.`
+      ),
+      new CharacteristicOption(
+        `I'm a predator, and the other ships on the sea
+        are my prey. (Evil)`,
+        `Mastery.`
+      ),
+      new CharacteristicOption(
+        `I'm committed to my crewmates, not to ideals.
+        (Neutral)`,
+        `People.`
+      ),
+      new CharacteristicOption(
+        `Someday I'll own my own ship and chart
+        my own destiny. (Any)`,
+        `Aspiration.`
+      )
+    ]),
+    new Bonds([
+      new CharacteristicOption(
+        `I'm loyal to my captain first, everything else second.`
+      ),
+      new CharacteristicOption(
+        `The ship is most important—crewmates and captains
+        come and go.`
+      ),
+      new CharacteristicOption(
+        `I'll always remember my first ship.`
+      ),
+      new CharacteristicOption(
+        `In a harbor town, I have a paramour whose eyes nearly
+        stole me from the sea.`
+      ),
+      new CharacteristicOption(
+        `I was cheated out of my fair share of the profits, and I
+        want to get my due.`
+      ),
+      new CharacteristicOption(
+        `Ruthless pirates murdered my captain and crewmates,
+        plundered our ship, and left me to die. Vengeance will
+        be mine.`
+      )
+    ]),
+    new Flaws([
+      new CharacteristicOption(
+        `I follow orders, even if I think they're wrong.`
+      ),
+      new CharacteristicOption(
+        `I'll say anything to avoid having to do extra work.`
+      ),
+      new CharacteristicOption(
+        `Once someone questions my courage, I never back
+        down no matter how dangerous the situation.`
+      ),
+      new CharacteristicOption(
+        `Once I start drinking, it's hard for me to stop.`
+      ),
+      new CharacteristicOption(
+        `I can't help but pocket loose coins and other trinkets I
+        come across.`
+      ),
+      new CharacteristicOption(
+        `My pride will probably lead to my destruction.`
+      )
+    ]),
+    new Feature(
+      `When you need to, you can secure free passage on
+      a sailing ship for yourself and your adventuring
+      companions. You might sail on the ship you served on,
+      or another ship you have good relations with (perhaps
+      one captained by a former crewmate). Because you're
+      calling in a favor, you can't be certain of a schedule or
+      route that w ill meet your every need. Your Dungeon
+      Master w ill determine how long it takes to get where
+      you need to go. In return for your free passage, you
+      and your companions are expected to assist the crew
+      during the voyage.`,
+      `Ship's Passage`
+    ),
+    [
+      SKILL.ATHLETICS,
+      SKILL.PERCEPTION,
+      TOOL.NAVIGATORS_TOOLS,
+      VEHICLE.TYPE.WATER
+    ],
+    [
+      Equipment(WEAPON.CLUB),
+      Equipment(GEAR.ROPE_SILK),
+      Choices(
+        1,
+        [
+          Choice(GEAR.LUCKY_CHARM),
+          Condition([TRINKET.ANY])
+        ]
+      ),
+      Equipment(GEAR.CLOTHES_COMMON),
+      Gold(10)
+    ],
+    null,
+    null,
+    new Variant(
+      `You spent your youth under the sway of a dread pirate,
+      a ruthless cutthroat who taught you how to survive in a
+      world of sharks and savages. You've indulged in larceny
+      on the high seas and sent more than one deserving soul
+      to a briny grave. Fear and bloodshed are no strangers
+      to you, and you've garnered a somewhat unsavory
+      reputation in many a port town.
+      If you decide that your sailing career involved piracy,
+      you can choose the Bad Reputation feature (see sidebar)
+      instead of the Ship's Passage feature.`,
+      `Pirate`
+    ),
+    new VariantFeature(
+      `If your character has a sailor background, you may select this
+      background feature instead of Ship's Passage.
+      No matter where you go, people are afraid of you due to
+      your reputation. When you are in a civilized settlement, you
+      can get away with minor criminal offenses, such as refusing
+      to pay for food at a tavern or breaking down doors at a local
+      shop, since most people will not report your activity to the
+      authorities.`,
+      `Bad Reputation`
+    )
+  );
+
+  backgrounds[BACKGROUND.SOLDIER.VALUE] = new Background(
+    'Soldier',
+    new PersonalityTraits([
+      new CharacteristicOption(
+        `I'm always polite and respectful.`
+      ),
+      new CharacteristicOption(
+        `I'm haunted by memories o f war. I can't get the images
+        of violence out of my mind.`
+      ),
+      new CharacteristicOption(
+        `I've lost too many friends, and I'm slow to make new
+        ones.`
+      ),
+      new CharacteristicOption(
+        `I'm full of inspiring and cautionary tales from my
+        military experience relevant to almost every combat
+        situation.`
+      ),
+      new CharacteristicOption(
+        `I can stare down a hell hound without flinching.`
+      ),
+      new CharacteristicOption(
+        `I enjoy being strong and like breaking things.`
+      ),
+      new CharacteristicOption(
+        `I have a crude sense of humor.`
+      ),
+      new CharacteristicOption(
+        `I face problems head-on. A simple, direct solution is
+        the best path to success.`
+      )
+    ]),
+    new Ideals([
+      new CharacteristicOption(
+        `Our lot is to lay down our lives in
+        defense of others. (Good)`,
+        `Greater Good.`
+      ),
+      new CharacteristicOption(
+        `I do what I must and obey just
+        authority. (Lawful)`,
+        `Responsibility.`
+      ),
+      new CharacteristicOption(
+        `When people follow orders blindly, they
+        embrace a kind of tyranny. (Chaotic)`,
+        `Independence.`
+      ),
+      new CharacteristicOption(
+        `In life as in war, the stronger force wins. (Evil)`,
+        `Might.`
+      ),
+      new CharacteristicOption(
+        `Ideals aren't worth killing over or
+        going to war for. (Neutral)`,
+        `Live and Let Live.`
+      ),
+      new CharacteristicOption(
+        `My city, nation, or people are all that matter.
+        (Any)`,
+        `Nation.`
+      )
+    ]),
+    new Bonds([
+      new CharacteristicOption(
+        `I would still lay down my life for the people I
+        served with.`
+      ),
+      new CharacteristicOption(
+        `Someone saved my life on the battlefield. To this day, I
+        will never leave a friend behind.`
+      ),
+      new CharacteristicOption(
+        `My honor is my life.`
+      ),
+      new CharacteristicOption(
+        `I'll never forget the crushing defeat my company
+        suffered or the enemies who dealt it.`
+      ),
+      new CharacteristicOption(
+        `Those who fight beside me are those worth dying for.`
+      ),
+      new CharacteristicOption(
+        `I fight for those who cannot fight for themselves.`
+      )
+    ]),
+    new Flaws([
+      new CharacteristicOption(
+        `The monstrous enemy we faced in battle still leaves
+        me quivering with fear.`
+      ),
+      new CharacteristicOption(
+        `I have little respect for anyone who is not a
+        proven warrior.`
+      ),
+      new CharacteristicOption(
+        `I made a terrible mistake in battle cost many lives—
+        and I would do anything to keep that mistake secret.`
+      ),
+      new CharacteristicOption(
+        `My hatred of my enemies is blind and unreasoning.`
+      ),
+      new CharacteristicOption(
+        `I obey the law, even if the law causes misery.`
+      ),
+      new CharacteristicOption(
+        `I'd rather eat my armor than admit when I'm wrong.`
+      )
+    ]),
+    new Feature(
+      `You have a military rank from your career as a soldier.
+      Soldiers loyal to your former military organization
+      still recognize your authority and influence, and they
+      defer to you if they are of a lower rank. You can invoke
+      your rank to exert influence over other soldiers and
+      requisition simple equipment or horses for temporary
+      use. You can also usually gain access to friendly
+      military encampments and fortresses where your
+      rank is recognized.`,
+      `Military Rank`
+    ),
+    [
+      SKILL.ATHLETICS,
+      SKILL.INTIMIDATION,
+      Choices(
+        1,
+        [
+          Condition([TOOL.CATEGORY.GAMING_SET])
+        ]
+      ),
+      VEHICLE.TYPE.LAND
+    ],
+    [
+      Equipment(GEAR.RANK_INSIGNIA),
+      Equipment(GEAR.ENEMY_TROPHY),
+      Choices(
+        1,
+        [
+          Choice(GEAR.BONE_DICE),
+          Choice(GEAR.DECK_OF_CARDS)
+        ]
+      ),
+      Choices(
+        1,
+        [
+          Choice(GEAR.PRAYER_BOOK),
+          Choice(GEAR.PRAYER_WHEEL)
+        ]
+      ),
+      Equipment(GEAR.CLOTHES_COMMON),
+      Gold(10)
+    ],
+    null,
+    new Characteristic(
+      [
+        new CharacteristicOption(`Officer`),
+        new CharacteristicOption(`Scout`),
+        new CharacteristicOption(`Infantry`),
+        new CharacteristicOption(`Cavalry`),
+        new CharacteristicOption(`Healer`),
+        new CharacteristicOption(`Quartermaster`),
+        new CharacteristicOption(`Standard bearer`),
+        new CharacteristicOption(`Support staff (cook, blacksmith, or the like)`),
+      ],
+      `Specialty`
+    )
+  );
+
+  backgrounds[BACKGROUND.URCHIN.VALUE] = new Background(
+    'Urchin',
+    new PersonalityTraits([
+      new CharacteristicOption(
+        `I hide scraps of food and trinkets away in my pockets.`
+      ),
+      new CharacteristicOption(
+        `I ask a lot of questions.`
+      ),
+      new CharacteristicOption(
+        `I like to squeeze into small places where no one else
+        can get to me.`
+      ),
+      new CharacteristicOption(
+        `I sleep with my back to a wall or tree, with everything I
+        own wrapped in a bundle in my arms.`
+      ),
+      new CharacteristicOption(
+        `I eat like a pig and have bad manners.`
+      ),
+      new CharacteristicOption(
+        `I think anyone who's nice to me is hiding evil intent.`
+      ),
+      new CharacteristicOption(
+        `I don't like to bathe.`
+      ),
+      new CharacteristicOption(
+        `I bluntly say what other people are hinting at or hiding.`
+      )
+    ]),
+    new Ideals([
+      new CharacteristicOption(
+        `All people, rich or poor, deserve respect.
+        (Good)`,
+        `Respect.`
+      ),
+      new CharacteristicOption(
+        `We have to take care of each other,
+        because no one else is going to do it. (Lawful)`,
+        `Community.`
+      ),
+      new CharacteristicOption(
+        `The low are lifted up, and the high and mighty
+        are brought down. Change is the nature o f things.
+        (Chaotic)`,
+        `Change.`
+      ),
+      new CharacteristicOption(
+        `The rich need to be shown what life and
+        death are like in the gutters. (Evil)`,
+        `Retribution.`
+      ),
+      new CharacteristicOption(
+        `I help the people who help me—that's what
+        keeps us alive. (Neutral)`,
+        `People.`
+      ),
+      new CharacteristicOption(
+        `I'm going to prove that I'm worthy of a
+        better life.`,
+        `Aspiration.`
+      )
+    ]),
+    new Bonds([
+      new CharacteristicOption(
+        `My town or city is my home, and I'll fight to defend it.`
+      ),
+      new CharacteristicOption(
+        `I sponsor an orphanage to keep others from enduring
+        what I was forced to endure.`
+      ),
+      new CharacteristicOption(
+        `I owe my survival to another urchin who taught me to
+        live on the streets.`
+      ),
+      new CharacteristicOption(
+        `I owe a debt I can never repay to the person who took
+        pity on me.`
+      ),
+      new CharacteristicOption(
+        `I escaped my life of poverty by robbing an important
+        person, and I'm wanted for it.`
+      ),
+      new CharacteristicOption(
+        `No one else should have to endure the hardships I've
+        been through.`
+      )
+    ]),
+    new Flaws([
+      new CharacteristicOption(
+        `If I'm outnumbered, I will run away from a fight.`
+      ),
+      new CharacteristicOption(
+        `Gold seems like a lot of money to me, and I'll do just
+        about anything for more of it.`
+      ),
+      new CharacteristicOption(
+        `I will never fully trust anyone other than myself.`
+      ),
+      new CharacteristicOption(
+        `I'd rather kill someone in their sleep then fight fair.`
+      ),
+      new CharacteristicOption(
+        `It's not stealing if I need it more than someone else.`
+      ),
+      new CharacteristicOption(
+        `People who can't take care of themselves get what they
+        deserve.`
+      )
+    ]),
+    new Feature(
+      `You know the secret patterns and flow to cities and can
+      find passages through the urban sprawl that others would
+      miss. When you are not in combat, you (and companions
+      you lead) can travel between any two locations in the city
+      twice as fast as your speed would normally allow.`,
+      `City Secrets`
+    ),
+    [
+      SKILL.SLEIGHT_OF_HAND,
+      SKILL.STEALTH,
+      TOOL.DISGUISE_KIT,
+      TOOL.THIEVES_TOOLS
+    ],
+    [
+      Equipment(GEAR.SMALL_KNIFE),
+      Equipment(GEAR.MAP),
+      Equipment(PET.MOUSE),
+      Choices(
+        1,
+        [
+          Condition([TRINKET.ANY])
+        ]
+      ),
+      Equipment(GEAR.CLOTHES_COMMON),
+      Gold(10)
     ]
   );
 
@@ -6395,12 +8929,14 @@ dbRefs[PATH.GEAR] = new DbRef('Gear', PATH.GEAR, getGear);
 dbRefs[PATH.GEAR_TYPES] = new DbRef('Gear types', PATH.GEAR_TYPES, getGearTypes);
 dbRefs[PATH.LANGUAGES] = new DbRef('Languages', PATH.LANGUAGES, getLanguages);
 dbRefs[PATH.PACKS] = new DbRef('Packs', PATH.PACKS, getPacks);
+dbRefs[PATH.PETS] = new DbRef('Pets', PATH.PETS, getPets);
 dbRefs[PATH.RACES] = new DbRef('Races', PATH.RACES, getRaces);
 dbRefs[PATH.SKILLS] = new DbRef('Skills', PATH.SKILLS, getSkills);
 dbRefs[PATH.SUBRACES] = new DbRef('Subraces', PATH.SUBRACES, getSubraces);
 dbRefs[PATH.TOOL_CATEGORIES] = new DbRef('Tool categories', PATH.TOOL_CATEGORIES, getToolCategories);
 dbRefs[PATH.TOOLS] = new DbRef('Tools', PATH.TOOLS, getTools);
 dbRefs[PATH.TRAITS] = new DbRef('Traits', PATH.TRAITS, getTraits);
+dbRefs[PATH.VEHICLE_TYPES] = new DbRef('Vehicle types', PATH.VEHICLE_TYPES, getVehicleTypes);
 dbRefs[PATH.WEAPON_CATEGORIES] = new DbRef('Weapon categories', PATH.WEAPON_CATEGORIES, getWeaponCategories);
 dbRefs[PATH.WEAPON_CLASSES] = new DbRef('Weapon classes', PATH.WEAPON_CLASSES, getWeaponClasses);
 dbRefs[PATH.WEAPONS] = new DbRef('Weapons', PATH.WEAPONS, getWeapons);
