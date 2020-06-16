@@ -91,6 +91,15 @@ label.choice {
   font-weight: normal;
 }
 
+label.normal {
+  font-weight: normal;
+}
+
+input.checkbox-padded {
+  margin-left: 10%;
+  margin-right: 5%;
+}
+
 div.side-column {
   margin: 0;
 }
@@ -152,7 +161,7 @@ table.nonogram {
   border: 2px solid black;
 }
 
-input.disabled {
+input.small-text {
   text-align: center;
   width: 50px;
 }

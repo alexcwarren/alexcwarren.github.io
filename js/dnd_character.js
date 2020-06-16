@@ -7,6 +7,9 @@ function loadData() {
 
   console.log('Loading Background dropdown...');
   loadList('background', dbRefs.backgrounds);
+
+  console.log('Loading Alignment dropdown...');
+  loadList('alignment', dbRefs.alignments);
 }
 
 function loadListFromArray(listID, array) {
@@ -83,6 +86,7 @@ function update(whatChanged) {
     updateCharacteristic('ideal', 'ideals');
     updateCharacteristic('bond', 'bonds');
     updateCharacteristic('flaw', 'flaws');
+    updateVariant();
     updateProficiencies();
     // TODO updateLanguages();
     // TODO updateEquipment();
@@ -545,6 +549,81 @@ function processCharacteristic(options) {
   }
 
   return array;
+}
+
+function updateVariant() {
+  const variantDiv = document.getElementById('variantDiv');
+  removeChildren(variantDiv);
+  variantDiv.style.display = 'none';
+
+  const backgroundValue = document.getElementById('background').value;
+
+  if (backgroundValue === '') {
+    return;
+  }
+
+  const background = dbRefs.backgrounds.val[backgroundValue];
+  if (!background.hasOwnProperty('variant')) {
+    return;
+  }
+
+  const variant = background.variant;
+  var checkbox = new Checkbox(variant.name.toLowerCase());
+  checkbox.setClassName('checkbox-padded');
+
+  var checkLabel = new Label(variant.name, checkbox.name);
+  checkLabel.setClassName('normal');
+
+  var label = new Label('Variant');
+
+  variantDiv.appendChild(label.element);
+  variantDiv.appendChild(checkbox.element);
+  variantDiv.appendChild(checkLabel.element);
+
+  variantDiv.style.display = 'block';
+}
+
+class Label {
+  constructor(text, htmlFor=null) {
+    this.element = document.createElement('label');
+    if (htmlFor !== null) {
+      this.element.htmlFor = htmlFor;
+    }
+    this.element.innerText = text;
+  }
+  
+  setClassName(className) {
+    this.element.className = className;
+  }
+}
+
+class Checkbox {
+  constructor(name=null, value=null) {
+    this.element = document.createElement('input');
+    this.element.type = 'checkbox';
+    if (name !== null) {
+      this.setName(name);
+    }
+    if (value !== null) {
+      this.setValue(value);
+    }
+  }
+
+  setName(name) {
+    this.element.name = name;
+  }
+
+  setValue(value) {
+    this.element.value = value;
+  }
+
+  setClassName(className) {
+    this.element.className = className;
+  }
+
+  setOnclick(onclick) {
+    this.element.setAttribute('onclick', onclick);
+  }
 }
 
 function removeOptions(select) {
