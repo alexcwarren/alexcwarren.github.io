@@ -62,7 +62,7 @@ input.ability {
   transform: rotate(180deg);
 }
 
-#subraceDiv {
+.starts-hidden {
   display: none;
 }
 
@@ -154,6 +154,7 @@ table.nonogram {
 
 input.disabled {
   text-align: center;
+  width: 50px;
 }
 
 input.counter {

@@ -20,10 +20,15 @@ function loadListFromArray(listID, array) {
 
   for (a of array) {
     var option = document.createElement('option');
-    option.text = a.text;
-    option.value = a.value;
+    option.text = a.hasOwnProperty('text') ? a.text : a;
+    option.value = a.hasOwnProperty('value') ? a.value : a;
     select.add(option);
+
+    if (array.length === 1) {
+      select.value = a;
+    }
   }
+
 }
 
 function loadList(listID, dbRef, nullText='') {
@@ -73,6 +78,7 @@ function update(whatChanged) {
     // TODO updateEquipment();
   }
   else if (whatChanged === 'background') {
+    updateFeature();
     updateCharacteristic('personality-trait', 'traits');
     updateCharacteristic('ideal', 'ideals');
     updateCharacteristic('bond', 'bonds');
@@ -465,6 +471,35 @@ function updateHitDice() {
   hitDice.value = clss.hitDice.text;
 }
 
+function updateFeature() {
+  const FEATURE = 'feature';
+  const VARIANT = 'variantFeature';
+
+  var select = document.getElementById(FEATURE);
+  removeOptions(select);
+
+  var backgroundValue = document.getElementById('background').value;
+
+  if (backgroundValue === '') {
+    return;
+  }
+
+  var background = new DbRef('Backgrounds', PATH.BACKGROUNDS + '/' + backgroundValue).val;
+
+  if (background === null) {
+    return;
+  }
+
+  var features = [];
+  features.push(background[FEATURE].name);
+
+  if (background.hasOwnProperty(VARIANT)) {
+    features.push(background[VARIANT].name);
+  }
+
+  loadListFromArray(FEATURE, features);
+}
+
 function updateCharacteristic(elementId, characteristic) {
   var select = document.getElementById(elementId);
   removeOptions(select);
@@ -477,7 +512,7 @@ function updateCharacteristic(elementId, characteristic) {
 
   var background = new DbRef('Backgrounds', PATH.BACKGROUNDS + '/' + backgroundValue).val;
 
-  if (background.val === null) {
+  if (background === null) {
     return;
   }
 
