@@ -83,7 +83,7 @@ function update(whatChanged) {
     updateCharacteristic('ideal', 'ideals');
     updateCharacteristic('bond', 'bonds');
     updateCharacteristic('flaw', 'flaws');
-    // updateProficiencies();
+    updateProficiencies();
     // TODO updateLanguages();
     // TODO updateEquipment();
   }
@@ -209,6 +209,13 @@ function updateProficiencies() {
     var clss = dbRefs.classes.val[classValue];
 
     addProficiencies(profs, clss.proficiencies);
+  }
+
+  var backgroundValue = document.getElementById('background').value;
+  if (backgroundValue !== '') {
+    var background = dbRefs.backgrounds.val[backgroundValue];
+
+    addProficiencies(profs, background.proficiencies);
   }
 
   var abilities = document.getElementsByClassName('row ability');
