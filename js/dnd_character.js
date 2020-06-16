@@ -4,11 +4,36 @@ function loadData() {
 
   console.log('Loading Class dropdown...');
   loadList('class', dbRefs.classes);
+
+  console.log('Loading Background dropdown...');
+  loadList('background', dbRefs.backgrounds);
+}
+
+function loadListFromArray(listID, array) {
+  nullText = '-- Select ' + listID[0].toUpperCase() + listID.slice(1).replace('-', ' ') + ' --';
+
+  const select = document.getElementById(listID);
+  var nullOption = document.createElement('option');
+  nullOption.text = nullText;
+  nullOption.value = '';
+  select.add(nullOption);
+
+  for (a of array) {
+    var option = document.createElement('option');
+    option.text = a.hasOwnProperty('text') ? a.text : a;
+    option.value = a.hasOwnProperty('value') ? a.value : a;
+    select.add(option);
+
+    if (array.length === 1) {
+      select.value = a;
+    }
+  }
+
 }
 
 function loadList(listID, dbRef, nullText='') {
   if (nullText === '') {
-    nullText = '-- Select ' + listID[0].toUpperCase() + listID.slice(1) + ' --';
+    nullText = '-- Select ' + listID[0].toUpperCase() + listID.slice(1).replace('-', ' ') + ' --';
   }
 
   const select = document.getElementById(listID);
@@ -53,6 +78,11 @@ function update(whatChanged) {
     // TODO updateEquipment();
   }
   else if (whatChanged === 'background') {
+    updateFeature();
+    updateCharacteristic('personality-trait', 'traits');
+    updateCharacteristic('ideal', 'ideals');
+    updateCharacteristic('bond', 'bonds');
+    updateCharacteristic('flaw', 'flaws');
     updateProficiencies();
     // TODO updateLanguages();
     // TODO updateEquipment();
@@ -67,9 +97,7 @@ function updateSubrace() {
 
   // Clear subrace select before adding new options
   var subraceSelect = document.getElementById('subrace');
-  for (i in subraceSelect.options) {
-    subraceSelect.options[i] = null;
-  }
+  removeOptions(subraceSelect);
 
   var raceValue = document.getElementById('race').value;
 
@@ -181,6 +209,13 @@ function updateProficiencies() {
     var clss = dbRefs.classes.val[classValue];
 
     addProficiencies(profs, clss.proficiencies);
+  }
+
+  var backgroundValue = document.getElementById('background').value;
+  if (backgroundValue !== '') {
+    var background = dbRefs.backgrounds.val[backgroundValue];
+
+    addProficiencies(profs, background.proficiencies);
   }
 
   var abilities = document.getElementsByClassName('row ability');
@@ -441,6 +476,81 @@ function updateHitDice() {
   var clss = dbRefs.classes.val[classValue];
 
   hitDice.value = clss.hitDice.text;
+}
+
+function updateFeature() {
+  const FEATURE = 'feature';
+  const VARIANT = 'variantFeature';
+
+  var select = document.getElementById(FEATURE);
+  removeOptions(select);
+
+  var backgroundValue = document.getElementById('background').value;
+
+  if (backgroundValue === '') {
+    return;
+  }
+
+  var background = new DbRef('Backgrounds', PATH.BACKGROUNDS + '/' + backgroundValue).val;
+
+  if (background === null) {
+    return;
+  }
+
+  var features = [];
+  features.push(background[FEATURE].name);
+
+  if (background.hasOwnProperty(VARIANT)) {
+    features.push(background[VARIANT].name);
+  }
+
+  loadListFromArray(FEATURE, features);
+}
+
+function updateCharacteristic(elementId, characteristic) {
+  var select = document.getElementById(elementId);
+  removeOptions(select);
+
+  var backgroundValue = document.getElementById('background').value;
+
+  if (backgroundValue === '') {
+    return;
+  }
+
+  var background = new DbRef('Backgrounds', PATH.BACKGROUNDS + '/' + backgroundValue).val;
+
+  if (background === null) {
+    return;
+  }
+
+  var characteristicObj = background[characteristic];
+  var options = processCharacteristic(characteristicObj.options);
+
+  loadListFromArray(elementId, options);
+}
+
+function processCharacteristic(options) {
+  var array = [{
+    'text': 'Roll...',
+    'value': 'ROLL'
+  }];
+
+  for (key of Object.keys(options)) {
+    let o = options[key];
+    let option = {
+      'text': o.desc,
+      'value': key
+    };
+    array.push(option);
+  }
+
+  return array;
+}
+
+function removeOptions(select) {
+  for (i in select.options) {
+    select.options[i] = null;
+  }
 }
 
 window.onload = function() {

@@ -71,7 +71,16 @@
         <div class="row">
           <div class="col-md-1">
             <div class="big-box">
-              <!-- TODO Embed Ability Score functionality -->
+              <div class="row dropdown">
+                Get Ability Scores:
+                <button class="btn btn-primary btn-small dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span>^</span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#">Roll...</a>
+                  <a class="dropdown-item" href="#">Fixed</a>
+                </div>
+              </div>
               <div class="row ability" id="str-row">
                 <span class="ability">STR</span>
                 <span>
@@ -114,23 +123,10 @@
                 </span>
                 <span id="chaMod" class="abilityMod"></span>
               </div>
-
-              <div class="row">
-                <div class="form-group side-column">
-                  <label for="speed">Get Ability Scores</label>
-                  <select class="form-control side-column" id="getAbilityScores" name="getAbilityScores" onchange="" value=""></select>
-                </div>
-              </div>
               <div class="row">
                 <div class="form-group side-column">
                   <label for="speed">Level</label>
                   <input type="text" class="form-control disabled" id="level" name="level" value="1" disabled>
-                </div>
-              </div>
-              <div class="row">
-                <div class="form-group side-column">
-                  <label for="speed">Hit Points</label>
-                  <select class="form-control side-column" id="hitPoints" name="hitPoints" onchange="" value=""></select>
                 </div>
               </div>
               <div class="row">
@@ -164,7 +160,7 @@
                     <label for="race">Race</label>
                     <select class="form-control" id="race" name="race" onchange="update(this.name)" value=""></select>
                   </div>
-                  <div id="subraceDiv" class="form-group col-md-6">
+                  <div id="subraceDiv" class="form-group col-md-6 starts-hidden">
                     <label for="subrace">Subrace</label>
                     <select class="form-control" id="subrace" name="subrace" onchange="update(this.name)" value=""></select>
                   </div>
@@ -184,29 +180,49 @@
                     <label for="class">Class</label>
                     <select class="form-control" id="class" name="class" onchange="update(this.name)" value=""></select>
                   </div>
+                  <div class="dropdown col-md-3">
+                    <span>Get Hit Points:</span>
+                    <button class="btn btn-primary btn-small dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <span>^</span>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="#">Roll...</a>
+                      <a class="dropdown-item" href="#">Fixed</a>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="speed">Hit Points</label>
+                    <input type="text" class="form-control disabled" id="hitPoints" name="hitPoints" value="" disabled>
+                  </div>
+                </div>
+                <div class="row">
                   <div class="form-group col-md-6">
                     <label for="background">Background</label>
                     <select class="form-control" id="background" name="background" onchange="update(this.name)" value=""></select>
                   </div>
-                </div>
-                <div class="row">
-                  <div class="form-group col-md-6">
-                    <label for="class">Personality Trait</label>
-                    <select class="form-control" id="personality-trait" name="personality-trait" onchange="update(this.name)" value=""></select>
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label for="background">Ideal</label>
-                    <select class="form-control" id="ideal" name="ideal" onchange="update(this.name)" value=""></select>
+                  <div id="featureDiv" class="form-group col-md-6">
+                    <label for="feature">Feature</label>
+                    <select class="form-control" id="feature" name="feature" onchange="" value=""></select>
                   </div>
                 </div>
                 <div class="row">
                   <div class="form-group col-md-6">
-                    <label for="class">Bond</label>
-                    <select class="form-control" id="bond" name="bond" onchange="update(this.name)" value=""></select>
+                    <label for="personality-trait">Personality Trait</label>
+                    <select class="form-control" id="personality-trait" name="personality-trait" onchange="" value=""></select>
                   </div>
                   <div class="form-group col-md-6">
-                    <label for="background">Flaw</label>
-                    <select class="form-control" id="flaw" name="flaw" onchange="update(this.name)" value=""></select>
+                    <label for="ideal">Ideal</label>
+                    <select class="form-control" id="ideal" name="ideal" onchange="" value=""></select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label for="bond">Bond</label>
+                    <select class="form-control" id="bond" name="bond" onchange="" value=""></select>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="flaw">Flaw</label>
+                    <select class="form-control" id="flaw" name="flaw" onchange="" value=""></select>
                   </div>
                 </div>
                 <button type="submit" class="btn btn-primary" onclick="saveCharacter()">Save</button>
@@ -227,7 +243,7 @@
                 </div>
               </div>
               <div class="row">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-5">
                   <label for="">Proficiencies</label>
                   <div id="proficiencies"></div>
                 </div>

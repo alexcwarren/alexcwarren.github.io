@@ -55,7 +55,14 @@ input.ability {
   text-align: center;
 }
 
-#subraceDiv {
+.btn-small {
+  padding: 0 0 5px 0;
+  width: 20px;
+  height: 17px;
+  transform: rotate(180deg);
+}
+
+.starts-hidden {
   display: none;
 }
 
@@ -147,6 +154,7 @@ table.nonogram {
 
 input.disabled {
   text-align: center;
+  width: 50px;
 }
 
 input.counter {
