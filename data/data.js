@@ -125,6 +125,7 @@ function getEnumerationRef(name, layers, value='true') {
 
 const PATH = {
   'ABILITIES': 'abilities',
+  'ALIGNMENTS': 'alignments',
   'ARMOR': 'armor',
   'ARMOR_TYPES': 'armor_types',
   'BACKGROUNDS': 'backgrounds',
@@ -6450,7 +6451,7 @@ function processLanguages(languagesList) {
 /*************
 * BACKGROUNDS
 *************/
-// TODO Finish adding backgrounds
+
 const BACKGROUND = {
   'ACOLYTE': {
     'VALUE': 'acolyte',
@@ -8892,6 +8893,76 @@ function getBackgrounds() {
   return backgrounds;
 }
 
+/************
+* ALIGNMENTS
+************/
+
+const ALIGNMENT = {
+  'LAWFUL_GOOD': {
+    'VALUE': 'lawful_good',
+    'PATH': PATH.ALIGNMENTS
+  },
+  'LAWFUL_NEUTRAL': {
+    'VALUE': 'lawful_neutral',
+    'PATH': PATH.ALIGNMENTS
+  },
+  'LAWFUL_EVIL': {
+    'VALUE': 'lawful_evil',
+    'PATH': PATH.ALIGNMENTS
+  },
+  'NEUTRAL_GOOD': {
+    'VALUE': 'neutral_good',
+    'PATH': PATH.ALIGNMENTS
+  },
+  'TRUE_NEUTRAL': {
+    'VALUE': 'true_neutral',
+    'PATH': PATH.ALIGNMENTS
+  },
+  'NEUTRAL_EVIL': {
+    'VALUE': 'neutral_evil',
+    'PATH': PATH.ALIGNMENTS
+  },
+  'CHAOTIC_GOOD': {
+    'VALUE': 'chaotic_good',
+    'PATH': PATH.ALIGNMENTS
+  },
+  'CHAOTIC_NEUTRAL': {
+    'VALUE': 'chaotic_neutral',
+    'PATH': PATH.ALIGNMENTS
+  },
+  'CHAOTIC_EVIL': {
+    'VALUE': 'chaotic_evil',
+    'PATH': PATH.ALIGNMENTS
+  }
+};
+
+class Alignment {
+  constructor(name) {
+    this.id = pushID(name);
+    this.name = name;
+  }
+}
+
+function getAlignments() {
+  var alignments = {};
+
+  alignments[ALIGNMENT.LAWFUL_GOOD.VALUE] = new Alignment('Lawful Good');
+  alignments[ALIGNMENT.LAWFUL_NEUTRAL.VALUE] = new Alignment('Lawful Neutral');
+  alignments[ALIGNMENT.LAWFUL_EVIL.VALUE] = new Alignment('Lawful Evil');
+  alignments[ALIGNMENT.NEUTRAL_GOOD.VALUE] = new Alignment('Neutral Good');
+  alignments[ALIGNMENT.TRUE_NEUTRAL.VALUE] = new Alignment('True Neutral');
+  alignments[ALIGNMENT.NEUTRAL_EVIL.VALUE] = new Alignment('Neutral Evil');
+  alignments[ALIGNMENT.CHAOTIC_GOOD.VALUE] = new Alignment('Chaotic Good');
+  alignments[ALIGNMENT.CHAOTIC_NEUTRAL.VALUE] = new Alignment('Chaotic Neutral');
+  alignments[ALIGNMENT.CHAOTIC_EVIL.VALUE] = new Alignment('Chaotic Evil');
+
+  return alignments;
+}
+
+/***************
+* DATABASE REFS
+***************/
+
 class DbRef {
   constructor(name, path, getData=null) {
     this.name = name;
@@ -8921,6 +8992,7 @@ class DbRef {
 
 var dbRefs = {};
 dbRefs[PATH.ABILITIES] = new DbRef('Abilities', PATH.ABILITIES, getAbilities);
+dbRefs[PATH.ALIGNMENTS] = new DbRef('Alignments', PATH.ALIGNMENTS, getAlignments);
 dbRefs[PATH.ARMOR] = new DbRef('Armor', PATH.ARMOR, getArmor);
 dbRefs[PATH.ARMOR_TYPES] = new DbRef('Armor types', PATH.ARMOR_TYPES, getArmorTypes);
 dbRefs[PATH.BACKGROUNDS] = new DbRef('Backgrounds', PATH.BACKGROUNDS, getBackgrounds);
