@@ -87,6 +87,10 @@ input.choice {
   display: inline;
 }
 
+label.choice-title {
+  font-weight: normal;
+  display: block;
+}
 label.choice {
   font-weight: normal;
 }
@@ -98,6 +102,10 @@ label.normal {
 input.checkbox-padded {
   margin-left: 10%;
   margin-right: 5%;
+}
+
+ul.equipment {
+  padding-left: 10%;
 }
 
 div.side-column {
@@ -164,6 +172,11 @@ table.nonogram {
 input.small-text {
   text-align: center;
   width: 50px;
+}
+
+input.med-text {
+  text-align: center;
+  width: 60px;
 }
 
 input.counter {

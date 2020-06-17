@@ -1,3 +1,18 @@
+class HTMLElement {
+  setClassName(className) {
+    this.element.className = className;
+  }
+
+  appendChild(child) {
+    if (child.hasOwnProperty('element')) {
+      this.element.appendChild(child.element);
+    }
+    else {
+      this.element.appendChild(child);
+    }
+  }
+}
+
 function loadData() {
   console.log('Loading Race dropdown...');
   loadList('race', dbRefs.races);
@@ -78,7 +93,7 @@ function update(whatChanged) {
   else if (whatChanged === 'class') {
     updateHitDice();
     updateProficiencies();
-    // TODO updateEquipment();
+    updateEquipment();
   }
   else if (whatChanged === 'background') {
     updateFeature();
@@ -89,7 +104,7 @@ function update(whatChanged) {
     updateVariant();
     updateProficiencies();
     updateLanguages();
-    // TODO updateEquipment();
+    updateEquipment();
   }
   else {
     console.log('Nothing to update!');
@@ -242,7 +257,7 @@ function updateProficiencies() {
           var label = document.createElement('label');
           label.innerText = 'Choose ' + amount + ':';
           label.htmlFor = choiceName;
-          label.className = 'choice';
+          label.className = 'choice-title';
           div.appendChild(label);
 
           for (choiceKey in choices) {
@@ -592,8 +607,9 @@ function updateVariant() {
   variantDiv.style.display = 'block';
 }
 
-class Label {
+class Label extends HTMLElement {
   constructor(text, htmlFor=null) {
+    super();
     this.element = document.createElement('label');
     if (htmlFor !== null) {
       this.element.htmlFor = htmlFor;
@@ -602,12 +618,17 @@ class Label {
   }
   
   setClassName(className) {
-    this.element.className = className;
+    super.setClassName(className);
+  }
+
+  appendChild(child) {
+    super.appendChild(child);
   }
 }
 
-class Checkbox {
+class Checkbox extends HTMLElement {
   constructor(name=null, value=null) {
+    super();
     this.element = document.createElement('input');
     this.element.type = 'checkbox';
     if (name !== null) {
@@ -627,7 +648,7 @@ class Checkbox {
   }
 
   setClassName(className) {
-    this.element.className = className;
+    super.setClassName(className);
   }
 
   setOnclick(onclick) {
@@ -701,8 +722,9 @@ function updateLanguages() {
   }
 }
 
-class Select {
+class Select extends HTMLElement {
   constructor(name, options) {
+    super();
     this.element = document.createElement('select');
     this.element.name = name;
     this.element.className = 'form-control';
@@ -726,11 +748,152 @@ class Select {
   }
 }
 
-class Option {
+class Option extends HTMLElement {
   constructor(text, value='') {
+    super();
     this.element = document.createElement('option');
     this.element.text = text;
     this.element.value = value;
+  }
+}
+
+function updateEquipment() {
+  let equipmentArray = [];
+
+  const classValue = document.getElementById('class').value;
+  if (classValue !== '') {
+    const classObj = dbRefs.classes.val[classValue];
+    collectEquipment(equipmentArray, classObj.equipment);
+  }
+
+  const backgroundValue = document.getElementById('background').value;
+  if (backgroundValue !== '') {
+    const background = dbRefs.backgrounds.val[backgroundValue];
+    collectEquipment(equipmentArray, background.equipment);
+  }
+
+  var equipmentList = new UnorderedList('equipment');
+  for (v of equipmentArray) {
+    equipmentList.appendChild(v);
+  }
+
+  const equipmentDiv = document.getElementById('equipment');
+  removeChildren(equipmentDiv);
+  equipmentDiv.appendChild(equipmentList.element);
+}
+
+function collectEquipment(array, equipment) {
+  var choiceCount = 0;
+
+  for (key in equipment) {
+    var e = equipment[key];
+    var text = '';
+    var eLI = null;
+
+    if (e.hasOwnProperty(CHOOSE)) {
+      var amount = Object.keys(e)[0];
+      var choicesObj = e[amount];
+
+      var first = Object.keys(choicesObj)[0];
+      var firstObj = choicesObj[first];
+
+      var eDiv = new Div();
+
+      if (firstObj.hasOwnProperty(CONDITIONS)) {
+        choicesObj = {};
+
+        for (conditionKey in firstObj.conditions) {
+          var path = firstObj.conditions[conditionKey];
+          var items = getItem(path, conditionKey);
+          for (itemKey in items) {
+            if (itemKey !== NAME) {
+              var itemPath = items[itemKey];
+              choicesObj[itemKey] = {
+                'path': itemPath,
+                'quantity': 1
+              };
+            }
+          }
+        }
+      }
+
+      var label = new Label(`Choose ${amount}:`);
+      label.setClassName('choice-title');
+      eDiv.appendChild(label);
+
+      for (choiceKey in choicesObj) {
+        var choice = choicesObj[choiceKey];
+        var item = getItem(choice.path, choiceKey);
+        
+        var checkbox = new Checkbox(item.name, choiceKey);
+        checkbox.setClassName(`choice equipCheckbox${choiceCount}`);
+        checkbox.setOnclick(`limitChecks(${amount}, this.className)`);
+        
+        var innerDiv = new Div();
+        innerDiv.appendChild(checkbox);
+
+        var checkLabel = new Label(item.name);
+        checkLabel.setClassName('choice');
+        innerDiv.appendChild(checkLabel);
+
+        eDiv.appendChild(innerDiv);
+      }
+
+      eLI = new ListItem();
+      eLI.appendChild(eDiv);
+      choiceCount++;
+    }
+    else if (key === 'gp') {
+      text = e + 'gp';
+    }
+    else {
+      var table = dbRefs[e.path].val;
+      var item = table[key];
+      text = item.name;
+    }
+
+    if (text !== '') {
+      eLI = new ListItem(text);
+    }
+    
+    array.push(eLI);
+  }
+}
+
+function getItem(path, key) {
+  var table = dbRefs[path].val;
+  return table[key];
+}
+
+class UnorderedList extends HTMLElement {
+  constructor(className='') {
+    super();
+    this.element = document.createElement('ul');
+    this.element.className = className;
+  }
+
+  appendChild(child) {
+    super.appendChild(child);
+  }
+}
+
+class ListItem extends HTMLElement {
+  constructor(text='') {
+    super();
+    this.element = document.createElement('li');
+    this.element.innerText = text;
+  }
+}
+
+class Div extends HTMLElement {
+  constructor(text='') {
+    super();
+    this.element = document.createElement('div');
+    this.element.innerText = text;
+  }
+  
+  appendChild(child) {
+    super.appendChild(child);
   }
 }
 
