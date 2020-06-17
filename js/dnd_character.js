@@ -1,3 +1,18 @@
+class HTMLElement {
+  setClassName(className) {
+    this.element.className = className;
+  }
+
+  appendChild(child) {
+    if (child.hasOwnProperty('element')) {
+      this.element.appendChild(child.element);
+    }
+    else {
+      this.element.appendChild(child);
+    }
+  }
+}
+
 function loadData() {
   console.log('Loading Race dropdown...');
   loadList('race', dbRefs.races);
@@ -7,6 +22,9 @@ function loadData() {
 
   console.log('Loading Background dropdown...');
   loadList('background', dbRefs.backgrounds);
+
+  console.log('Loading Alignment dropdown...');
+  loadList('alignment', dbRefs.alignments);
 }
 
 function loadListFromArray(listID, array) {
@@ -63,19 +81,19 @@ function update(whatChanged) {
     updateSpeed();
     updateProficiencies();
     updateTraits();
-    // TODO updateLanguages();
+    updateLanguages();
   }
   else if (whatChanged === 'subrace') {
     updateAbilities();
     updateSpeed();
     updateProficiencies();
     updateTraits();
-    // TODO updateLanguages();
+    updateLanguages();
   }
   else if (whatChanged === 'class') {
     updateHitDice();
     updateProficiencies();
-    // TODO updateEquipment();
+    updateEquipment();
   }
   else if (whatChanged === 'background') {
     updateFeature();
@@ -83,9 +101,10 @@ function update(whatChanged) {
     updateCharacteristic('ideal', 'ideals');
     updateCharacteristic('bond', 'bonds');
     updateCharacteristic('flaw', 'flaws');
+    updateVariant();
     updateProficiencies();
-    // TODO updateLanguages();
-    // TODO updateEquipment();
+    updateLanguages();
+    updateEquipment();
   }
   else {
     console.log('Nothing to update!');
@@ -238,7 +257,7 @@ function updateProficiencies() {
           var label = document.createElement('label');
           label.innerText = 'Choose ' + amount + ':';
           label.htmlFor = choiceName;
-          label.className = 'choice';
+          label.className = 'choice-title';
           div.appendChild(label);
 
           for (choiceKey in choices) {
@@ -459,10 +478,19 @@ function updateTraits() {
 }
 
 function massAppendToSet(set, list, dbVal) {
+  var hasAny = false;
+
   for (key in list) {
-    var item = list[key];
-    set.add(dbVal[key].name + '\n');
+    if (key !== ANY) {
+      var item = list[key];
+      set.add(dbVal[key].name + '\n');
+    }
+    else {
+      hasAny = true;
+    }
   }
+
+  return hasAny;
 }
 
 function updateHitDice() {
@@ -545,6 +573,328 @@ function processCharacteristic(options) {
   }
 
   return array;
+}
+
+function updateVariant() {
+  const variantDiv = document.getElementById('variantDiv');
+  removeChildren(variantDiv);
+  variantDiv.style.display = 'none';
+
+  const backgroundValue = document.getElementById('background').value;
+
+  if (backgroundValue === '') {
+    return;
+  }
+
+  const background = dbRefs.backgrounds.val[backgroundValue];
+  if (!background.hasOwnProperty('variant')) {
+    return;
+  }
+
+  const variant = background.variant;
+  var checkbox = new Checkbox(variant.name.toLowerCase());
+  checkbox.setClassName('checkbox-padded');
+
+  var checkLabel = new Label(variant.name, checkbox.name);
+  checkLabel.setClassName('normal');
+
+  var label = new Label('Variant');
+
+  variantDiv.appendChild(label.element);
+  variantDiv.appendChild(checkbox.element);
+  variantDiv.appendChild(checkLabel.element);
+
+  variantDiv.style.display = 'block';
+}
+
+class Label extends HTMLElement {
+  constructor(text, htmlFor=null) {
+    super();
+    this.element = document.createElement('label');
+    if (htmlFor !== null) {
+      this.element.htmlFor = htmlFor;
+    }
+    this.element.innerText = text;
+  }
+  
+  setClassName(className) {
+    super.setClassName(className);
+  }
+
+  appendChild(child) {
+    super.appendChild(child);
+  }
+}
+
+class Checkbox extends HTMLElement {
+  constructor(name=null, value=null) {
+    super();
+    this.element = document.createElement('input');
+    this.element.type = 'checkbox';
+    if (name !== null) {
+      this.setName(name);
+    }
+    if (value !== null) {
+      this.setValue(value);
+    }
+  }
+
+  setName(name) {
+    this.element.name = name;
+  }
+
+  setValue(value) {
+    this.element.value = value;
+  }
+
+  setClassName(className) {
+    super.setClassName(className);
+  }
+
+  setOnclick(onclick) {
+    this.element.setAttribute('onclick', onclick);
+  }
+}
+
+function updateLanguages() {
+  var languageSpan = document.getElementById('languages');
+  removeChildren(languageSpan);
+
+  var language_set = new Set();
+  var anyCount = 0;
+
+  var raceValue = document.getElementById('race').value;
+  if (raceValue !== '') {
+    var race = dbRefs.races.val[raceValue];
+    var hasANY = massAppendToSet(language_set, race.languages, dbRefs.languages.val);
+    if (hasANY) {
+      anyCount++
+    }
+  }
+
+  var subraceValue = document.getElementById('subrace').value;
+  if (subraceValue !== '') {
+    subraces = dbRefs.subraces.val[raceValue];
+    var subrace = subraces[subraceValue];
+    if (subrace.hasOwnProperty('languages')) {
+      var hasANY = massAppendToSet(language_set, subrace.languages, dbRefs.languages.val);
+      if (hasANY) {
+        anyCount++
+      }
+    }
+  }
+
+  var backgroundValue = document.getElementById('background').value;
+  if (backgroundValue !== '') {
+    var background = dbRefs.backgrounds.val[backgroundValue];
+    if (background.hasOwnProperty('languages')) {
+      var hasANY = massAppendToSet(language_set, background.languages, dbRefs.languages.val);
+      if (hasANY) {
+        anyCount += background.languages[ANY];
+      }
+    }
+  }
+
+  var languageText = '';
+  
+  language_set.forEach(function(language) {
+    languageText += language.replace(/\n/g, '') + ', ';
+  });
+  languageText = languageText.slice(0, languageText.length - 2);
+
+  var div = document.createElement('div');
+  div.innerText = languageText;
+  languageSpan.appendChild(div);
+
+  var languageList = [];
+  for (key in dbRefs.languages.val) {
+    var l = {
+      'text': dbRefs.languages.val[key].name,
+      'value': key
+    };
+
+    languageList.push(l);
+  }
+
+  for (let i = 0; i < anyCount; i++) {
+    var chooseLanguage = new Select('language', languageList);
+    languageSpan.appendChild(chooseLanguage.element);
+  }
+}
+
+class Select extends HTMLElement {
+  constructor(name, options) {
+    super();
+    this.element = document.createElement('select');
+    this.element.name = name;
+    this.element.className = 'form-control';
+    this.loadOptions(options, name);
+  }
+
+  loadOptions(options, name) {
+    var nullText = '-- Select ' + name[0].toUpperCase() + name.slice(1).replace('-', ' ') + ' --';
+    var nullOption = new Option(nullText);
+    this.element.add(nullOption.element);
+
+    for (key in options) {
+      var o = options[key];
+      var option = new Option(o.text, o.value);
+      this.element.add(option.element);
+
+      if (options.length === 1) {
+        this.element.value = o.value;
+      }
+    }
+  }
+}
+
+class Option extends HTMLElement {
+  constructor(text, value='') {
+    super();
+    this.element = document.createElement('option');
+    this.element.text = text;
+    this.element.value = value;
+  }
+}
+
+function updateEquipment() {
+  let equipmentArray = [];
+
+  const classValue = document.getElementById('class').value;
+  if (classValue !== '') {
+    const classObj = dbRefs.classes.val[classValue];
+    collectEquipment(equipmentArray, classObj.equipment);
+  }
+
+  const backgroundValue = document.getElementById('background').value;
+  if (backgroundValue !== '') {
+    const background = dbRefs.backgrounds.val[backgroundValue];
+    collectEquipment(equipmentArray, background.equipment);
+  }
+
+  var equipmentList = new UnorderedList('equipment');
+  for (v of equipmentArray) {
+    equipmentList.appendChild(v);
+  }
+
+  const equipmentDiv = document.getElementById('equipment');
+  removeChildren(equipmentDiv);
+  equipmentDiv.appendChild(equipmentList.element);
+}
+
+function collectEquipment(array, equipment) {
+  var choiceCount = 0;
+
+  for (key in equipment) {
+    var e = equipment[key];
+    var text = '';
+    var eLI = null;
+
+    if (e.hasOwnProperty(CHOOSE)) {
+      var amount = Object.keys(e)[0];
+      var choicesObj = e[amount];
+
+      var first = Object.keys(choicesObj)[0];
+      var firstObj = choicesObj[first];
+
+      var eDiv = new Div();
+
+      if (firstObj.hasOwnProperty(CONDITIONS)) {
+        choicesObj = {};
+
+        for (conditionKey in firstObj.conditions) {
+          var path = firstObj.conditions[conditionKey];
+          var items = getItem(path, conditionKey);
+          for (itemKey in items) {
+            if (itemKey !== NAME) {
+              var itemPath = items[itemKey];
+              choicesObj[itemKey] = {
+                'path': itemPath,
+                'quantity': 1
+              };
+            }
+          }
+        }
+      }
+
+      var label = new Label(`Choose ${amount}:`);
+      label.setClassName('choice-title');
+      eDiv.appendChild(label);
+
+      for (choiceKey in choicesObj) {
+        var choice = choicesObj[choiceKey];
+        var item = getItem(choice.path, choiceKey);
+        
+        var checkbox = new Checkbox(item.name, choiceKey);
+        checkbox.setClassName(`choice equipCheckbox${choiceCount}`);
+        checkbox.setOnclick(`limitChecks(${amount}, this.className)`);
+        
+        var innerDiv = new Div();
+        innerDiv.appendChild(checkbox);
+
+        var checkLabel = new Label(item.name);
+        checkLabel.setClassName('choice');
+        innerDiv.appendChild(checkLabel);
+
+        eDiv.appendChild(innerDiv);
+      }
+
+      eLI = new ListItem();
+      eLI.appendChild(eDiv);
+      choiceCount++;
+    }
+    else if (key === 'gp') {
+      text = e + 'gp';
+    }
+    else {
+      var table = dbRefs[e.path].val;
+      var item = table[key];
+      text = item.name;
+    }
+
+    if (text !== '') {
+      eLI = new ListItem(text);
+    }
+    
+    array.push(eLI);
+  }
+}
+
+function getItem(path, key) {
+  var table = dbRefs[path].val;
+  return table[key];
+}
+
+class UnorderedList extends HTMLElement {
+  constructor(className='') {
+    super();
+    this.element = document.createElement('ul');
+    this.element.className = className;
+  }
+
+  appendChild(child) {
+    super.appendChild(child);
+  }
+}
+
+class ListItem extends HTMLElement {
+  constructor(text='') {
+    super();
+    this.element = document.createElement('li');
+    this.element.innerText = text;
+  }
+}
+
+class Div extends HTMLElement {
+  constructor(text='') {
+    super();
+    this.element = document.createElement('div');
+    this.element.innerText = text;
+  }
+  
+  appendChild(child) {
+    super.appendChild(child);
+  }
 }
 
 function removeOptions(select) {

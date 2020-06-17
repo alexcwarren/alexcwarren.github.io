@@ -87,8 +87,25 @@ input.choice {
   display: inline;
 }
 
+label.choice-title {
+  font-weight: normal;
+  display: block;
+}
 label.choice {
   font-weight: normal;
+}
+
+label.normal {
+  font-weight: normal;
+}
+
+input.checkbox-padded {
+  margin-left: 10%;
+  margin-right: 5%;
+}
+
+ul.equipment {
+  padding-left: 10%;
 }
 
 div.side-column {
@@ -152,9 +169,14 @@ table.nonogram {
   border: 2px solid black;
 }
 
-input.disabled {
+input.small-text {
   text-align: center;
   width: 50px;
+}
+
+input.med-text {
+  text-align: center;
+  width: 60px;
 }
 
 input.counter {
