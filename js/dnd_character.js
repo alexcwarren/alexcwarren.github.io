@@ -1,14 +1,57 @@
+class HTMLElement {
+  setClassName(className) {
+    this.element.className = className;
+  }
+
+  appendChild(child) {
+    if (child.hasOwnProperty('element')) {
+      this.element.appendChild(child.element);
+    }
+    else {
+      this.element.appendChild(child);
+    }
+  }
+}
+
 function loadData() {
   console.log('Loading Race dropdown...');
   loadList('race', dbRefs.races);
 
   console.log('Loading Class dropdown...');
   loadList('class', dbRefs.classes);
+
+  console.log('Loading Background dropdown...');
+  loadList('background', dbRefs.backgrounds);
+
+  console.log('Loading Alignment dropdown...');
+  loadList('alignment', dbRefs.alignments);
+}
+
+function loadListFromArray(listID, array) {
+  nullText = '-- Select ' + listID[0].toUpperCase() + listID.slice(1).replace('-', ' ') + ' --';
+
+  const select = document.getElementById(listID);
+  var nullOption = document.createElement('option');
+  nullOption.text = nullText;
+  nullOption.value = '';
+  select.add(nullOption);
+
+  for (a of array) {
+    var option = document.createElement('option');
+    option.text = a.hasOwnProperty('text') ? a.text : a;
+    option.value = a.hasOwnProperty('value') ? a.value : a;
+    select.add(option);
+
+    if (array.length === 1) {
+      select.value = a;
+    }
+  }
+
 }
 
 function loadList(listID, dbRef, nullText='') {
   if (nullText === '') {
-    nullText = '-- Select ' + listID[0].toUpperCase() + listID.slice(1) + ' --';
+    nullText = '-- Select ' + listID[0].toUpperCase() + listID.slice(1).replace('-', ' ') + ' --';
   }
 
   const select = document.getElementById(listID);
@@ -29,103 +72,6 @@ function loadList(listID, dbRef, nullText='') {
   });
 }
 
-function getProficiencies2(list) {
-  if (list === undefined) {
-    return [];
-  }
-
-  var profs = [];
-
-  for (lKey in list) {
-    var p = list[lKey];
-
-    if (p.hasOwnProperty(CHOOSE)) {
-      var amount = Object.keys(p)[0];;
-      var choose = 'Choose ' + amount + ':\n';
-
-      var choices = p[amount];
-
-      for (cKey in choices) {
-        var c = choices[cKey];
-
-        if (c.hasOwnProperty(CONDITIONS)) {
-          for (cdKey in c.conditions) {
-            var path = c.conditions[cdKey];
-
-            var conditionVal = dbRefs[path].val;
-
-            var items = null;
-            var itemsVal = null;
-
-            if (cdKey === ANY) {
-              items = conditionVal;
-              itemsVal = conditionVal;
-            }
-            else {
-              items = conditionVal[cdKey];
-              var firstItemKey = Object.keys(items)[0];
-              var itemsPath = items[firstItemKey];
-              itemsVal = dbRefs[itemsPath].val;
-            }
-
-            for (itemKey in items) {
-              var item = itemsVal[itemKey];
-
-              choose += '  ' + item.name + '\n';
-            }
-          }
-        }
-        else {
-          c['id'] = cKey;
-
-          var choiceVal = dbRefs[c.path].val;
-
-          if (c.id === ANY) {
-            for (i in choiceVal) {
-              var item = choiceVal[i];
-              choose += '  ' + item.name + '\n';
-            }
-          }
-          else {
-            choose += '  ';
-
-            if (c.hasOwnProperty('quantity') && c.quantity > 1) {
-              choose += c.quantity + ' ';
-            }
-
-            choose += choiceVal[c.id].name + '\n';
-          }
-        }
-      }
-
-      profs.push(choose);
-    }
-    else {
-      var profRef = dbRefs[p];
-      var prof = profRef.val[lKey];
-
-      if (prof.hasOwnProperty(NAME)) {
-        profs.push(profRef.val[lKey].name + '\n');
-      }
-      else {
-        var pPath = null;
-        var pRef = null;
-
-        for (pKey in prof) {
-          if (pPath === null) {
-            pPath = prof[pKey];
-            pRef = dbRefs[pPath];
-          }
-
-          profs.push(pRef.val[pKey].name + '\n');
-        }
-      }
-    }
-  }
-
-  return profs;
-}
-
 function update(whatChanged) {
   console.log('Updating ' + whatChanged + '...');
 
@@ -135,16 +81,30 @@ function update(whatChanged) {
     updateSpeed();
     updateProficiencies();
     updateTraits();
+    updateLanguages();
   }
   else if (whatChanged === 'subrace') {
     updateAbilities();
     updateSpeed();
     updateProficiencies();
     updateTraits();
+    updateLanguages();
   }
   else if (whatChanged === 'class') {
     updateHitDice();
     updateProficiencies();
+    updateEquipment();
+  }
+  else if (whatChanged === 'background') {
+    updateFeature();
+    updateCharacteristic('personality-trait', 'traits');
+    updateCharacteristic('ideal', 'ideals');
+    updateCharacteristic('bond', 'bonds');
+    updateCharacteristic('flaw', 'flaws');
+    updateVariant();
+    updateProficiencies();
+    updateLanguages();
+    updateEquipment();
   }
   else {
     console.log('Nothing to update!');
@@ -156,9 +116,7 @@ function updateSubrace() {
 
   // Clear subrace select before adding new options
   var subraceSelect = document.getElementById('subrace');
-  for (i in subraceSelect.options) {
-    subraceSelect.options[i] = null;
-  }
+  removeOptions(subraceSelect);
 
   var raceValue = document.getElementById('race').value;
 
@@ -166,8 +124,14 @@ function updateSubrace() {
     return;
   }
 
+  var subraces = new DbRef(raceValue + ' subraces', PATH.SUBRACES + '/' + raceValue);
+
+  if (subraces.val === null) {
+    return;
+  }
+
   console.log('Loading Subrace dropdown...');
-  loadList('subrace', new DbRef(raceValue + ' subraces', PATH.SUBRACES + '/' + raceValue));
+  loadList('subrace', subraces);
   document.getElementById('subraceDiv').style.display = 'block';
 }
 
@@ -198,6 +162,10 @@ function updateAbilities() {
 function addAbilityModifiers(modList) {
   for (key in modList) {
     var ability = key;
+    if (ability === ANY) {
+      // TODO - Handle prompting user for ability choice
+      continue;
+    }
     var abilityMod = modList[key];
 
     var modID = ability.toLowerCase() + 'Mod';
@@ -262,6 +230,13 @@ function updateProficiencies() {
     addProficiencies(profs, clss.proficiencies);
   }
 
+  var backgroundValue = document.getElementById('background').value;
+  if (backgroundValue !== '') {
+    var background = dbRefs.backgrounds.val[backgroundValue];
+
+    addProficiencies(profs, background.proficiencies);
+  }
+
   var abilities = document.getElementsByClassName('row ability');
   for (a of abilities) {
     a.style.fontWeight = 'normal';
@@ -282,7 +257,7 @@ function updateProficiencies() {
           var label = document.createElement('label');
           label.innerText = 'Choose ' + amount + ':';
           label.htmlFor = choiceName;
-          label.className = 'choice';
+          label.className = 'choice-title';
           div.appendChild(label);
 
           for (choiceKey in choices) {
@@ -402,11 +377,9 @@ function updateProficiencies() {
     }
 
     // Check for proficiencies in abilities
-    else if (prof.hasOwnProperty('STR') || prof.hasOwnProperty('DEX') || prof.hasOwnProperty('CON')
-     || prof.hasOwnProperty('INT') || prof.hasOwnProperty('WIS') || prof.hasOwnProperty('CHA')) {
+    else if (Object.keys(ABILITY).includes(prof)) {
 
-       var profKey = Object.keys(prof)[0];
-       var rowID = profKey.match(/[A-Z]{3}/g)[0].toLowerCase() + '-row';
+       var rowID = prof.toLowerCase() + '-row';
        var row = document.getElementById(rowID);
        row.style.fontWeight = '900';
     }
@@ -505,10 +478,19 @@ function updateTraits() {
 }
 
 function massAppendToSet(set, list, dbVal) {
+  var hasAny = false;
+
   for (key in list) {
-    var item = list[key];
-    set.add(dbVal[key].name + '\n');
+    if (key !== ANY) {
+      var item = list[key];
+      set.add(dbVal[key].name + '\n');
+    }
+    else {
+      hasAny = true;
+    }
   }
+
+  return hasAny;
 }
 
 function updateHitDice() {
@@ -522,6 +504,403 @@ function updateHitDice() {
   var clss = dbRefs.classes.val[classValue];
 
   hitDice.value = clss.hitDice.text;
+}
+
+function updateFeature() {
+  const FEATURE = 'feature';
+  const VARIANT = 'variantFeature';
+
+  var select = document.getElementById(FEATURE);
+  removeOptions(select);
+
+  var backgroundValue = document.getElementById('background').value;
+
+  if (backgroundValue === '') {
+    return;
+  }
+
+  var background = new DbRef('Backgrounds', PATH.BACKGROUNDS + '/' + backgroundValue).val;
+
+  if (background === null) {
+    return;
+  }
+
+  var features = [];
+  features.push(background[FEATURE].name);
+
+  if (background.hasOwnProperty(VARIANT)) {
+    features.push(background[VARIANT].name);
+  }
+
+  loadListFromArray(FEATURE, features);
+}
+
+function updateCharacteristic(elementId, characteristic) {
+  var select = document.getElementById(elementId);
+  removeOptions(select);
+
+  var backgroundValue = document.getElementById('background').value;
+
+  if (backgroundValue === '') {
+    return;
+  }
+
+  var background = new DbRef('Backgrounds', PATH.BACKGROUNDS + '/' + backgroundValue).val;
+
+  if (background === null) {
+    return;
+  }
+
+  var characteristicObj = background[characteristic];
+  var options = processCharacteristic(characteristicObj.options);
+
+  loadListFromArray(elementId, options);
+}
+
+function processCharacteristic(options) {
+  var array = [{
+    'text': 'Roll...',
+    'value': 'ROLL'
+  }];
+
+  for (key of Object.keys(options)) {
+    let o = options[key];
+    let option = {
+      'text': o.desc,
+      'value': key
+    };
+    array.push(option);
+  }
+
+  return array;
+}
+
+function updateVariant() {
+  const variantDiv = document.getElementById('variantDiv');
+  removeChildren(variantDiv);
+  variantDiv.style.display = 'none';
+
+  const backgroundValue = document.getElementById('background').value;
+
+  if (backgroundValue === '') {
+    return;
+  }
+
+  const background = dbRefs.backgrounds.val[backgroundValue];
+  if (!background.hasOwnProperty('variant')) {
+    return;
+  }
+
+  const variant = background.variant;
+  var checkbox = new Checkbox(variant.name.toLowerCase());
+  checkbox.setClassName('checkbox-padded');
+
+  var checkLabel = new Label(variant.name, checkbox.name);
+  checkLabel.setClassName('normal');
+
+  var label = new Label('Variant');
+
+  variantDiv.appendChild(label.element);
+  variantDiv.appendChild(checkbox.element);
+  variantDiv.appendChild(checkLabel.element);
+
+  variantDiv.style.display = 'block';
+}
+
+class Label extends HTMLElement {
+  constructor(text, htmlFor=null) {
+    super();
+    this.element = document.createElement('label');
+    if (htmlFor !== null) {
+      this.element.htmlFor = htmlFor;
+    }
+    this.element.innerText = text;
+  }
+  
+  setClassName(className) {
+    super.setClassName(className);
+  }
+
+  appendChild(child) {
+    super.appendChild(child);
+  }
+}
+
+class Checkbox extends HTMLElement {
+  constructor(name=null, value=null) {
+    super();
+    this.element = document.createElement('input');
+    this.element.type = 'checkbox';
+    if (name !== null) {
+      this.setName(name);
+    }
+    if (value !== null) {
+      this.setValue(value);
+    }
+  }
+
+  setName(name) {
+    this.element.name = name;
+  }
+
+  setValue(value) {
+    this.element.value = value;
+  }
+
+  setClassName(className) {
+    super.setClassName(className);
+  }
+
+  setOnclick(onclick) {
+    this.element.setAttribute('onclick', onclick);
+  }
+}
+
+function updateLanguages() {
+  var languageSpan = document.getElementById('languages');
+  removeChildren(languageSpan);
+
+  var language_set = new Set();
+  var anyCount = 0;
+
+  var raceValue = document.getElementById('race').value;
+  if (raceValue !== '') {
+    var race = dbRefs.races.val[raceValue];
+    var hasANY = massAppendToSet(language_set, race.languages, dbRefs.languages.val);
+    if (hasANY) {
+      anyCount++
+    }
+  }
+
+  var subraceValue = document.getElementById('subrace').value;
+  if (subraceValue !== '') {
+    subraces = dbRefs.subraces.val[raceValue];
+    var subrace = subraces[subraceValue];
+    if (subrace.hasOwnProperty('languages')) {
+      var hasANY = massAppendToSet(language_set, subrace.languages, dbRefs.languages.val);
+      if (hasANY) {
+        anyCount++
+      }
+    }
+  }
+
+  var backgroundValue = document.getElementById('background').value;
+  if (backgroundValue !== '') {
+    var background = dbRefs.backgrounds.val[backgroundValue];
+    if (background.hasOwnProperty('languages')) {
+      var hasANY = massAppendToSet(language_set, background.languages, dbRefs.languages.val);
+      if (hasANY) {
+        anyCount += background.languages[ANY];
+      }
+    }
+  }
+
+  var languageText = '';
+  
+  language_set.forEach(function(language) {
+    languageText += language.replace(/\n/g, '') + ', ';
+  });
+  languageText = languageText.slice(0, languageText.length - 2);
+
+  var div = document.createElement('div');
+  div.innerText = languageText;
+  languageSpan.appendChild(div);
+
+  var languageList = [];
+  for (key in dbRefs.languages.val) {
+    var l = {
+      'text': dbRefs.languages.val[key].name,
+      'value': key
+    };
+
+    languageList.push(l);
+  }
+
+  for (let i = 0; i < anyCount; i++) {
+    var chooseLanguage = new Select('language', languageList);
+    languageSpan.appendChild(chooseLanguage.element);
+  }
+}
+
+class Select extends HTMLElement {
+  constructor(name, options) {
+    super();
+    this.element = document.createElement('select');
+    this.element.name = name;
+    this.element.className = 'form-control';
+    this.loadOptions(options, name);
+  }
+
+  loadOptions(options, name) {
+    var nullText = '-- Select ' + name[0].toUpperCase() + name.slice(1).replace('-', ' ') + ' --';
+    var nullOption = new Option(nullText);
+    this.element.add(nullOption.element);
+
+    for (key in options) {
+      var o = options[key];
+      var option = new Option(o.text, o.value);
+      this.element.add(option.element);
+
+      if (options.length === 1) {
+        this.element.value = o.value;
+      }
+    }
+  }
+}
+
+class Option extends HTMLElement {
+  constructor(text, value='') {
+    super();
+    this.element = document.createElement('option');
+    this.element.text = text;
+    this.element.value = value;
+  }
+}
+
+function updateEquipment() {
+  let equipmentArray = [];
+
+  const classValue = document.getElementById('class').value;
+  if (classValue !== '') {
+    const classObj = dbRefs.classes.val[classValue];
+    collectEquipment(equipmentArray, classObj.equipment);
+  }
+
+  const backgroundValue = document.getElementById('background').value;
+  if (backgroundValue !== '') {
+    const background = dbRefs.backgrounds.val[backgroundValue];
+    collectEquipment(equipmentArray, background.equipment);
+  }
+
+  var equipmentList = new UnorderedList('equipment');
+  for (v of equipmentArray) {
+    equipmentList.appendChild(v);
+  }
+
+  const equipmentDiv = document.getElementById('equipment');
+  removeChildren(equipmentDiv);
+  equipmentDiv.appendChild(equipmentList.element);
+}
+
+function collectEquipment(array, equipment) {
+  var choiceCount = 0;
+
+  for (key in equipment) {
+    var e = equipment[key];
+    var text = '';
+    var eLI = null;
+
+    if (e.hasOwnProperty(CHOOSE)) {
+      var amount = Object.keys(e)[0];
+      var choicesObj = e[amount];
+
+      var first = Object.keys(choicesObj)[0];
+      var firstObj = choicesObj[first];
+
+      var eDiv = new Div();
+
+      if (firstObj.hasOwnProperty(CONDITIONS)) {
+        choicesObj = {};
+
+        for (conditionKey in firstObj.conditions) {
+          var path = firstObj.conditions[conditionKey];
+          var items = getItem(path, conditionKey);
+          for (itemKey in items) {
+            if (itemKey !== NAME) {
+              var itemPath = items[itemKey];
+              choicesObj[itemKey] = {
+                'path': itemPath,
+                'quantity': 1
+              };
+            }
+          }
+        }
+      }
+
+      var label = new Label(`Choose ${amount}:`);
+      label.setClassName('choice-title');
+      eDiv.appendChild(label);
+
+      for (choiceKey in choicesObj) {
+        var choice = choicesObj[choiceKey];
+        var item = getItem(choice.path, choiceKey);
+        
+        var checkbox = new Checkbox(item.name, choiceKey);
+        checkbox.setClassName(`choice equipCheckbox${choiceCount}`);
+        checkbox.setOnclick(`limitChecks(${amount}, this.className)`);
+        
+        var innerDiv = new Div();
+        innerDiv.appendChild(checkbox);
+
+        var checkLabel = new Label(item.name);
+        checkLabel.setClassName('choice');
+        innerDiv.appendChild(checkLabel);
+
+        eDiv.appendChild(innerDiv);
+      }
+
+      eLI = new ListItem();
+      eLI.appendChild(eDiv);
+      choiceCount++;
+    }
+    else if (key === 'gp') {
+      text = e + 'gp';
+    }
+    else {
+      var table = dbRefs[e.path].val;
+      var item = table[key];
+      text = item.name;
+    }
+
+    if (text !== '') {
+      eLI = new ListItem(text);
+    }
+    
+    array.push(eLI);
+  }
+}
+
+function getItem(path, key) {
+  var table = dbRefs[path].val;
+  return table[key];
+}
+
+class UnorderedList extends HTMLElement {
+  constructor(className='') {
+    super();
+    this.element = document.createElement('ul');
+    this.element.className = className;
+  }
+
+  appendChild(child) {
+    super.appendChild(child);
+  }
+}
+
+class ListItem extends HTMLElement {
+  constructor(text='') {
+    super();
+    this.element = document.createElement('li');
+    this.element.innerText = text;
+  }
+}
+
+class Div extends HTMLElement {
+  constructor(text='') {
+    super();
+    this.element = document.createElement('div');
+    this.element.innerText = text;
+  }
+  
+  appendChild(child) {
+    super.appendChild(child);
+  }
+}
+
+function removeOptions(select) {
+  for (i in select.options) {
+    select.options[i] = null;
+  }
 }
 
 window.onload = function() {
