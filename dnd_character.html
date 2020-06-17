@@ -123,18 +123,6 @@
                 </span>
                 <span id="chaMod" class="abilityMod"></span>
               </div>
-              <div class="row">
-                <div class="form-group side-column">
-                  <label for="speed">Level</label>
-                  <input type="text" class="form-control small-text" id="level" name="level" value="1" disabled>
-                </div>
-              </div>
-              <div class="row">
-                <div class="form-group side-column">
-                  <label for="hitDice">Hit Dice</label>
-                  <input type="text" class="form-control small-text" id="hitDice" name="hitDice" value="" disabled>
-                </div>
-              </div>
             </div>
           </div><!-- attributes row -->
 
@@ -156,16 +144,6 @@
                     <label for="race">Race</label>
                     <select class="form-control" id="race" name="race" onchange="update(this.name)" value=""></select>
                   </div>
-                  <div id="subraceDiv" class="form-group col-md-6 starts-hidden">
-                    <label for="subrace">Subrace</label>
-                    <select class="form-control" id="subrace" name="subrace" onchange="update(this.name)" value=""></select>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="form-group col-md-6">
-                    <label for="">Languages:</label>
-                    <span id="languages"></span>
-                  </div>
                   <div class="form-group col-md-2">
                     <label for="speed">Speed</label>
                     <input type="text" class="form-control small-text" id="speed" name="speed" value="" disabled>
@@ -174,14 +152,24 @@
                     <label for="age">Age</label>
                     <input type="text" class="form-control small-text" id="age" name="age" value="">
                   </div>
+                  <div class="form-group col-md-2">
+                    <label for="speed">Level</label>
+                    <input type="text" class="form-control small-text" id="level" name="level" value="1" disabled>
+                  </div>
+                </div>
+                <div class="row">
+                  <div id="subraceDiv" class="form-group col-md-6 starts-hidden">
+                    <label for="subrace">Subrace</label>
+                    <select class="form-control" id="subrace" name="subrace" onchange="update(this.name)" value=""></select>
+                  </div>
                 </div>
                 <div class="row">
                   <div class="form-group col-md-6">
                     <label for="class">Class</label>
                     <select class="form-control" id="class" name="class" onchange="update(this.name)" value=""></select>
                   </div>
-                  <div class="dropdown col-md-3">
-                    <span>Get Hit Points:</span>
+                  <div class="dropdown col-md-2">
+                    <span>Get HP:</span>
                     <button class="btn btn-primary btn-small dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <span>^</span>
                     </button>
@@ -190,9 +178,13 @@
                       <a class="dropdown-item" href="#">Fixed</a>
                     </div>
                   </div>
-                  <div class="form-group col-md-3">
-                    <label for="speed">Hit Points</label>
+                  <div class="form-group col-md-2">
+                    <label for="speed">HP</label>
                     <input type="text" class="form-control small-text" id="hitPoints" name="hitPoints" value="" disabled>
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label for="hitDice">Hit Dice</label>
+                    <input type="text" class="form-control small-text" id="hitDice" name="hitDice" value="" disabled>
                   </div>
                 </div>
                 <div class="row">
@@ -230,6 +222,13 @@
                     <label for="variant">Variant</label>
                   </div>
                 </div>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label for="">Languages:</label>
+                    <span id="languages"></span>
+                  </div>
+                </div>
+
                 <button type="submit" class="btn btn-primary" onclick="saveCharacter()">Save</button>
               </form>
             </div>

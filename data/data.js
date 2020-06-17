@@ -6509,7 +6509,7 @@ const BACKGROUND = {
 
 class Background {
   constructor(name, traits, ideals, bonds, flaws, feature, proficiencyList,
-              equipmentList, languageList=null, extra=null, variant=null, variantFeature=null) {
+              equipmentList, anyLanguageCount=null, extra=null, variant=null, variantFeature=null) {
     this.id = pushID(name);
     this.name = name;
     this.traits = traits;
@@ -6521,8 +6521,10 @@ class Background {
     this.proficiencies = processProficiencies(proficiencyList);
     this.equipment = processEquipment(equipmentList);
 
-    if (languageList !== null) {
-      this.languages = processLanguages(languageList);
+    if (anyLanguageCount !== null) {
+      // this.languages = processLanguages(languageList);
+      this.languages = {};
+      this.languages[ANY] = anyLanguageCount;
     }
 
     if (extra !== null) {
@@ -6775,14 +6777,7 @@ function getBackgrounds() {
       Equipment(GEAR.CLOTHES_COMMON),
       Gold(15)
     ],
-    [
-      Choices(
-        2,
-        [
-          Condition([LANGUAGE.ANY])
-        ]
-      )
-    ]
+    2
   );
 
   backgrounds[BACKGROUND.CHARLATAN.VALUE] = new Background(
@@ -7655,14 +7650,7 @@ function getBackgrounds() {
       Equipment(GEAR.CLOTHES_TRAVELERS),
       Gold(15)
     ],
-    [
-      Choices(
-        1,
-        [
-          Condition([LANGUAGE.ANY])
-        ]
-      )
-    ],
+    1,
     new Characteristic(
       [
         new CharacteristicOption(`Alchemists and apothecaries`),
@@ -7853,14 +7841,7 @@ function getBackgrounds() {
       Equipment(TOOL.HERBALISM_KIT),
       Gold(5)
     ],
-    [
-      Choices(
-        1,
-        [
-          Condition([LANGUAGE.ANY])
-        ]
-      )
-    ],
+    1,
     new Characteristic(
       [
         new CharacteristicOption(
@@ -8038,14 +8019,7 @@ function getBackgrounds() {
       Equipment(GEAR.SCROLL_OF_PEDIGREE),
       Gold(25)
     ],
-    [
-      Choices(
-        1,
-        [
-          Condition([LANGUAGE.ANY])
-        ]
-      )
-    ],
+    1,
     null,
     new Variant(
       `A knighthood is among the lowest noble titles in most
@@ -8222,14 +8196,7 @@ function getBackgrounds() {
       Equipment(GEAR.CLOTHES_TRAVELERS),
       Gold(10)
     ],
-    [
-      Choices(
-        1,
-        [
-          Condition([LANGUAGE.ANY])
-        ]
-      )
-    ],
+    1,
     new Characteristic(
       [
         new CharacteristicOption(`Forester`),
@@ -8387,14 +8354,7 @@ function getBackgrounds() {
       Equipment(GEAR.CLOTHES_COMMON),
       Gold(10)
     ],
-    [
-      Choices(
-        2,
-        [
-          Condition([LANGUAGE.ANY])
-        ]
-      )
-    ],
+    2,
     new Characteristic(
       [
         new CharacteristicOption(`Alchemist`),

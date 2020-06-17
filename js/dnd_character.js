@@ -66,14 +66,14 @@ function update(whatChanged) {
     updateSpeed();
     updateProficiencies();
     updateTraits();
-    // TODO updateLanguages();
+    updateLanguages();
   }
   else if (whatChanged === 'subrace') {
     updateAbilities();
     updateSpeed();
     updateProficiencies();
     updateTraits();
-    // TODO updateLanguages();
+    updateLanguages();
   }
   else if (whatChanged === 'class') {
     updateHitDice();
@@ -88,7 +88,7 @@ function update(whatChanged) {
     updateCharacteristic('flaw', 'flaws');
     updateVariant();
     updateProficiencies();
-    // TODO updateLanguages();
+    updateLanguages();
     // TODO updateEquipment();
   }
   else {
@@ -463,10 +463,19 @@ function updateTraits() {
 }
 
 function massAppendToSet(set, list, dbVal) {
+  var hasAny = false;
+
   for (key in list) {
-    var item = list[key];
-    set.add(dbVal[key].name + '\n');
+    if (key !== ANY) {
+      var item = list[key];
+      set.add(dbVal[key].name + '\n');
+    }
+    else {
+      hasAny = true;
+    }
   }
+
+  return hasAny;
 }
 
 function updateHitDice() {
@@ -623,6 +632,105 @@ class Checkbox {
 
   setOnclick(onclick) {
     this.element.setAttribute('onclick', onclick);
+  }
+}
+
+function updateLanguages() {
+  var languageSpan = document.getElementById('languages');
+  removeChildren(languageSpan);
+
+  var language_set = new Set();
+  var anyCount = 0;
+
+  var raceValue = document.getElementById('race').value;
+  if (raceValue !== '') {
+    var race = dbRefs.races.val[raceValue];
+    var hasANY = massAppendToSet(language_set, race.languages, dbRefs.languages.val);
+    if (hasANY) {
+      anyCount++
+    }
+  }
+
+  var subraceValue = document.getElementById('subrace').value;
+  if (subraceValue !== '') {
+    subraces = dbRefs.subraces.val[raceValue];
+    var subrace = subraces[subraceValue];
+    if (subrace.hasOwnProperty('languages')) {
+      var hasANY = massAppendToSet(language_set, subrace.languages, dbRefs.languages.val);
+      if (hasANY) {
+        anyCount++
+      }
+    }
+  }
+
+  var backgroundValue = document.getElementById('background').value;
+  if (backgroundValue !== '') {
+    var background = dbRefs.backgrounds.val[backgroundValue];
+    if (background.hasOwnProperty('languages')) {
+      var hasANY = massAppendToSet(language_set, background.languages, dbRefs.languages.val);
+      if (hasANY) {
+        anyCount += background.languages[ANY];
+      }
+    }
+  }
+
+  var languageText = '';
+  
+  language_set.forEach(function(language) {
+    languageText += language.replace(/\n/g, '') + ', ';
+  });
+  languageText = languageText.slice(0, languageText.length - 2);
+
+  var div = document.createElement('div');
+  div.innerText = languageText;
+  languageSpan.appendChild(div);
+
+  var languageList = [];
+  for (key in dbRefs.languages.val) {
+    var l = {
+      'text': dbRefs.languages.val[key].name,
+      'value': key
+    };
+
+    languageList.push(l);
+  }
+
+  for (let i = 0; i < anyCount; i++) {
+    var chooseLanguage = new Select('language', languageList);
+    languageSpan.appendChild(chooseLanguage.element);
+  }
+}
+
+class Select {
+  constructor(name, options) {
+    this.element = document.createElement('select');
+    this.element.name = name;
+    this.element.className = 'form-control';
+    this.loadOptions(options, name);
+  }
+
+  loadOptions(options, name) {
+    var nullText = '-- Select ' + name[0].toUpperCase() + name.slice(1).replace('-', ' ') + ' --';
+    var nullOption = new Option(nullText);
+    this.element.add(nullOption.element);
+
+    for (key in options) {
+      var o = options[key];
+      var option = new Option(o.text, o.value);
+      this.element.add(option.element);
+
+      if (options.length === 1) {
+        this.element.value = o.value;
+      }
+    }
+  }
+}
+
+class Option {
+  constructor(text, value='') {
+    this.element = document.createElement('option');
+    this.element.text = text;
+    this.element.value = value;
   }
 }
 
