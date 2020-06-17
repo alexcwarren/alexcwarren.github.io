@@ -57,11 +57,18 @@
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="dnd_character.html">Character Form</a>
                 <a class="dropdown-item" href="dnd_roll.html">Roll Dashboard</a>
-                <!-- <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a> -->
               </div>
             </li>
-            <li class="nav-item active"><a href="arkham.html">Arkham</a></li>
+            <li class="nav-item dropdown active">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Arkham
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="arkham.html">Play</a>
+                <a class="dropdown-item" href="arkham_roll.html">Roll Dashboard</a>
+              </div>
+            </li>
+            <li class="nav-item"><a href="nonogram.html">Nonogram</a></li>
             <li class="nav-item"><a href="wedding.html">Wedding</a></li>
             <li class="nav-item"><a id="sign-in-tab" href="profile.html">Sign In</a></li>
           </ul>
@@ -70,44 +77,7 @@
     </nav>
 
     <div class="container">
-      <button onClick="drawChaosToken()">Draw Chaos Token</button>
-      <button onClick="showChaosTokens()">Show Chaos Tokens</button>
-      <br/><br/>
-      Difficulty:
-      <select id="difficulty" onChange="legend()">
-        <option value="easy">Easy</option>
-        <option value="standard">Standard</option>
-        <option value="hard">Hard</option>
-        <option value="expert">Expert</option>
-      </select>
-      <br/><br/>
-      <table id="legend">
-          <tr>
-            <td>skull:</td>
-            <td id="skull">-X. X is the number of <strong><em>Ghoul</em></strong> enemies at your location.</td>
-          </tr>
-          <tr>
-            <td>hood:</td>
-            <td id="hood">-1. If you fail, take 1 horror.</td>
-          </tr>
-          <tr>
-            <td>tablet:</td>
-            <td id="tablet">-2. If there is a <strong><em>Ghoul</em></strong> enemy at your location, take 1 damage.</td>
-          </tr>
-          <tr>
-            <td>cthulu:</td>
-            <td>Automatic failure.</td>
-          </tr>
-          <tr>
-            <td>star:</td>
-            <td>Consult your <strong><em>Investigator Card</em></strong>.</td>
-          </tr>
-      </table>
-      <br/>
-      <button onClick="clearLog()">Clear Log</button>
-      <br/><br/>
-      <p>Log:</p>
-      <p id="log"></>
+      
 
     </div><!-- /.container -->
 
