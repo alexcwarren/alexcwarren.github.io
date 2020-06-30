@@ -126,9 +126,9 @@ table.nonogram {
   border: 2px solid black;
 }
 
-input.counter {
-  /* width: 30px; */
-}
+/* input.counter {
+  width: 30px;
+} */
 
 @media (max-width: 598px) {
   body {
