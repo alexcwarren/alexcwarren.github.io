@@ -21,9 +21,9 @@ td {
   color: white;
 }
 
-.showBorder {
+/* div {
   border: 1px solid red;
-}
+} */
 
 input.smallInput {
     text-align: center;
@@ -47,6 +47,32 @@ div.stopwatch span {
 }
 
 #subraceDiv {
+div.ability {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+span.ability {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: large;
+}
+
+input.ability {
+  display: inline;
+  height: 50%;
+  width: 30%;
+  padding: 1px;
+  text-align: center;
+}
+
+.btn-small {
+  padding: 0 0 5px 0;
+  width: 20px;
+  height: 17px;
+  transform: rotate(180deg);
+}
+
+.starts-hidden {
   display: none;
 }
 
@@ -60,17 +86,44 @@ div.stopwatch span {
   width: 200px;
 }
 
+select.side-column {
+  padding-left: 10px;
+  padding-right: 2px;
+}
+
 input.choice {
   margin-left: 10%;
   margin-right: 5%;
   display: inline;
 }
 
+label.choice-title {
+  font-weight: normal;
+  display: block;
+}
 label.choice {
   font-weight: normal;
 }
 
+label.normal {
+  font-weight: normal;
+}
+
+input.checkbox-padded {
+  margin-left: 10%;
+  margin-right: 5%;
+}
+
+ul.equipment {
+  padding-left: 10%;
+}
+
+div.side-column {
+  margin: 0;
+}
+
 div.side-column input {
+  text-align: center;
   width: 75%;
 }
 
@@ -129,6 +182,16 @@ table.nonogram {
 /* input.counter {
   width: 30px;
 } */
+
+input.small-text {
+  text-align: center;
+  width: 50px;
+}
+
+input.med-text {
+  text-align: center;
+  width: 60px;
+}
 
 @media (max-width: 598px) {
   body {

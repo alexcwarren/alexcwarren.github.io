@@ -54,11 +54,17 @@
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="dnd_character.html">Character Form</a>
                 <a class="dropdown-item" href="dnd_roll.html">Roll Dashboard</a>
-                <!-- <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a> -->
               </div>
             </li>
-            <li class="nav-item"><a href="arkham.html">Arkham</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Arkham
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="arkham.html">Play</a>
+                <a class="dropdown-item" href="arkham_roll.html">Roll Dashboard</a>
+              </div>
+            </li>
             <li class="nav-item"><a href="nonogram.html">Nonogram</a></li>
             <li class="nav-item"><a href="hiit.html">HIIT</a></li>
             <li class="nav-item"><a href="wedding.html">Wedding</a></li>
@@ -69,40 +75,76 @@
     </nav>
 
     <div class="container">
-      <div class="container">
+      <div class="container inner-container">
         <div class="row">
           <div class="col-md-1">
             <div class="big-box">
-              <div class="row ability" id="str-row">STR</span><span id="strMod" class="abilityMod"></span></div>
-              <div class="row ability" id="dex-row">DEX</span><span id="dexMod" class="abilityMod"></span></div>
-              <div class="row ability" id="con-row">CON</span><span id="conMod" class="abilityMod"></span></div>
-              <div class="row ability" id="int-row">INT</span><span id="intMod" class="abilityMod"></span></div>
-              <div class="row ability" id="wis-row">WIS</span><span id="wisMod" class="abilityMod"></span></div>
-              <div class="row ability" id="cha-row">CHA</span><span id="chaMod" class="abilityMod"></span></div>
-
-              <div class="row">
-                <div class="form-group side-column">
-                  <label for="speed">Speed</label>
-                  <input type="text" class="form-control" id="speed" name="speed" value="" disabled>
+              <div class="row dropdown">
+                Get Ability Scores:
+                <button class="btn btn-primary btn-small dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span>^</span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#">Roll...</a>
+                  <a class="dropdown-item" href="#">Fixed</a>
                 </div>
               </div>
-              <div class="row">
-                <div class="form-group side-column">
-                  <label for="hitDice">Hit Dice</label>
-                  <input type="text" class="form-control" id="hitDice" name="hitDice" value="" disabled>
-                </div>
+              <div class="row ability" id="str-row">
+                <span class="ability">STR</span>
+                <span>
+                  <input type="text" class="form-control ability" id="" name="" value="">
+                </span>
+                <span id="strMod" class="abilityMod"></span>
+              </div>
+              <div class="row ability" id="dex-row">
+                <span class="ability">DEX</span>
+                <span>
+                  <input type="text" class="form-control ability" id="" name="" value="">
+                </span>
+                <span id="dexMod" class="abilityMod"></span>
+              </div>
+              <div class="row ability" id="con-row">
+                <span class="ability">CON</span>
+                <span>
+                  <input type="text" class="form-control ability" id="" name="" value="">
+                </span>
+                <span id="conMod" class="abilityMod"></span>
+              </div>
+              <div class="row ability" id="int-row">
+                <span class="ability">INT</span>
+                <span>
+                  <input type="text" class="form-control ability" id="" name="" value="">
+                </span>
+                <span id="intMod" class="abilityMod"></span>
+              </div>
+              <div class="row ability" id="wis-row">
+                <span class="ability">WIS</span>
+                <span>
+                  <input type="text" class="form-control ability" id="" name="" value="">
+                </span>
+                <span id="wisMod" class="abilityMod"></span>
+              </div>
+              <div class="row ability" id="cha-row">
+                <span class="ability">CHA</span>
+                <span>
+                  <input type="text" class="form-control ability" id="" name="" value="">
+                </span>
+                <span id="chaMod" class="abilityMod"></span>
               </div>
             </div>
           </div><!-- attributes row -->
 
-          <!-- TODO Change layout to use wider space better -->
-          <div class="col-md-5">
+          <div class="col-md-6">
             <div class="row">
               <form>
                 <div class="row">
-                  <div class="form-group col-md-8">
+                  <div class="form-group col-md-6">
                     <label for="characterName">Character Name</label>
                     <input type="text" class="form-control" id="characterName" name="characterName" value="" placeholder="Character name">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="alignment">Alignment</label>
+                    <select class="form-control" id="alignment" name="alignment" value=""></select>
                   </div>
                 </div>
                 <div class="row">
@@ -110,42 +152,112 @@
                     <label for="race">Race</label>
                     <select class="form-control" id="race" name="race" onchange="update(this.name)" value=""></select>
                   </div>
-                  <div id="subraceDiv" class="form-group col-md-6">
+                  <div class="form-group col-md-2">
+                    <label for="speed">Speed</label>
+                    <input type="text" class="form-control small-text" id="speed" name="speed" value="" disabled>
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label for="age">Age</label>
+                    <input type="text" class="form-control small-text" id="age" name="age" value="">
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label for="speed">Level</label>
+                    <input type="text" class="form-control small-text" id="level" name="level" value="1" disabled>
+                  </div>
+                </div>
+                <div class="row">
+                  <div id="subraceDiv" class="form-group col-md-6 starts-hidden">
                     <label for="subrace">Subrace</label>
                     <select class="form-control" id="subrace" name="subrace" onchange="update(this.name)" value=""></select>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="form-group col-md-5">
+                  <div class="form-group col-md-6">
                     <label for="class">Class</label>
                     <select class="form-control" id="class" name="class" onchange="update(this.name)" value=""></select>
                   </div>
+                  <div class="dropdown col-md-2">
+                    <span>Get HP:</span>
+                    <button class="btn btn-primary btn-small dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <span>^</span>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="#">Roll...</a>
+                      <a class="dropdown-item" href="#">Fixed</a>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label for="speed">HP</label>
+                    <input type="text" class="form-control small-text" id="hitPoints" name="hitPoints" value="" disabled>
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label for="hitDice">Hit Dice</label>
+                    <input type="text" class="form-control med-text" id="hitDice" name="hitDice" value="" disabled>
+                  </div>
                 </div>
                 <div class="row">
-                  <div class="form-group col-md-2">
-                    <label for="age">Age</label>
-                    <input type="text" class="form-control" id="age" name="age" value="">
+                  <div class="form-group col-md-6">
+                    <label for="background">Background</label>
+                    <select class="form-control" id="background" name="background" onchange="update(this.name)" value=""></select>
                   </div>
-                  <div class="form-group col-md-5">
-                    <label for="alignment">Alignment</label>
-                    <select class="form-control" id="alignment" name="alignment" value=""></select>
+                  <div id="featureDiv" class="form-group col-md-6">
+                    <label for="feature">Feature</label>
+                    <select class="form-control" id="feature" name="feature" onchange="" value=""></select>
                   </div>
                 </div>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label for="personality-trait">Personality Trait</label>
+                    <select class="form-control" id="personality-trait" name="personality-trait" onchange="" value=""></select>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="ideal">Ideal</label>
+                    <select class="form-control" id="ideal" name="ideal" onchange="" value=""></select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label for="bond">Bond</label>
+                    <select class="form-control" id="bond" name="bond" onchange="" value=""></select>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="flaw">Flaw</label>
+                    <select class="form-control" id="flaw" name="flaw" onchange="" value=""></select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div id="variantDiv" class="form-group col-md-6 starts-hidden">
+                    <label for="variant">Variant</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label for="">Languages:</label>
+                    <span id="languages"></span>
+                  </div>
+                </div>
+
                 <button type="submit" class="btn btn-primary" onclick="saveCharacter()">Save</button>
               </form>
             </div>
           </div><!-- form col -->
 
-          <div class="col-md-6">
+          <div class="col-md-5">
             <form>
+              <div class="row">
+                <div class="form-group col-md-5">
+                  <label for="">Traits</label>
+                  <div id="traits"></div>
+                </div>
+                <div class="form-group col-md-5">
+                  <label for="">Equipment</label>
+                  <div id="equipment"></div>
+                </div>
+              </div>
               <div class="row">
                 <div class="form-group col-md-5">
                   <label for="">Proficiencies</label>
                   <div id="proficiencies"></div>
-                </div>
-                <div class="form-group col-md-3">
-                  <label for="">Traits</label>
-                  <div id="traits"></div>
                 </div>
               </div>
             </form>
@@ -175,7 +287,7 @@
     <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-analytics.js"></script>
 
     <script src="js/firebase.js"></script>
-    <script src="js/data.js"></script>
+    <script src="data/dnd_data.js"></script>
     <script src="js/dnd_character.js"></script>
   </body>
 </html>
