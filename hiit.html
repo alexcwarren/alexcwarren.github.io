@@ -33,7 +33,7 @@
     <![endif]-->
   </head>
 
-  <body class="home">
+  <body>
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
@@ -47,7 +47,7 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="nav-item active"><a href="index.html">Home</a></li>
+            <li class="nav-item"><a href="index.html">Home</a></li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 DnD
@@ -57,17 +57,9 @@
                 <a class="dropdown-item" href="dnd_roll.html">Roll Dashboard</a>
               </div>
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Arkham
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="arkham.html">Play</a>
-                <a class="dropdown-item" href="arkham_roll.html">Roll Dashboard</a>
-              </div>
-            </li>
+            <li class="nav-item"><a href="arkham.html">Arkham</a></li>
             <li class="nav-item"><a href="nonogram.html">Nonogram</a></li>
-            <li class="nav-item"><a href="hiit.html">HIIT</a></li>
+            <li class="nav-item active"><a href="hiit.html">HIIT</a></li>
             <li class="nav-item"><a href="wedding.html">Wedding</a></li>
             <li class="nav-item"><a id="sign-in-tab" href="profile.html">Sign In</a></li>
           </ul>
@@ -76,12 +68,22 @@
     </nav>
 
     <div class="container">
+      <div class="stopwatch">
+        <div class="timer-buttons">
+          <input type="button" class="timer-button" id="start-button" name="start-timer" value="Start" onclick="startTimer()">
+          <input type="button" class="timer-button" id="stop-button" name="stop-timer" value="Stop" onclick="stopTimer()" disabled>
+          <input type="button" class="timer-button" id="reset-button" name="reset-timer" value="Reset" onclick="resetTimer()">
+        </div>
 
-      <div class="starter-template">
-        <h1 class="home">Welcome</h1>
-        <p class="lead home">to alexcwarren.com</p>
+        <span class="time-field" id="minutes">00</span>
+        <span>:</span>
+        <span class="time-field" id="seconds">00</span>
+        <span>.</span>
+        <span class="time-field" id="milliseconds">000</span>
+      </div><!-- /.stopwatch -->
+
+      <div class="messages">
       </div>
-
     </div><!-- /.container -->
 
 
@@ -105,6 +107,6 @@
     <script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-analytics.js"></script>
 
     <script src="js/firebase.js"></script>
-    <script src="js/index.js"></script>
+    <script src="js/hiit.js"></script>
   </body>
 </html>

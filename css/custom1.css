@@ -37,6 +37,16 @@ div.row {
   padding: 10px;
 }
 
+.timer-button {
+  font-size: 20px;
+  margin: 5px;
+}
+
+div.stopwatch span {
+  font-size: 40px;
+}
+
+#subraceDiv {
 div.ability {
   padding-left: 0;
   padding-right: 0;
@@ -169,6 +179,10 @@ table.nonogram {
   border: 2px solid black;
 }
 
+/* input.counter {
+  width: 30px;
+} */
+
 input.small-text {
   text-align: center;
   width: 50px;
@@ -177,10 +191,6 @@ input.small-text {
 input.med-text {
   text-align: center;
   width: 60px;
-}
-
-input.counter {
-  /* width: 30px; */
 }
 
 @media (max-width: 598px) {
