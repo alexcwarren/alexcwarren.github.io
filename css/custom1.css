@@ -37,7 +37,32 @@ div.row {
   padding: 10px;
 }
 
-#subraceDiv {
+div.ability {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+span.ability {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: large;
+}
+
+input.ability {
+  display: inline;
+  height: 50%;
+  width: 30%;
+  padding: 1px;
+  text-align: center;
+}
+
+.btn-small {
+  padding: 0 0 5px 0;
+  width: 20px;
+  height: 17px;
+  transform: rotate(180deg);
+}
+
+.starts-hidden {
   display: none;
 }
 
@@ -51,17 +76,44 @@ div.row {
   width: 200px;
 }
 
+select.side-column {
+  padding-left: 10px;
+  padding-right: 2px;
+}
+
 input.choice {
   margin-left: 10%;
   margin-right: 5%;
   display: inline;
 }
 
+label.choice-title {
+  font-weight: normal;
+  display: block;
+}
 label.choice {
   font-weight: normal;
 }
 
+label.normal {
+  font-weight: normal;
+}
+
+input.checkbox-padded {
+  margin-left: 10%;
+  margin-right: 5%;
+}
+
+ul.equipment {
+  padding-left: 10%;
+}
+
+div.side-column {
+  margin: 0;
+}
+
 div.side-column input {
+  text-align: center;
   width: 75%;
 }
 
@@ -77,6 +129,58 @@ a.dropdown-item:hover {
   display: block;
   padding: 5px;
   color: #9d9d9d;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.borderBottom {
+  border-bottom: 1px solid inherit;
+}
+
+table.nonogram {
+  width: 50%;
+  height: 400px;
+}
+
+.submit {
+  margin: 50px;
+}
+
+.nonocell {
+  /* width: 15%; */
+  border: 2px solid black;
+}
+
+.countCell {
+  border: inherit;
+  background: inherit;
+  text-align: center;
+}
+
+.cellOn {
+  background-color: black;
+  border: 2px solid white;
+}
+
+.cellOff {
+  background-color: inherit;
+  border: 2px solid black;
+}
+
+input.small-text {
+  text-align: center;
+  width: 50px;
+}
+
+input.med-text {
+  text-align: center;
+  width: 60px;
+}
+
+input.counter {
+  /* width: 30px; */
 }
 
 @media (max-width: 598px) {
