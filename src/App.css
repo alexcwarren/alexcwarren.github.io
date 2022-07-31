@@ -1,43 +1,45 @@
-.App {
-  text-align: center;
+/* @import 'variables'; */
+
+:root {
+    --primary1: #FBFFF1;
+    --primary2: #AF7A6D;
+    --primary3: #B4C5E4;
+    --secondary: #05204A;
+    --accent1: #FFB300;
+    --accent2: #D62839;
+    --bs-body-font-family: 'Exo', sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.primary1 {
+    color: var(--secondary);
+    background-color: var(--primary1);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.primary2 {
+    color: var(--primary1);
+    background-color: var(--primary2);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.primary3 {
+    color: var(--secondary);
+    background-color: var(--primary3);
 }
 
-.App-link {
-  color: #61dafb;
+.secondary {
+    color: var(--primary1);
+    background-color: var(--secondary);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.accent1 {
+    color: var(--secondary);
+    background-color: var(--accent1);
 }
 
-img.Profile {
-  height: 300px;
-  border-radius: 50%;
+.accent2 {
+    color: var(--primary1);
+    background-color: var(--accent2);
+}
+
+.alice {
+    font-family: 'Alice', serif;
 }

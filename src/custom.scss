@@ -1,0 +1,50 @@
+@import url('https://fonts.googleapis.com/css2?family=Alice&family=Exo:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+$primary1: #fbfff1;
+$primary2: #af7a6d;
+$primary3: #b4c5e4;
+$secondary: #05204a;
+$accent1: #ffb300;
+$accent2: #d62839;
+
+$theme-colors: (
+    "primary1": $primary1,
+    "primary2": $primary2,
+    "primary3": $primary3,
+    "secondary": $secondary,
+    "accent1": $accent1,
+    "accent2": $accent2,
+    "dark": $secondary
+);
+
+// Border
+$border-color: $primary3;
+$border-color-translucent: rgba($primary3, .5);
+
+// Active
+$component-active-color: $primary1;
+
+// Navbar
+$dark-navbar-color: $accent1;
+$navbar-dark-color: rgba($dark-navbar-color, .55);
+$navbar-dark-hover-color: rgba($dark-navbar-color, .75);
+$navbar-dark-active-color: $dark-navbar-color;
+$navbar-dark-disabled-color: rgba($dark-navbar-color, .25);
+$navbar-dark-toggler-border-color: rgba($dark-navbar-color, .1);
+$light-navbar-color: $secondary;
+$navbar-light-color: rgba($light-navbar-color, .55);
+$navbar-light-hover-color: rgba($light-navbar-color, .7);
+$navbar-light-active-color: rgba($light-navbar-color, .9);
+$navbar-light-disabled-color: rgba($light-navbar-color, .3);
+$navbar-light-toggler-border-color: rgba($light-navbar-color, .1);
+
+// Dropdown
+$dark-dropdown-color: rgba($accent1, .75);
+$dark-dropdown-bg: $secondary;
+$dropdown-dark-color: $dark-dropdown-color;
+$dropdown-dark-bg: rgba($dark-dropdown-bg, .9);
+$dropdown-dark-link-hover-color: $primary1;
+$dropdown-dark-link-hover-bg: rgba($primary2, .15);
+$dropdown-dark-link-disabled-color: rgba($primary3, .7);
+
+@import '~bootstrap/scss/bootstrap.scss';

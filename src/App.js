@@ -1,31 +1,23 @@
-import profile from './profilePhoto.JPG';
-import logo from './logo.svg';
+// import Button from 'react-bootstrap/Button';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './custom.scss';
+
+// import profile from './new_profilephoto.jpg';
+// import profile from './profilePhoto.JPG';
+// import logo from './logo.svg';
 import './App.css';
+import Header from './Header.js';
+import Main from './Main.js';
+
 
 function App() {
   document.title = "alexcwarren.com";
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={profile} className="Profile" alt="profile" />
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          , Alex Warren.
-        </span>
-      </header>
-    </div>
+    <>
+      <Header />
+      <Main />
+    </>
   );
 }
 
