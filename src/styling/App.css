@@ -7,6 +7,7 @@
     --secondary: #05204A;
     --accent1: #FFB300;
     --accent2: #D62839;
+
     --bs-body-font-family: 'Exo', sans-serif;
 }
 
@@ -40,6 +41,16 @@
     background-color: var(--accent2);
 }
 
-.alice {
+.serif {
     font-family: 'Alice', serif;
+}
+
+.car-item {
+    height: 200px;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }

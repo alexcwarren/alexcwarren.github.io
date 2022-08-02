@@ -1,22 +1,24 @@
-// import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './custom.scss';
+import './styling/App.scss';
+import './styling/App.css';
 
-// import profile from './new_profilephoto.jpg';
-// import profile from './profilePhoto.JPG';
-// import logo from './logo.svg';
-import './App.css';
 import Header from './Header.js';
 import Main from './Main.js';
-
+import CardCarousel from './CardCarousel.js';
+import Footer from './Footer.js';
 
 function App() {
-  document.title = "alexcwarren.com";
+  document.title = 'alexcwarren.com';
+  document.body.style.background = getComputedStyle(
+    document.documentElement
+  ).getPropertyValue('--primary1');
 
   return (
     <>
       <Header />
       <Main />
+      <CardCarousel />
+      <Footer />
     </>
   );
 }
