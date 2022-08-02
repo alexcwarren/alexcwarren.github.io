@@ -6,7 +6,7 @@ import IconButton from "./IconButton.js";
 import * as links from "./Links.js";
 
 import facebookIcon from "../images/icons/facebook.png";
-import githubIcon from "../images/icons/github.png"
+import githubIcon from "../images/icons/github.png";
 import instagramIcon from "../images/icons/instagram.png";
 import linkedinIcon from "../images/icons/linkedin.png";
 import mediumIcon from "../images/icons/medium.png";
@@ -16,7 +16,10 @@ import youtubeIcon from "../images/icons/youtube.png";
 
 function Footer() {
   return (
-    <Container fluid className="primary2 py-1 px-3 text-center footer">
+    <Container
+      fluid
+      className="square border-top border-primary2 border-1 p-3 text-center footer"
+    >
       <Row>
         <Col>
           <IconButton image={mediumIcon} href={links.medium} />
