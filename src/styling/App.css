@@ -67,7 +67,7 @@
     width: 100%;
 }
 
-@media (min-width: 480px) {
+@media (min-width: 10px) {
     .btn-icon {
         margin: 1px;
     }
