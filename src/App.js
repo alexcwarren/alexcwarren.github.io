@@ -1,25 +1,29 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './styling/App.scss';
-import './styling/App.css';
+// import BrowserRouter from "react-router-dom";
+// import Redirect from "react-router-dom";
+// import Route from "react-router";
+// import Switch from "react-router-dom";
 
-import Header from './Header.js';
-import Main from './Main.js';
-import CardCarousel from './CardCarousel.js';
-import Footer from './Footer.js';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./styling/App.scss";
+import "./styling/App.css";
+
+import LaunchPage from "./components/LaunchPage.js"
 
 function App() {
-  document.title = 'alexcwarren.com';
+  document.title = "alexcwarren.com";
   document.body.style.background = getComputedStyle(
     document.documentElement
-  ).getPropertyValue('--primary1');
+  ).getPropertyValue("--primary1");
 
   return (
-    <>
-      <Header />
-      <Main />
-      <CardCarousel />
-      <Footer />
-    </>
+    <LaunchPage />
+    // <>
+    //   <BrowserRouter>
+    //     <Switch>
+    //       <Route exact path="/" component={LaunchPage} />
+    //     </Switch>
+    //   </BrowserRouter>
+    // </>
   );
 }
 

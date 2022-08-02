@@ -45,12 +45,66 @@
     font-family: 'Alice', serif;
 }
 
+.mybutton {
+    width: 100px;
+}
+
+#btn-email-list {
+    width: 200px;
+}
+
+.card-carousel {
+    height: 300px;
+}
+
 .car-item {
     height: 200px;
 }
 
 .footer {
-    position: fixed;
+    /* position: fixed; */
     bottom: 0;
     width: 100%;
+}
+
+@media (min-width: 480px) {
+    .btn-icon {
+        margin: 1px;
+    }
+}
+
+@media (min-width: 580px) {
+    .btn-icon {
+        margin: 1px 5px;
+    }
+}
+
+@media (min-width: 780px) {
+    .btn-icon {
+        margin: 1px 8px;
+    }
+}
+
+@media (min-width: 980px) {
+    .btn-icon {
+        margin: 1px 10px;
+    }
+}
+
+@media (min-width: 1280px) {
+    .btn-icon {
+        margin: 1px 15px;
+    }
+}
+
+@media (min-width: 1480px) {
+    .btn-icon {
+        margin: 1px 18px;
+    }
+}
+
+@media (min-width: 1780px) {
+    .btn-icon {
+        margin: 1px 20px;
+    }
 }

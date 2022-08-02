@@ -1,10 +1,12 @@
-import MyButton from "./components/MyButton.js"; //'react-bootstrap/Button';
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Image from "react-bootstrap/Image";
 import Row from "react-bootstrap/Row";
 
-import profile from "./images/new_profilephoto.png";
+import MyButton from "./MyButton.js";
+import { mailchimp } from "./Links.js";
+
+import profile from "../images/profilephoto.png";
 
 function Main() {
   return (
@@ -24,7 +26,11 @@ function Main() {
         </Row>
         <Row className="my-4">
           <Col>
-            <MyButton text="Subscribe to email list" />
+            <MyButton
+              text="Subscribe to email list"
+              href={mailchimp}
+              id="btn-email-list"
+            />
           </Col>
         </Row>
         <Row className="pt-2">

@@ -3,21 +3,23 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 // import NavDropdown from "react-bootstrap/NavDropdown";
 
+import * as links from "./Links.js";
+
 function Header() {
   return (
     <header>
       <Navbar bg="dark" variant="dark" expand="sm">
         <Container fluid>
-          <Navbar.Brand href="#home" className="serif">
+          <Navbar.Brand href="/" className="serif">
             Alex C Warren
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="#home">Home</Nav.Link>
-              <Nav.Link href="#articles">Articles</Nav.Link>
-              <Nav.Link href="#videos">Videos</Nav.Link>
-              <Nav.Link href="#projects">Projects</Nav.Link>
+              <Nav.Link href="/">HOME</Nav.Link>
+              <Nav.Link href={links.medium} target="_blank">ARTICLES</Nav.Link>
+              <Nav.Link href={links.youtube} target="_blank">VIDEOS</Nav.Link>
+              <Nav.Link href={links.github} target="_blank">PROJECTS</Nav.Link>
 
               {/* <NavDropdown
                 menuVariant="dark"
