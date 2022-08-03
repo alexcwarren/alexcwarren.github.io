@@ -52,8 +52,8 @@ function CardCarousel() {
               <Carousel.Caption className={captionClass}>
                 <div>
                   <Button
-                    variant="accent2"
-                    className="p-1 my-3"
+                    variant="transparent"
+                    className="border-0 p-1 my-3"
                     href={links.buymeacoffee}
                     target="_blank"
                   >
@@ -62,8 +62,8 @@ function CardCarousel() {
                 </div>
                 <div>
                   <Button
-                    variant="accent2"
-                    className="p-1"
+                    variant="transparent"
+                    className="border-0 p-1"
                     href={links.kofi}
                     target="_blank"
                   >
