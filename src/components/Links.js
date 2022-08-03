@@ -1,6 +1,5 @@
 export const buymeacoffee = "https://www.buymeacoffee.com/alexcwarren";
-export const facebook =
-  "https://www.facebook.com/profile.php?id=100083895441866";
+export const facebook = "https://www.facebook.com/alex.ch.warren/";
 export const github = "https://github.com/alexcwarren";
 export const instagram = "https://instagram.com/alexcwarren";
 export const kofi = "https://ko-fi.com/alexcwarren";
