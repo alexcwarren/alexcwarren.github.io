@@ -20,6 +20,7 @@ function Header() {
               <Nav.Link href={links.medium} target="_blank">ARTICLES</Nav.Link>
               <Nav.Link href={links.youtube} target="_blank">VIDEOS</Nav.Link>
               <Nav.Link href={links.github} target="_blank">PROJECTS</Nav.Link>
+              <Nav.Link href={links.contactme} target="_blank">CONTACT ME</Nav.Link>
 
               {/* <NavDropdown
                 menuVariant="dark"
