@@ -1,7 +1,9 @@
+export const buymeacoffee = "https://www.buymeacoffee.com/alexcwarren";
 export const facebook =
   "https://www.facebook.com/profile.php?id=100083895441866";
 export const github = "https://github.com/alexcwarren";
 export const instagram = "https://instagram.com/alexcwarren";
+export const kofi = "https://ko-fi.com/alexcwarren";
 export const linkedin = "https://www.linkedin.com/in/alexandercwarren/";
 export const mailchimp = "https://eepurl.com/h7yAS9";
 export const medium = "https://medium.com/@alexcwarren";

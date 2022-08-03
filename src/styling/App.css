@@ -58,7 +58,7 @@
 }
 
 .car-item {
-    height: 200px;
+    height: 250px;
 }
 
 .footer {
@@ -71,6 +71,14 @@
     .btn-icon {
         margin: 1px;
     }
+
+    #img-coffee {
+        width: 150px;
+    }
+
+    #img-kofi {
+        width: 150px;
+    }
 }
 
 @media (min-width: 580px) {
@@ -82,6 +90,14 @@
 @media (min-width: 780px) {
     .btn-icon {
         margin: 1px 8px;
+    }
+
+    #img-coffee {
+        width: 200px;
+    }
+
+    #img-kofi {
+        width: 300px;
     }
 }
 

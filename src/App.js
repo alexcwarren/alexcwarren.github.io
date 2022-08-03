@@ -10,7 +10,7 @@ import "./styling/App.css";
 import LaunchPage from "./components/LaunchPage.js"
 
 function App() {
-  document.title = "alexcwarren.com";
+  document.title = "AlexCWarren.com";
   document.body.style.background = getComputedStyle(
     document.documentElement
   ).getPropertyValue("--primary1");
