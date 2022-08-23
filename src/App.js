@@ -1,13 +1,11 @@
-// import BrowserRouter from "react-router-dom";
-// import Redirect from "react-router-dom";
-// import Route from "react-router";
-// import Switch from "react-router-dom";
+import { BrowserRouter, Routes, Route, } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styling/App.scss";
 import "./styling/App.css";
 
-import LaunchPage from "./components/LaunchPage.js"
+import Header from "./components/Header.js";
+import LaunchPage from "./components/LaunchPage.js";
 
 function App() {
   document.title = "AlexCWarren.com";
@@ -16,14 +14,15 @@ function App() {
   ).getPropertyValue("--primary1");
 
   return (
-    <LaunchPage />
-    // <>
-    //   <BrowserRouter>
-    //     <Switch>
-    //       <Route exact path="/" component={LaunchPage} />
-    //     </Switch>
-    //   </BrowserRouter>
-    // </>
+    <>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route exact path="/" element={<LaunchPage />} />
+          {/* <Route path="/about" element={<About />} /> */}
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 

@@ -22,6 +22,9 @@ function Header() {
               <Nav.Link href={links.github} target="_blank">PROJECTS</Nav.Link>
               <Nav.Link href={links.contactme} target="_blank">CONTACT ME</Nav.Link>
 
+              {/* "href" determined by "path" of Route component in App.js */}
+              {/* <Nav.Link href="/about">About</Nav.Link> */}
+
               {/* <NavDropdown
                 menuVariant="dark"
                 title="Dropdown"
