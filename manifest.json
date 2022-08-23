@@ -3,29 +3,24 @@
   "name": "AlexCWarren.com",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "any",
+      "src": "favicon-64.png",
+      "sizes": "64x64",
       "type": "image/png"
     },
     {
-      "src": "favicon-64.ico",
-      "sizes": "64x64",
-      "type": "image/x-icon"
-    },
-    {
-      "src": "favicon-32.ico",
-      "sizes": "32x32",
-      "type": "image/x-icon"
-    },
-    {
-      "src": "favicon-24.ico",
+      "src": "favicon-24.png",
       "sizes": "24x24",
-      "type": "image/x-icon"
+      "type": "image/png"
     },
     {
-      "src": "favicon-16.ico",
-      "sizes": "16x16",
-      "type": "image/x-icon"
+      "src":"/android-chrome-192x192.png",
+      "sizes":"192x192",
+      "type":"image/png"
+    },
+    {
+        "src":"/android-chrome-512x512.png",
+        "sizes":"512x512",
+        "type":"image/png"
     }
   ],
   "start_url": ".",
