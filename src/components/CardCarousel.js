@@ -53,16 +53,6 @@ function CardCarousel() {
                 <div>
                   <Button
                     variant="transparent"
-                    className="border-0 p-1 my-3"
-                    href={links.buymeacoffee}
-                    target="_blank"
-                  >
-                    <Image src={buymeacoffeeIcon} width={200} id="img-coffee" />
-                  </Button>
-                </div>
-                <div>
-                  <Button
-                    variant="transparent"
                     className="border-0 p-1"
                     href={links.kofi}
                     target="_blank"
