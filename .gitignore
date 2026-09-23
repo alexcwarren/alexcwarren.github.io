@@ -1,2 +1,7 @@
 node_modules
 build
+
+# Astro
+/astro/node_modules/
+/astro/dist/
+/astro/.astro
