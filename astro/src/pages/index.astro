@@ -1,17 +1,17 @@
 ---
-
+import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="Alex Warren | Software Engineer"
+  description="Alex Warren is a software engineer building developer tools, independent software, and games."
+>
+  <main>
+    <h1>Alex Warren</h1>
+
+    <p>
+      Software engineer building practical software,
+      exploring game development, and sharing what I learn.
+    </p>
+  </main>
+</BaseLayout>
