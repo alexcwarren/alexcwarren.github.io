@@ -1,0 +1,277 @@
+:root {
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+
+  line-height: 1.5;
+
+  --color-bg: #05204a;
+  --color-surface: #0b2b5a;
+  --color-surface-soft: #173866;
+
+  --color-text: #fbfff1;
+  --color-text-muted: #b4c5e4;
+
+  --color-accent: #ffb300;
+  --color-border: #31527d;
+
+  --content-width: 72rem;
+  --radius: 0.75rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--color-bg);
+}
+
+body {
+  margin: 0;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+body,
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+header,
+main,
+footer {
+  width: min(100% - 2rem, var(--content-width));
+  margin-inline: auto;
+}
+
+header {
+  padding-block: 1.25rem;
+}
+
+main {
+  padding-block: 4rem;
+}
+
+footer {
+  padding-block: 2rem;
+  color: var(--color-text-muted);
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+nav ul {
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+nav a {
+  text-decoration: none;
+}
+
+nav a:hover,
+nav a:focus-visible {
+  color: var(--color-accent);
+}
+
+section + section {
+  margin-top: 5rem;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.15;
+}
+
+h1 {
+  margin-block: 0.5rem 1rem;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+h2 {
+  margin-bottom: 1.5rem;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+p {
+  max-width: 70ch;
+  color: var(--color-text-muted);
+}
+
+footer nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+footer a {
+  text-decoration: none;
+}
+
+footer a:hover,
+footer a:focus-visible {
+  color: var(--color-accent);
+}
+
+.hero {
+  padding-block: 3rem 2rem;
+}
+
+.hero-summary {
+  max-width: 48rem;
+  font-size: 1.125rem;
+}
+
+.hero-label {
+  color: var(--color-accent);
+  font-weight: 600;
+  margin-bottom: 0;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.button {
+  display: inline-block;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  text-decoration: none;
+}
+
+.button-primary {
+  color: #111827;
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.button-secondary {
+  background: transparent;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.project-card {
+  padding: 1.5rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  transition:
+    transform 150ms ease,
+    border-color 150ms ease;
+}
+
+.project-card h3 {
+  margin-top: 0;
+}
+
+.project-card p {
+  margin-bottom: 0;
+}
+
+.project-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-accent);
+}
+
+.project-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.project-status {
+  padding: 0.2rem 0.5rem;
+  color: var(--color-accent);
+  font-size: 0.8rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+}
+
+.project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-block: 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.project-tech li {
+  padding: 0.25rem 0.5rem;
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  background: var(--color-surface-soft);
+  border-radius: 999px;
+}
+
+.project-link {
+  color: var(--color-accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.project-link:hover,
+.project-link:focus-visible {
+  text-decoration: underline;
+}
+
+.footer-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
+@media (max-width: 48rem) {
+  nav {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+
+  main {
+    padding-block: 3rem;
+  }
+
+  .footer-content {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,58 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { featuredProjects } from "../data/projects";
+---
+
+<BaseLayout
+  title="Alex C Warren | Software Engineer"
+  description="Alex C Warren is a software engineer building developer tools, independent software, and games."
+>
+  <main>
+    <section class="hero">
+      <p class="hero-label">Senior Software Engineer</p>
+
+      <h1>Alex C Warren</h1>
+
+      <p class="hero-summary">
+        I build practical software, developer tools, and small games.
+        My side projects are where I experiment, learn, and turn useful
+        ideas into finished software.
+      </p>
+
+      <div class="hero-actions">
+        <a class="button button-primary" href="/projects/">View Projects</a>
+        <a class="button button-secondary" href="/about/">About Me</a>
+      </div>
+    </section>
+
+    <section aria-labelledby="featured-projects">
+      <h2 id="featured-projects">Featured Projects</h2>
+
+      <div class="project-grid">
+        {featuredProjects.map((project) => (
+          <ProjectCard
+            name={project.name}
+            summary={project.summary}
+            tech={project.tech}
+            status={project.status}
+            repositoryUrl={project.repositoryUrl}
+          />
+        ))}
+      </div>
+    </section>
+
+    <section>
+      <h2>About Me</h2>
+
+      <p>
+        I'm a senior software engineer with over a decade of experience
+        building backend systems, internal tools, and developer workflows.
+      </p>
+
+      <p>
+        <a href="/about/">More about me</a>
+      </p>
+    </section>
+  </main>
+</BaseLayout>
