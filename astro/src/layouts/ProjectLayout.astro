@@ -21,7 +21,7 @@ const {
 ---
 
 <BaseLayout title={title} description={description}>
-  <main>
+  <main id="main-content" tabindex="-1">
     <section class="hero">
       <p class="hero-label">Project Case Study</p>
       <h1>{projectName}</h1>
@@ -40,6 +40,7 @@ const {
           href={repositoryUrl}
           target="_blank"
           rel="noreferrer"
+          aria-label={`View on GitHub: ${projectName} (opens in a new tab)`}
         >
           View on GitHub
         </a>

@@ -19,20 +19,24 @@ const { Content } = await render(article);
   title={`${article.data.title} | Alex C Warren`}
   description={article.data.description}
 >
-  <main>
+  <main id="main-content" tabindex="-1">
     <article class="article">
       <header class="article-header">
         <p class="hero-label">Article</p>
 
         <h1>{article.data.title}</h1>
 
-        <p class="article-date">
+        <time
+          class="article-date"
+          datetime={article.data.publishedDate.toISOString().slice(0, 10)}
+        >
           {article.data.publishedDate.toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
             day: "numeric",
+            timeZone: "UTC",
           })}
-        </p>
+        </time>
 
         <p class="hero-summary">
           {article.data.description}

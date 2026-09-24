@@ -14,7 +14,7 @@ const articles = (await getCollection("articles"))
   title="Articles | Alex C Warren"
   description="Technical writing about software engineering, developer tools, game development, and lessons learned while building projects."
 >
-  <main>
+  <main id="main-content" tabindex="-1">
     <section class="hero">
       <p class="hero-label">Articles</p>
 
@@ -37,6 +37,7 @@ const articles = (await getCollection("articles"))
                     year: "numeric",
                     month: "long",
                     day: "numeric",
+                    timeZone: "UTC",
                   })}
                 </p>
 
