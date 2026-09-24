@@ -1,17 +1,59 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectCard from "../components/ProjectCard.astro";
 ---
 
 <BaseLayout
-  title="Alex Warren | Software Engineer"
-  description="Alex Warren is a software engineer building developer tools, independent software, and games."
+  title="Alex C Warren | Software Engineer"
+  description="Alex C Warren is a software engineer building developer tools, independent software, and games."
 >
   <main>
-    <h1>Alex Warren</h1>
+    <section>
+      <p>Senior Software Engineer</p>
+      <h1>Alex C Warren</h1>
 
-    <p>
-      Software engineer building practical software,
-      exploring game development, and sharing what I learn.
-    </p>
+      <p>
+        I build practical software, developer tools, and small games.
+        My side projects are where I experiment, learn, and turn useful
+        ideas into finished software.
+      </p>
+
+      <p>
+        <a href="/projects/">View Projects</a>
+        <a href="/about/">About Me</a>
+      </p>
+    </section>
+
+    <section aria-labelledby="featured-projects">
+      <h2 id="featured-projects">Featured Projects</h2>
+
+      <ProjectCard
+        name="pyproject-init"
+        summary="A command-line tool for creating modern Python projects with a consistent development setup."
+      />
+
+      <ProjectCard
+        name="Game Mechanic Generator"
+        summary="A Godot tool for generating combinations of gameplay verbs, constraints, pressures, and goals for game-design practice."
+      />
+
+      <ProjectCard
+        name="filename-manager"
+        summary="A Python command-line utility for batch-renaming files using configurable rules."
+      />
+    </section>
+
+    <section>
+      <h2>About Me</h2>
+
+      <p>
+        I'm a senior software engineer with over a decade of experience
+        building backend systems, internal tools, and developer workflows.
+      </p>
+
+      <p>
+        <a href="/about/">More about me</a>
+      </p>
+    </section>
   </main>
 </BaseLayout>
