@@ -2,12 +2,32 @@
 interface Props {
   name: string;
   summary: string;
+  tech: string[];
+  status: string;
+  repositoryUrl: string;
 }
 
-const { name, summary } = Astro.props;
+const { name, summary, tech, status, repositoryUrl } = Astro.props;
 ---
 
 <article class="project-card">
-  <h3>{name}</h3>
+  <div class="project-card-header">
+    <h3>{name}</h3>
+    <span class="project-status">{status}</span>
+  </div>
+
   <p>{summary}</p>
+
+  <ul class="project-tech" aria-label={`${name} technologies`}>
+    {tech.map((item) => <li>{item}</li>)}
+  </ul>
+
+  <a
+    class="project-link"
+    href={repositoryUrl}
+    target="_blank"
+    rel="noreferrer"
+  >
+    View on GitHub
+  </a>
 </article>
