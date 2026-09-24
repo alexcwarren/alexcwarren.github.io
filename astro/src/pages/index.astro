@@ -10,7 +10,7 @@ import { featuredProjects } from "../data/projects";
 >
   <main>
     <section>
-      <p>Senior Software Engineer</p>
+      <p class="hero-label">Senior Software Engineer</p>
       <h1>Alex C Warren</h1>
 
       <p>
@@ -19,21 +19,23 @@ import { featuredProjects } from "../data/projects";
         ideas into finished software.
       </p>
 
-      <p>
-        <a href="/projects/">View Projects</a>
-        <a href="/about/">About Me</a>
-      </p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="/projects/">View Projects</a>
+        <a class="button button-secondary" href="/about/">About Me</a>
+      </div>
     </section>
 
     <section aria-labelledby="featured-projects">
       <h2 id="featured-projects">Featured Projects</h2>
 
-      {featuredProjects.map((project) => (
-        <ProjectCard
-          name={project.name}
-          summary={project.summary}
-        />
-      ))}
+      <div class="project-grid">
+        {featuredProjects.map((project) => (
+          <ProjectCard
+            name={project.name}
+            summary={project.summary}
+          />
+        ))}
+      </div>
     </section>
 
     <section>
