@@ -1,12 +1,39 @@
-<header>
-  <nav aria-label="Primary">
-    <a href="/">Alex C Warren</a>
+---
+const currentPath = Astro.url.pathname;
 
-    <ul>
-      <li><a href="/">Home</a></li>
-      <li><a href="/projects/">Projects</a></li>
-      <li><a href="/about/">About</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
+const navItems = [
+  { href: "/", label: "Home" },
+  { href: "/projects/", label: "Projects" },
+  { href: "/articles/", label: "Articles" },
+  { href: "/about/", label: "About" },
+];
+---
+
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="site-brand" href="/">Alex C Warren</a>
+
+    <nav aria-label="Primary navigation">
+      {
+        navItems.map((item) => {
+          const isActive =
+            item.href === "/"
+              ? currentPath === "/"
+              : currentPath.startsWith(item.href);
+
+          return (
+            <a
+              href={item.href}
+              class:list={["nav-link", isActive && "active"]}
+              aria-current={isActive ? "page" : undefined}
+            >
+              {item.label}
+            </a>
+          );
+        })
+      }
+
+      <a class="nav-link" href="#contact">Contact</a>
+    </nav>
+  </div>
 </header>

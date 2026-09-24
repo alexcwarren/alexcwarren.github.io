@@ -136,6 +136,51 @@ footer a:focus-visible {
   color: var(--color-accent);
 }
 
+.site-header {
+  padding: 1.25rem 2rem;
+}
+
+.site-header-inner {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.site-header nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.site-brand {
+  color: var(--color-text);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site-brand:hover,
+.site-brand:focus-visible,
+.nav-link:hover,
+.nav-link:focus-visible,
+.nav-link.active {
+  color: var(--color-accent);
+}
+
+.nav-link {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.nav-link:hover,
+.nav-link:focus-visible,
+.nav-link.active {
+  color: var(--color-accent);
+}
+
 .hero {
   padding-block: 3rem 2rem;
 }
@@ -267,6 +312,55 @@ footer a:focus-visible {
   font-weight: 500;
 }
 
+.article-list {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.article-card,
+.empty-state {
+  padding: 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+
+.article-card h2 {
+  margin-top: 0.25rem;
+}
+
+.article-card h2 a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.article-card h2 a:hover {
+  color: var(--color-accent);
+}
+
+.article-date {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.article {
+  max-width: 50rem;
+}
+
+.article-content {
+  margin-top: 3rem;
+}
+
+.article-content h2,
+.article-content h3 {
+  margin-top: 2.5rem;
+}
+
+.article-content p,
+.article-content li {
+  line-height: 1.7;
+}
+
 .footer-content {
   display: flex;
   align-items: center;
@@ -276,21 +370,39 @@ footer a:focus-visible {
 }
 
 @media (max-width: 48rem) {
-  nav {
-    align-items: flex-start;
-    flex-direction: column;
+  main {
+    padding-block: 3rem;
   }
 
   .project-grid {
     grid-template-columns: 1fr;
   }
 
-  main {
-    padding-block: 3rem;
-  }
-
   .footer-content {
     align-items: flex-start;
     flex-direction: column;
+  }
+  .site-header-inner {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .site-header nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+  }
+
+  .hero {
+    padding-block: 2rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 12vw, 4rem);
+  }
+
+  .hero-actions {
+    flex-wrap: wrap;
   }
 }
