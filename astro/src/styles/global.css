@@ -5,13 +5,15 @@
 
   line-height: 1.5;
 
-  --color-bg: #0f172a;
-  --color-surface: #172033;
-  --color-surface-soft: #1e293b;
-  --color-text: #e5e7eb;
-  --color-text-muted: #a8b3c7;
-  --color-accent: #f4b942;
-  --color-border: #334155;
+  --color-bg: #05204a;
+  --color-surface: #0b2b5a;
+  --color-surface-soft: #173866;
+
+  --color-text: #fbfff1;
+  --color-text-muted: #b4c5e4;
+
+  --color-accent: #ffb300;
+  --color-border: #31527d;
 
   --content-width: 72rem;
   --radius: 0.75rem;
@@ -116,9 +118,19 @@ p {
   color: var(--color-text-muted);
 }
 
+.hero {
+  padding-block: 3rem 2rem;
+}
+
+.hero-summary {
+  max-width: 48rem;
+  font-size: 1.125rem;
+}
+
 .hero-label {
   color: var(--color-accent);
   font-weight: 600;
+  margin-bottom: 0;
 }
 
 .hero-actions {
@@ -157,10 +169,22 @@ p {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
+  transition:
+    transform 150ms ease,
+    border-color 150ms ease;
 }
 
 .project-card h3 {
   margin-top: 0;
+}
+
+.project-card p {
+  margin-bottom: 0;
+}
+
+.project-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-accent);
 }
 
 @media (max-width: 48rem) {
