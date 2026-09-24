@@ -1,13 +1,35 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import { projects } from "../../data/projects";
 ---
 
 <BaseLayout
   title="Projects | Alex C Warren"
-  description="Selected software projects by Alex C Warren."
+  description="Selected software, developer tooling, and game-development projects by Alex C Warren."
 >
   <main>
-    <h1>Projects</h1>
-    <p>Selected projects and engineering case studies will live here.</p>
+    <section>
+      <p class="hero-label">Projects</p>
+      <h1>Things I've built.</h1>
+
+      <p class="hero-summary">
+        A selection of developer tools, utilities, and game-development
+        projects I've built while solving practical problems and exploring
+        new ideas.
+      </p>
+    </section>
+
+    <section class="project-grid">
+      {projects.map((project) => (
+        <ProjectCard
+          name={project.name}
+          summary={project.summary}
+          tech={project.tech}
+          status={project.status}
+          repositoryUrl={project.repositoryUrl}
+        />
+      ))}
+    </section>
   </main>
 </BaseLayout>
