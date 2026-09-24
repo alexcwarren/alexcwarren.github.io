@@ -1,0 +1,68 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const articles = (await getCollection("articles"))
+  .filter((article) => !article.data.draft)
+  .sort(
+    (a, b) =>
+      b.data.publishedDate.getTime() - a.data.publishedDate.getTime(),
+  );
+---
+
+<BaseLayout
+  title="Articles | Alex C Warren"
+  description="Technical writing about software engineering, developer tools, game development, and lessons learned while building projects."
+>
+  <main id="main-content" tabindex="-1">
+    <section class="hero">
+      <p class="hero-label">Articles</p>
+
+      <h1>Notes from building and learning.</h1>
+
+      <p class="hero-summary">
+        Technical writing about software engineering, developer tools,
+        game development, and lessons learned from projects along the way.
+      </p>
+    </section>
+
+    <section>
+      {
+        articles.length > 0 ? (
+          <div class="article-list">
+            {articles.map((article) => (
+              <article class="article-card">
+                <p class="article-date">
+                  {article.data.publishedDate.toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    timeZone: "UTC",
+                  })}
+                </p>
+
+                <h2>
+                  <a href={`/articles/${article.id}/`}>
+                    {article.data.title}
+                  </a>
+                </h2>
+
+                <p>{article.data.description}</p>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <div class="empty-state">
+            <h2>Articles are coming soon.</h2>
+
+            <p>
+              I'm building out this section for technical writeups, project
+              retrospectives, and things I've learned while experimenting with
+              software and game development.
+            </p>
+          </div>
+        )
+      }
+    </section>
+  </main>
+</BaseLayout>

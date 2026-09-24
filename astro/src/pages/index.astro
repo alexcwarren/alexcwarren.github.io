@@ -8,7 +8,7 @@ import { featuredProjects } from "../data/projects";
   title="Alex C Warren | Software Engineer"
   description="Alex C Warren is a software engineer building developer tools, independent software, and games."
 >
-  <main>
+  <main id="main-content" tabindex="-1">
     <section class="hero">
       <p class="hero-label">Senior Software Engineer</p>
 
@@ -33,10 +33,13 @@ import { featuredProjects } from "../data/projects";
         {featuredProjects.map((project) => (
           <ProjectCard
             name={project.name}
+            slug={project.slug}
             summary={project.summary}
             tech={project.tech}
             status={project.status}
             repositoryUrl={project.repositoryUrl}
+            hasCaseStudy={project.hasCaseStudy}
+            variant="compact"
           />
         ))}
       </div>

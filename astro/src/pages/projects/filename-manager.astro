@@ -1,0 +1,65 @@
+---
+import ProjectLayout from "../../layouts/ProjectLayout.astro";
+---
+
+<ProjectLayout
+  title="filename-manager | Alex C Warren"
+  description="A case study of filename-manager, a Python CLI utility for safely batch-renaming files using user-defined rules."
+  projectName="filename-manager"
+  summary="A Python command-line utility for renaming groups of files using configurable rules."
+  repositoryUrl="https://github.com/alexcwarren/filename-manager"
+  tech={["Python", "CLI", "pytest", "Ruff", "MyPy", "Hatch"]}
+>
+  <section>
+    <h2>Why I Built It</h2>
+
+    <p>
+      Batch file operations are simple until they involve enough files that
+      mistakes become expensive. I wanted a reusable command-line tool for
+      applying predictable filename transformations instead of repeatedly
+      writing one-off scripts.
+    </p>
+  </section>
+
+  <section>
+    <h2>What It Does</h2>
+
+    <p>
+      filename-manager can add prefixes and suffixes, replace file
+      extensions, and operate recursively through nested directories.
+    </p>
+
+    <p>
+      The project is structured as an installable Python command-line
+      application rather than a single disposable script, with automated
+      tests and development tooling around it.
+    </p>
+  </section>
+
+  <section>
+    <h2>Engineering Focus</h2>
+
+    <p>
+      File-renaming software has a particularly important failure mode:
+      accidentally overwriting or corrupting user files. The project therefore
+      places emphasis on predictable behavior, collision protection, testing,
+      and clear error handling.
+    </p>
+
+    <p>
+      Its development workflow includes pytest and coverage, Ruff, MyPy,
+      Hatch commands, and build/release checks.
+    </p>
+  </section>
+
+  <section>
+    <h2>Current Status</h2>
+
+    <p>
+      Version 0.1.0 provides the core batch-renaming functionality.
+      Regex-based substitution is still planned rather than treated as a
+      completed feature, alongside ideas such as dry-run support, undo,
+      configuration files, and a possible graphical interface.
+    </p>
+  </section>
+</ProjectLayout>

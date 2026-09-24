@@ -1,0 +1,51 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const articles = await getCollection("articles", ({ data }) => !data.draft);
+
+  return articles.map((article) => ({
+    params: { id: article.id },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article);
+---
+
+<BaseLayout
+  title={`${article.data.title} | Alex C Warren`}
+  description={article.data.description}
+>
+  <main id="main-content" tabindex="-1">
+    <article class="article">
+      <header class="article-header">
+        <p class="hero-label">Article</p>
+
+        <h1>{article.data.title}</h1>
+
+        <time
+          class="article-date"
+          datetime={article.data.publishedDate.toISOString().slice(0, 10)}
+        >
+          {article.data.publishedDate.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            timeZone: "UTC",
+          })}
+        </time>
+
+        <p class="hero-summary">
+          {article.data.description}
+        </p>
+      </header>
+
+      <div class="article-content">
+        <Content />
+      </div>
+    </article>
+  </main>
+</BaseLayout>

@@ -1,0 +1,68 @@
+---
+import ProjectLayout from "../../layouts/ProjectLayout.astro";
+---
+
+<ProjectLayout
+  title="Game Mechanic Generator | Alex C Warren"
+  description="A case study of Game Mechanic Generator, a Godot tool for exploring gameplay ideas through verbs, constraints, pressures, goals, and meaningful decisions."
+  projectName="game-mechanic-generator"
+  summary="A small Godot desktop tool for turning loose gameplay ideas into more structured mechanic concepts."
+  repositoryUrl="https://github.com/alexcwarren/game-mechanic-generator"
+  tech={["Godot", "GDScript"]}
+>
+  <section>
+    <h2>Why I Built It</h2>
+
+    <p>
+      I wanted a practical way to practice game-design ideation without
+      depending on inspiration to produce a complete game concept from
+      nothing.
+    </p>
+
+    <p>
+      The tool breaks ideas into smaller pieces: what the player does,
+      what limits them, what creates pressure, what they are trying to
+      accomplish, and what meaningful decision emerges from the combination.
+    </p>
+  </section>
+
+  <section>
+    <h2>How It Works</h2>
+
+    <p>
+      The generator combines gameplay verbs, constraints, pressures, and
+      goals. Individual elements can be kept while the others are rerolled,
+      allowing an idea to evolve instead of being completely replaced.
+    </p>
+
+    <p>
+      The resulting decision or tension can then be written manually and the
+      completed idea exported as JSON.
+    </p>
+  </section>
+
+  <section>
+    <h2>What I Learned</h2>
+
+    <p>
+      Building the tool reinforced that an interesting mechanic is often more
+      than a single player action. Goals, pressure, limitations, and tradeoffs
+      help turn a raw mechanic into something closer to actual gameplay.
+    </p>
+
+    <p>
+      It also gave me useful experience building responsive interfaces in
+      Godot rather than treating UI as a secondary part of game development.
+    </p>
+  </section>
+
+  <section>
+    <h2>Current Status</h2>
+
+    <p>
+      The current release focuses on lightweight brainstorming rather than
+      trying to judge whether a generated idea is good. Windows builds are
+      available through GitHub Releases, and the project continues to evolve.
+    </p>
+  </section>
+</ProjectLayout>

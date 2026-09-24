@@ -8,7 +8,7 @@ import { projects } from "../../data/projects";
   title="Projects | Alex C Warren"
   description="Selected software, developer tooling, and game-development projects by Alex C Warren."
 >
-  <main>
+  <main id="main-content" tabindex="-1">
     <section>
       <p class="hero-label">Projects</p>
       <h1>Things I've built.</h1>
@@ -24,10 +24,13 @@ import { projects } from "../../data/projects";
       {projects.map((project) => (
         <ProjectCard
           name={project.name}
+          slug={project.slug}
           summary={project.summary}
           tech={project.tech}
           status={project.status}
           repositoryUrl={project.repositoryUrl}
+          hasCaseStudy={project.hasCaseStudy}
+          variant="full"
         />
       ))}
     </section>
