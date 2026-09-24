@@ -1,97 +1,68 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import ProjectLayout from "../../layouts/ProjectLayout.astro";
 ---
 
-<BaseLayout
+<ProjectLayout
   title="Game Mechanic Generator | Alex C Warren"
   description="A case study of Game Mechanic Generator, a Godot tool for exploring gameplay ideas through verbs, constraints, pressures, goals, and meaningful decisions."
+  projectName="game-mechanic-generator"
+  summary="A small Godot desktop tool for turning loose gameplay ideas into more structured mechanic concepts."
+  repositoryUrl="https://github.com/alexcwarren/game-mechanic-generator"
+  tech={["Godot", "GDScript"]}
 >
-  <main>
-    <section class="hero">
-      <p class="hero-label">Project Case Study</p>
-      <h1>Game Mechanic Generator</h1>
+  <section>
+    <h2>Why I Built It</h2>
 
-      <p class="hero-summary">
-        A small Godot desktop tool for turning loose gameplay ideas into
-        more structured mechanic concepts.
-      </p>
+    <p>
+      I wanted a practical way to practice game-design ideation without
+      depending on inspiration to produce a complete game concept from
+      nothing.
+    </p>
 
-      <ul class="project-tech" aria-label="Game Mechanic Generator technologies">
-        <li>Godot 4</li>
-        <li>GDScript</li>
-        <li>JSON</li>
-      </ul>
+    <p>
+      The tool breaks ideas into smaller pieces: what the player does,
+      what limits them, what creates pressure, what they are trying to
+      accomplish, and what meaningful decision emerges from the combination.
+    </p>
+  </section>
 
-      <div class="hero-actions">
-        <a
-          class="button button-primary"
-          href="https://github.com/alexcwarren/game-mechanic-generator"
-          target="_blank"
-          rel="noreferrer"
-        >
-          View on GitHub
-        </a>
+  <section>
+    <h2>How It Works</h2>
 
-        <a class="button button-secondary" href="/projects/">
-          Back to Projects
-        </a>
-      </div>
-    </section>
+    <p>
+      The generator combines gameplay verbs, constraints, pressures, and
+      goals. Individual elements can be kept while the others are rerolled,
+      allowing an idea to evolve instead of being completely replaced.
+    </p>
 
-    <section>
-      <h2>Why I Built It</h2>
+    <p>
+      The resulting decision or tension can then be written manually and the
+      completed idea exported as JSON.
+    </p>
+  </section>
 
-      <p>
-        I wanted a practical way to practice game-design ideation without
-        depending on inspiration to produce a complete game concept from
-        nothing.
-      </p>
+  <section>
+    <h2>What I Learned</h2>
 
-      <p>
-        The tool breaks ideas into smaller pieces: what the player does,
-        what limits them, what creates pressure, what they are trying to
-        accomplish, and what meaningful decision emerges from the combination.
-      </p>
-    </section>
+    <p>
+      Building the tool reinforced that an interesting mechanic is often more
+      than a single player action. Goals, pressure, limitations, and tradeoffs
+      help turn a raw mechanic into something closer to actual gameplay.
+    </p>
 
-    <section>
-      <h2>How It Works</h2>
+    <p>
+      It also gave me useful experience building responsive interfaces in
+      Godot rather than treating UI as a secondary part of game development.
+    </p>
+  </section>
 
-      <p>
-        The generator combines gameplay verbs, constraints, pressures, and
-        goals. Individual elements can be kept while the others are rerolled,
-        allowing an idea to evolve instead of being completely replaced.
-      </p>
+  <section>
+    <h2>Current Status</h2>
 
-      <p>
-        The resulting decision or tension can then be written manually and the
-        completed idea exported as JSON.
-      </p>
-    </section>
-
-    <section>
-      <h2>What I Learned</h2>
-
-      <p>
-        Building the tool reinforced that an interesting mechanic is often more
-        than a single player action. Goals, pressure, limitations, and tradeoffs
-        help turn a raw mechanic into something closer to actual gameplay.
-      </p>
-
-      <p>
-        It also gave me useful experience building responsive interfaces in
-        Godot rather than treating UI as a secondary part of game development.
-      </p>
-    </section>
-
-    <section>
-      <h2>Current Status</h2>
-
-      <p>
-        The current release focuses on lightweight brainstorming rather than
-        trying to judge whether a generated idea is good. Windows builds are
-        available through GitHub Releases, and the project continues to evolve.
-      </p>
-    </section>
-  </main>
-</BaseLayout>
+    <p>
+      The current release focuses on lightweight brainstorming rather than
+      trying to judge whether a generated idea is good. Windows builds are
+      available through GitHub Releases, and the project continues to evolve.
+    </p>
+  </section>
+</ProjectLayout>
