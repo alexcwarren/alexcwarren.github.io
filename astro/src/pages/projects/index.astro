@@ -24,10 +24,13 @@ import { projects } from "../../data/projects";
       {projects.map((project) => (
         <ProjectCard
           name={project.name}
+          slug={project.slug}
           summary={project.summary}
           tech={project.tech}
           status={project.status}
           repositoryUrl={project.repositoryUrl}
+          hasCaseStudy={project.hasCaseStudy}
+          variant="full"
         />
       ))}
     </section>

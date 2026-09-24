@@ -1,0 +1,224 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="pyproject-init | Alex C Warren"
+  description="A case study of pyproject-init, a CLI tool for creating ready-to-develop Python projects with modern tooling and consistent project conventions."
+>
+  <main>
+    <section class="hero">
+      <p class="hero-label">Project Case Study</p>
+
+      <h1>pyproject-init</h1>
+
+      <p class="hero-summary">
+        A command-line tool for creating ready-to-develop Python projects
+        with a consistent modern setup.
+      </p>
+
+      <div class="hero-actions">
+        <a
+          class="button button-primary"
+          href="https://github.com/alexcwarren/pyproject-init"
+          target="_blank"
+          rel="noreferrer"
+        >
+          View on GitHub
+        </a>
+
+        <a class="button button-secondary" href="/projects/">
+          Back to Projects
+        </a>
+      </div>
+    </section>
+
+    <ul class="project-tech" aria-label="pyproject-init technologies">
+      <li>Python</li>
+      <li>Click</li>
+      <li>Cookiecutter</li>
+      <li>uv</li>
+      <li>pytest</li>
+      <li>Ruff</li>
+      <li>MyPy</li>
+    </ul>
+
+    <section>
+      <h2>Overview</h2>
+
+      <p>
+        pyproject-init is an interactive CLI that generates a modern Python
+        project from a predictable baseline. It combines Click and Cookiecutter
+        with a bundled project template so a new repository can start with
+        packaging, testing, linting, type checking, and common development
+        conventions already in place.
+      </p>
+
+      <p>
+        The project is currently in beta and continues to evolve as I refine
+        both the generated project structure and the developer workflow around
+        it.
+      </p>
+    </section>
+
+    <section>
+      <h2>Why I Built It</h2>
+
+      <p>
+        I found myself making many of the same setup decisions whenever I
+        started a Python project: how to structure the package, which tools to
+        use, how to configure testing and linting, and which development
+        commands should be standard.
+      </p>
+
+      <p>
+        pyproject-init turns those repeated decisions into a reusable starting
+        point. Instead of rebuilding the same foundation every time, I can
+        create a project with a consistent baseline and spend more time on the
+        actual problem the project is meant to solve.
+      </p>
+    </section>
+
+    <section>
+      <h2>What It Generates</h2>
+
+      <p>
+        The default template creates a src-layout Python project with a small
+        but practical development setup.
+      </p>
+
+      <ul>
+        <li>uv for Python versions, environments, dependencies, and commands</li>
+        <li>uv_build for packaging</li>
+        <li>pytest and pytest-cov</li>
+        <li>Ruff for linting and formatting</li>
+        <li>MyPy for static type checking</li>
+        <li>A .python-version file</li>
+        <li>A practical .gitignore</li>
+        <li>An MIT license</li>
+        <li>A starter CLI application</li>
+        <li>A starter test</li>
+      </ul>
+
+      <p>
+        The generated project also separates the distribution name from the
+        importable Python package name, allowing names such as
+        <code>my-cool-app</code> to become a valid package like
+        <code>my_cool_app</code>.
+      </p>
+    </section>
+
+    <section>
+      <h2>Engineering Decisions</h2>
+
+      <p>
+        One of the main design goals is to provide useful defaults without
+        turning the generated project into an oversized framework.
+      </p>
+
+      <p>
+        The default template is deliberately opinionated about core development
+        tooling, but intentionally small enough to remain understandable and
+        adaptable.
+      </p>
+
+      <ul>
+        <li>
+          Existing destination directories are rejected instead of overwritten,
+          reducing the risk of destructive behavior.
+        </li>
+        <li>
+          Python version selection is written into
+          <code>.python-version</code> and becomes the generated project's
+          minimum supported Python version.
+        </li>
+        <li>
+          The generated README includes the project's normal development
+          commands so the resulting repository is usable immediately.
+        </li>
+        <li>
+          The template focuses on a solid development baseline rather than
+          attempting to generate every possible open-source or governance file.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Quality and Verification</h2>
+
+      <p>
+        I wanted the project to verify more than whether the generator itself
+        runs successfully.
+      </p>
+
+      <p>
+        The repository includes routine automated checks along with smoke tests
+        that exercise a freshly generated project and the built pyproject-init
+        package.
+      </p>
+
+      <p>
+        Continuous integration currently validates Python 3.12, 3.13, and 3.14,
+        checks the generated project, and verifies the built wheel and bundled
+        template.
+      </p>
+    </section>
+
+    <section>
+      <h2>Current Limitations</h2>
+
+      <ul>
+        <li>
+          The bundled default template is currently the primary supported
+          generation path.
+        </li>
+        <li>
+          Custom-template support exists as a direction for the project but is
+          not yet a fully established workflow.
+        </li>
+        <li>
+          Existing destination directories are rejected rather than merged into
+          or overwritten.
+        </li>
+        <li>
+          Generated projects intentionally stop short of providing a complete
+          open-source governance setup.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>What I Learned</h2>
+
+      <p>
+        The project has made me think more carefully about what actually belongs
+        in a reusable Python project baseline. A tool like this has to balance
+        consistency with flexibility: too little structure defeats the purpose,
+        while too much structure makes the generated project harder to
+        understand and adapt.
+      </p>
+
+      <p>
+        It has also reinforced the importance of testing generated output
+        directly. A scaffolding tool can pass its own unit tests while still
+        producing a broken project, so validating the generated repository is
+        an important part of the design.
+      </p>
+    </section>
+
+    <section>
+      <h2>Current Status</h2>
+
+      <p>
+        pyproject-init is currently at version 0.2.0 and is classified as beta.
+        It supports CPython 3.12, 3.13, and 3.14.
+      </p>
+
+      <p>
+        I am continuing to refine the generated project structure, developer
+        experience, documentation, and template behavior as I use the tool in
+        my own projects.
+      </p>
+    </section>
+  </main>
+</BaseLayout>

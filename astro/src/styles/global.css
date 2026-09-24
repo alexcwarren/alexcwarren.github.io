@@ -212,6 +212,14 @@ footer a:focus-visible {
   gap: 1rem;
 }
 
+.project-card-compact {
+  padding: 1.25rem;
+}
+
+.project-card-compact .project-tech {
+  margin-bottom: 0.75rem;
+}
+
 .project-status {
   padding: 0.2rem 0.5rem;
   color: var(--color-accent);
@@ -237,6 +245,12 @@ footer a:focus-visible {
   border-radius: 999px;
 }
 
+.project-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
 .project-link {
   color: var(--color-accent);
   font-weight: 600;
@@ -246,6 +260,11 @@ footer a:focus-visible {
 .project-link:hover,
 .project-link:focus-visible {
   text-decoration: underline;
+}
+
+.project-link-secondary {
+  color: var(--color-text-muted);
+  font-weight: 500;
 }
 
 .footer-content {

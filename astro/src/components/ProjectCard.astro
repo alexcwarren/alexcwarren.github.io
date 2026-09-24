@@ -1,33 +1,61 @@
 ---
 interface Props {
   name: string;
+  slug: string;
   summary: string;
   tech: string[];
   status: string;
   repositoryUrl: string;
+  hasCaseStudy: boolean;
+  variant?: "compact" | "full";
 }
 
-const { name, summary, tech, status, repositoryUrl } = Astro.props;
+const {
+  name,
+  slug,
+  summary,
+  tech,
+  status,
+  repositoryUrl,
+  hasCaseStudy,
+  variant = "full",
+} = Astro.props;
+
+const visibleTech = variant === "compact" ? tech.slice(0, 3) : tech;
 ---
 
-<article class="project-card">
+<article class:list={["project-card", `project-card-${variant}`]}>
   <div class="project-card-header">
     <h3>{name}</h3>
-    <span class="project-status">{status}</span>
+
+    {variant === "full" && (
+      <span class="project-status">{status}</span>
+    )}
   </div>
 
   <p>{summary}</p>
 
   <ul class="project-tech" aria-label={`${name} technologies`}>
-    {tech.map((item) => <li>{item}</li>)}
+    {visibleTech.map((item) => <li>{item}</li>)}
   </ul>
 
-  <a
-    class="project-link"
-    href={repositoryUrl}
-    target="_blank"
-    rel="noreferrer"
-  >
-    View on GitHub
-  </a>
+  <div class="project-links">
+    {hasCaseStudy && (
+      <a class="project-link" href={`/projects/${slug}/`}>
+        View Case Study
+      </a>
+    )}
+
+    <a
+      class:list={[
+        "project-link",
+        variant === "compact" && hasCaseStudy && "project-link-secondary",
+      ]}
+      href={repositoryUrl}
+      target="_blank"
+      rel="noreferrer"
+    >
+      GitHub
+    </a>
+  </div>
 </article>

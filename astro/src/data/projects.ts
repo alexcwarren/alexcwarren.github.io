@@ -6,6 +6,7 @@ export interface Project {
   status: string;
   repositoryUrl: string;
   featured: boolean;
+  hasCaseStudy: boolean;
 }
 
 export const projects: Project[] = [
@@ -18,6 +19,7 @@ export const projects: Project[] = [
     status: "Active",
     repositoryUrl: "https://github.com/alexcwarren/pyproject-init",
     featured: true,
+    hasCaseStudy: true,
   },
   {
     name: "Game Mechanic Generator",
@@ -28,6 +30,7 @@ export const projects: Project[] = [
     status: "Active",
     repositoryUrl: "https://github.com/alexcwarren/game-mechanic-generator",
     featured: true,
+    hasCaseStudy: false,
   },
   {
     name: "filename-manager",
@@ -38,6 +41,7 @@ export const projects: Project[] = [
     status: "Released",
     repositoryUrl: "https://github.com/alexcwarren/filename-manager",
     featured: true,
+    hasCaseStudy: false,
   },
 ];
 
