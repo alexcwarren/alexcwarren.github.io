@@ -30,7 +30,7 @@ export const projects: Project[] = [
     status: "Active",
     repositoryUrl: "https://github.com/alexcwarren/game-mechanic-generator",
     featured: true,
-    hasCaseStudy: false,
+    hasCaseStudy: true,
   },
   {
     name: "filename-manager",
@@ -41,7 +41,7 @@ export const projects: Project[] = [
     status: "Released",
     repositoryUrl: "https://github.com/alexcwarren/filename-manager",
     featured: true,
-    hasCaseStudy: false,
+    hasCaseStudy: true,
   },
 ];
 
