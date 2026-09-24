@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ProjectCard from "../components/ProjectCard.astro";
+import { featuredProjects } from "../data/projects";
 ---
 
 <BaseLayout
@@ -27,20 +28,12 @@ import ProjectCard from "../components/ProjectCard.astro";
     <section aria-labelledby="featured-projects">
       <h2 id="featured-projects">Featured Projects</h2>
 
-      <ProjectCard
-        name="pyproject-init"
-        summary="A command-line tool for creating modern Python projects with a consistent development setup."
-      />
-
-      <ProjectCard
-        name="Game Mechanic Generator"
-        summary="A Godot tool for generating combinations of gameplay verbs, constraints, pressures, and goals for game-design practice."
-      />
-
-      <ProjectCard
-        name="filename-manager"
-        summary="A Python command-line utility for batch-renaming files using configurable rules."
-      />
+      {featuredProjects.map((project) => (
+        <ProjectCard
+          name={project.name}
+          summary={project.summary}
+        />
+      ))}
     </section>
 
     <section>
